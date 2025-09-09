@@ -6,7 +6,7 @@ function LeftPanel() {
     return (    
         <div className="left-panel-container">
             <div className="left-panel-heading">
-                Hackathon To-Do-List App
+                To-Do-List App
             </div>
             <div className="left-panel-date-container">
                 <div className="my-planned">My Planned</div>

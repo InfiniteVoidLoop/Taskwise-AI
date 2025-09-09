@@ -11,7 +11,7 @@ createRoot(document.getElementById('root')!).render(
 
 
 /*
-* Left panel: data, unfinished
+* Left panel: date, unfinished, All finished 
 -  Calendar -> rates of finished things  red and green as marked
 -  Main display -> google calendar style : percentage marked finish, work, entertainment, health, others
 -  Right panel: list things, able to tick to
