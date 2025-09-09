@@ -6,5 +6,14 @@ import App from './App.tsx'
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <App />
-  </StrictMode>,
+  </StrictMode>,  
 )
+
+
+/*
+* Left panel: data, unfinished
+-  Calendar -> rates of finished things  red and green as marked
+-  Main display -> google calendar style : percentage marked finish, work, entertainment, health, others
+-  Right panel: list things, able to tick to
+- npm install @mui/material @emotion/react @emotion/styled
+*/

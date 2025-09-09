@@ -1,0 +1,59 @@
+
+
+.left-panel-container {
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 100vh;
+	width: 300px;
+	background: #fff;
+	border-top-right-radius: 24px;
+	border-bottom-right-radius: 24px;
+	box-shadow: 4px 0 24px 0 rgba(0,0,0,0.10);
+	padding: 2.5rem 1.5rem 2rem 1.5rem;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 2.5rem;
+	z-index: 100;
+	border-right: 1.5px solid #e0e0e0;                  
+}
+
+.left-panel-heading {
+	font-size: 2rem;
+	font-weight: 700;
+	color: #1a1a2e;
+	letter-spacing: 1px;
+	margin-bottom: 1.5rem;
+	text-align: center;
+	text-shadow: 0 2px 8px rgba(26,26,46,0.08);
+	width: 100%;
+	padding-bottom: 1rem;
+	border-bottom: 1px solid #e0e0e0;
+}
+
+.my-planned {
+	font-size: 1.2rem;
+	font-weight: 700;
+	color: #1a1a2e;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	text-align: center;
+	padding: 0.8rem 1rem;
+	border-radius: 8px;
+	margin-bottom: 1rem;
+	width: 100%;
+}
+
+.left-panel-date-container {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	background: #f5f6fa;
+	border-radius: 12px;
+	padding: 1.2rem 0.8rem;
+	box-shadow: 0 2px 8px 0 rgba(0,0,0,0.06);
+	min-height: 220px;
+	margin-top: 2rem;
+}
