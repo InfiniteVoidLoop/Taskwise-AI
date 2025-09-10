@@ -15,23 +15,23 @@ function ModifyNote(props: ModifyNote) {
     const style = {
         position: "absolute" as const, 
         left: props.x + (transform?.x || 0),
-        top: props.y + (transform?.y || 0),
+        top: props.y + (transform?.y || 0), 
     };
 
 
     return (
-        <div className = 'modify-note-container'
+        <div className = 'modify-note-container large'
             ref = {setNodeRef}
             style = {style}
             {...listeners}
             {...attributes}
         >
-            <div className = "modify-note-title">
+            <input className = "modify-note-title">
                 {props.title}
-            </div>
-            <div className = "modify-note-description">
+            </input>
+            <input className = "modify-note-description">
                 {props.description}
-            </div>
+            </input>
             <button className = "modify-note-save-button">
                 Save
             </button>

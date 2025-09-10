@@ -3,8 +3,12 @@ import type{Note} from '../utils/interface'
 import '../styles/Note.css'
 
 function NoteComponent(props: Note){
+    const handleClick = () => {
+        
+    };
+
     return (
-        <li key = {props.timestamp} className = "note-container">
+        <li key = {props.timestamp} className = "note-container" onClick = {handleClick}>
             <div className = "note-content">
                 <div className = "note-title">
                     {props.title}
