@@ -1,0 +1,244 @@
+/* Note Component Styling for Right Panel */
+.note-container {
+  list-style: none;
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 0.8rem 1rem;
+  margin: 0 0 1rem 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 1px 4px 0 rgba(26,26,46,0.06);
+  border: 1px solid #f1f3f4;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  min-height: 50px;
+  border-left: 3px solid #5FF281;
+}
+
+.note-container:hover {
+  transform: translateX(4px);
+  box-shadow: 0 2px 8px 0 rgba(26,26,46,0.1);
+  border-color: #e8eaed;
+  border-left-color: #4ae66b;
+}
+
+.note-container:active {
+  transform: translateX(2px);
+  box-shadow: 0 1px 4px 0 rgba(26,26,46,0.06);
+}
+
+/* Legacy li support */
+li {
+  list-style: none;
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 0.8rem 1rem;
+  margin: 0 0 0.3rem 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 1px 4px 0 rgba(26,26,46,0.06);
+  border: 1px solid #f1f3f4;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  min-height: 50px;
+  border-left: 3px solid #5FF281;
+}
+
+li:hover {
+  transform: translateX(4px);
+  box-shadow: 0 2px 8px 0 rgba(26,26,46,0.1);
+  border-color: #e8eaed;
+  border-left-color: #4ae66b;
+}
+
+li:active {
+  transform: translateX(2px);
+  box-shadow: 0 1px 4px 0 rgba(26,26,46,0.06);
+}
+
+/* Note Content Area */
+.note-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  margin-right: 0.8rem;
+  min-width: 0;
+}
+
+.note-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #1a1a2e;
+  line-height: 1.3;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.note-preview {
+  font-size: 0.75rem;
+  color: #70757a;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-word;
+}
+
+/* Note Actions */
+.note-action {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.delete-button {
+  background: transparent;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0.4rem;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  color: #9aa0a6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+}
+
+.delete-button:hover {
+  background: #fce8e6;
+  color: #d93025;
+  transform: scale(1.1);
+}
+
+.delete-button:active {
+  transform: scale(0.95);
+  background: #fdd663;
+}
+
+/* Priority Indicators - Bar Style */
+.note-container.priority-high,
+li.priority-high {
+  border-left: 3px solid #d93025;
+}
+
+.note-container.priority-medium,
+li.priority-medium {
+  border-left: 3px solid #f9ab00;
+}
+
+.note-container.priority-low,
+li.priority-low {
+  border-left: 3px solid #137333;
+}
+
+.note-container.completed,
+li.completed {
+  background: #f8f9fa;
+  opacity: 0.7;
+}
+
+.note-container.completed .note-title,
+li.completed .note-title {
+  text-decoration: line-through;
+  color: #9aa0a6;
+}
+
+.note-container.completed .note-preview,
+li.completed .note-preview {
+  color: #c1c7cd;
+}
+
+/* Status Indicators */
+.note-status {
+  position: absolute;
+  top: 0.8rem;
+  right: 3rem;
+  font-size: 0.75rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.note-status.todo {
+  background: #e3f2fd;
+  color: #1976d2;
+}
+
+.note-status.in-progress {
+  background: #fff3e0;
+  color: #f57c00;
+}
+
+.note-status.done {
+  background: #e8f5e8;
+  color: #2e7d32;
+}
+
+/* Timestamp */
+.note-timestamp {
+  font-size: 0.75rem;
+  color: #9aa0a6;
+  margin-top: 0.5rem;
+  font-style: italic;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .note-container,
+  li {
+    padding: 0.8rem 1rem;
+    margin: 0 0 0.5rem 0;
+  }
+  
+  .note-title {
+    font-size: 0.9rem;
+  }
+  
+  .note-preview {
+    font-size: 0.8rem;
+    -webkit-line-clamp: 1;
+  }
+  
+  .delete-button {
+    width: 32px;
+    height: 32px;
+    font-size: 1rem;
+  }
+}
+
+/* Animation for new notes */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+li.new-note {
+  animation: slideIn 0.3s ease-out;
+}

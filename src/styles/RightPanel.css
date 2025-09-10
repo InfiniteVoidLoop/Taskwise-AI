@@ -12,7 +12,6 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	gap: 2.5rem;
 	z-index: 100;
 	border-left: 1.5px solid #e0e0e0;
 }
@@ -64,19 +63,4 @@
 .right-panel-add-button:active {
 	transform: translateY(0);
 	box-shadow: 0 2px 8px 0 rgba(95,242,129,0.3);
-}
-
-.right-panel-list {
-	width: 100%;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	background: #f5f6fa;
-	border-radius: 12px;
-	padding: 1.2rem 0.8rem;
-	box-shadow: 0 2px 8px 0 rgba(0,0,0,0.06);
-	min-height: 220px;
-	margin-top: 1rem;
-	flex: 1;
-	overflow-y: auto;
 }

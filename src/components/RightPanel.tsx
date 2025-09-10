@@ -1,8 +1,22 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import '../styles/RightPanel.css'
-import {addNote, deleteNote} from '../models/firebase'
+import {addNote, deleteNote, fetchNote} from '../models/firebase'
+import {useListNoteStore} from '../store';
+import NoteComponent from './Note'
 
 function RightPanel(){
+    const {listNote, setListNote, addListNote} = useListNoteStore();
+
+    const fetchData = async () => {
+        const response = await fetchNote('phuc');
+        console.log(response);
+        setListNote(response);
+    }
+
+    useEffect(() => {
+       fetchData();
+    }, []);
+
     return(
         <div className = "right-panel-container">
             <div className = "right-panel-header">
@@ -10,12 +24,17 @@ function RightPanel(){
                     Your list
                 </div>
                 <button className = 'right-panel-add-button'
-                        onClick={() => deleteNote('phuc', 323131)}
+                        onClick={() => addNote('phuc', 'hi', 'I love you', 132)}
                 >+</button>
             </div>  
-            <div className = "right-panel-list">
-
-            </div>
+            {/* <div className = "right-panel-list-container"> */}
+                {listNote.map((note) => (
+                    <NoteComponent title = {note.title}
+                        description = {note.description}
+                        timestamp = {note.timestamp}
+                    />
+                ))}
+            {/* </div> */}
         </div>
     );
 }
