@@ -1,5 +1,6 @@
 import {create} from 'zustand'
-import type{ListNote, Note, VisibilityStore, CurrentNote, CacheNote} from './utils/interface'
+import type{ListNote, Note, VisibilityStore, CurrentNote, CacheNote, DateMonth} from './utils/interface'
+import {Dayjs} from 'dayjs'
 
 const useListNoteStore = create<ListNote>()((set) => ({
     listNote: [],
@@ -41,5 +42,11 @@ const useCacheNoteStore = create<CacheNote>()((set) => ({
     setCache: (note: Note) => set(() => ({cacheNote: note})),
 }));
 
-export {useListNoteStore, useVisibilityStore, useCurrentNoteStore, useCacheNoteStore};
+const useDateMonthStore = create<DateMonth>()((set) => ({
+    dateMonth: null,
+    setDateMonth: (newDate: Dayjs) => set(()=>({
+        dateMonth: newDate
+    }))
+}))
+export {useListNoteStore, useVisibilityStore, useCurrentNoteStore, useCacheNoteStore, useDateMonthStore};
 

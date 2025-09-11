@@ -1,3 +1,5 @@
+import {Dayjs} from 'dayjs'
+
 export interface Note{
     title: string,
     description: string, 
@@ -38,3 +40,7 @@ export interface CacheNote{
     setCache: (note: Note) => void
 };
 
+export interface DateMonth{
+    dateMonth: Dayjs|null;
+    setDateMonth: (newDate: Dayjs) => void;
+};

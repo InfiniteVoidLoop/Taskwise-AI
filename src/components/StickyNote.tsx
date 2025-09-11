@@ -1,19 +1,21 @@
 import { useEffect } from 'react'
 import '../styles/StickyNote.css'
 import {fetchNote } from '../models/firebase'
-import { useListNoteStore } from '../store';
+import { useListNoteStore, useDateMonthStore } from '../store';
 import NoteComponent from './NoteComponent'
 
 function StickyNote() {
     const { listNote, setListNote, addListNote, deleteListNote} = useListNoteStore();
+    const {dateMonth} = useDateMonthStore();
 
     const fetchData = async () => {
-        const response = await fetchNote('phuc');   
+        const response = await fetchNote('phuc', dateMonth);   
         setListNote(response);
-    }
+    };
+
     useEffect(() => {
         fetchData();
-    }, []);
+    }, [dateMonth]);
 
     const handleClickAddButton = () => {
         addListNote({title: '', description: '', timestamp: Date.now(), type: 'working', marked: false});

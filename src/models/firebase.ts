@@ -1,6 +1,7 @@
 import { initializeApp } from "firebase/app";
 import {getDatabase, set, ref, push, query, remove, equalTo, orderByChild, get, update} from "firebase/database";
 import type {Note} from '../utils/interface'
+import dayjs, {Dayjs} from "dayjs";
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -106,14 +107,15 @@ async function deleteNote(username: string, timestamp: number): Promise<boolean>
   }
 }
 
-async function fetchNote(username: string): Promise<Note[]>{
+async function fetchNote(username: string, dateMonth: Dayjs | null): Promise<Note[]>{
   try{
     const noteRef = ref(database, username);
     const snapshot = await get(noteRef);
     const result: Note[] = [];
     if (snapshot.exists()){
       (snapshot).forEach(childSnap => {
-        result.push(childSnap.val() as Note)
+        if (dayjs(childSnap.val().timestamp).isSame(dateMonth, "day"))
+          result.push(childSnap.val() as Note)
       })
     }
     return result;
