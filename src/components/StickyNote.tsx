@@ -16,7 +16,7 @@ function StickyNote() {
     }, []);
 
     const handleClickAddButton = () => {
-        addListNote({title: '', description: '', timestamp: Date.now(), type: 'working'});
+        addListNote({title: '', description: '', timestamp: Date.now(), type: 'working', marked: false});
     };
     return (
         <div className="sticky-note-container">
@@ -33,6 +33,7 @@ function StickyNote() {
                     description={note.description}
                     timestamp={note.timestamp}
                     type={note.type}
+                    marked={note.marked}
                     deleteNote={deleteListNote}
                 />
             ))}

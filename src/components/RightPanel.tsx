@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
 import '../styles/RightPanel.css';
-import { useListNoteStore } from '../store';
+import { useListNoteStore, useVisibilityStore} from '../store';
 
 function RightPanel() {
     const { listNote } = useListNoteStore();
+    const {visibility} = useVisibilityStore();
 
     const [counter, setCounter] = useState<Record<string, number>>({
         working: 0,
@@ -27,7 +28,7 @@ function RightPanel() {
         });
 
         setCounter(newCounter); 
-    }, [listNote]); 
+    }, [listNote, visibility]); 
     return (
         <div className="right-panel-container">
             <div className='right-panel-categories'>

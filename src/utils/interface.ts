@@ -2,7 +2,8 @@ export interface Note{
     title: string,
     description: string, 
     timestamp: number,
-    type: string
+    type: string, 
+    marked: boolean
 };
     
 export interface ListNote{

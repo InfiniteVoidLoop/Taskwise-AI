@@ -1,7 +1,7 @@
 import React from 'react'
 import type{Note} from '../utils/interface'
 import '../styles/NoteComponent.css'
-import {deleteNote} from '../models/firebase'
+import {deleteNote, updataMarkNote} from '../models/firebase'
 import {useVisibilityStore} from '../store'
 import {useCurrentNoteStore, useCacheNoteStore} from '../store'
 
@@ -19,13 +19,15 @@ function NoteComponent(props: NoteProps){
             title: props.title, 
             description: props.description,
             timestamp: props.timestamp,
-            type: props.type
+            type: props.type,
+            marked: props.marked
         });
         setCache({
             title: props.title, 
             description: props.description,
             timestamp: props.timestamp,
-            type: props.type
+            type: props.type, 
+            marked: props.marked
         });
         setShow();    
     };
@@ -46,6 +48,12 @@ function NoteComponent(props: NoteProps){
         return "note-container";
     };
 
+    const handleCheckBox = (e: React.MouseEvent<HTMLInputElement>, timestamp: number) => {
+        e.stopPropagation();
+        const checked = (e.currentTarget as HTMLInputElement).checked;
+        updataMarkNote('phuc', timestamp, checked);
+    };
+
     return (
         <li key = {props.timestamp} className = {getCategoryClass()} onClick = {() => handleClickNote()}>
             <div className = "note-content">
@@ -61,6 +69,7 @@ function NoteComponent(props: NoteProps){
                     🗑️
                 </button>
             </div>
+            <input type="checkbox" defaultChecked={props.marked} className='note-check-box' onClick = {(e) => handleCheckBox(e, props.timestamp)} />
         </li>
     );
 }

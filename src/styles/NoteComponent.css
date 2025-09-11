@@ -72,7 +72,7 @@ li:active {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  margin-right: 1rem;
+  margin-right: 3rem; /* Increased to accommodate checkbox */
   min-width: 0;
 }
 
@@ -107,6 +107,84 @@ li:active {
   align-items: flex-start;
   flex-shrink: 0;
   margin-top: 0.2rem;
+}
+
+/* Professional Note Checkbox Styling */
+.note-check-box {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 22px;
+  height: 22px;
+  cursor: pointer;
+  z-index: 10;
+  margin: 0;
+  padding: 0;
+}
+
+/* Custom Professional Checkbox Design */
+.note-check-box[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 22px;
+  height: 22px;
+  border: 2px solid #e1e5e9;
+  border-radius: 6px;
+  background: #ffffff;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0.0, 0.2, 1);
+  outline: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+/* Hover State */
+.note-check-box[type="checkbox"]:hover {
+  border-color: #4285f4;
+  box-shadow: 0 2px 8px rgba(66, 133, 244, 0.15), 0 0 0 3px rgba(66, 133, 244, 0.1);
+  transform: translateY(-1px);
+}
+
+/* Focus State */
+.note-check-box[type="checkbox"]:focus {
+  border-color: #4285f4;
+  box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.2);
+}
+
+/* Checked State */
+.note-check-box[type="checkbox"]:checked {
+  background: linear-gradient(135deg, #4285f4 0%, #34a853 100%);
+  border-color: #4285f4;
+  box-shadow: 0 2px 8px rgba(66, 133, 244, 0.25);
+}
+
+/* Professional Check Mark */
+.note-check-box[type="checkbox"]:checked::before {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 7px;
+  width: 6px;
+  height: 10px;
+  border: solid #ffffff;
+  border-width: 0 2.5px 2.5px 0;
+  transform: rotate(45deg);
+  opacity: 1;
+  transition: all 0.2s ease;
+}
+
+/* Checked Hover Effect */
+.note-check-box[type="checkbox"]:checked:hover {
+  background: linear-gradient(135deg, #3367d6 0%, #2e7d32 100%);
+  box-shadow: 0 3px 12px rgba(66, 133, 244, 0.3), 0 0 0 3px rgba(66, 133, 244, 0.15);
+  transform: translateY(-1px);
+}
+
+/* Active State */
+.note-check-box[type="checkbox"]:active {
+  transform: scale(0.95);
+  box-shadow: 0 1px 4px rgba(66, 133, 244, 0.2);
 }
 
 .delete-button {
@@ -227,7 +305,7 @@ li:focus-visible {
   
   .note-content {
     gap: 0.4rem;
-    margin-right: 0.8rem;
+    margin-right: 2.5rem; /* Adjusted for mobile checkbox */
   }
   
   .note-title {
@@ -246,6 +324,31 @@ li:focus-visible {
     height: 32px;
     font-size: 1rem;
     padding: 0.4rem;
+  }
+  
+  .note-check-box {
+    top: 0.8rem;
+    right: 0.8rem;
+    width: 20px;
+    height: 20px;
+  }
+  
+  .note-check-box[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    border-radius: 5px;
+  }
+  
+  .note-check-box[type="checkbox"]:checked::before {
+    top: 2px;
+    left: 6px;
+    width: 5px;
+    height: 8px;
+    border-width: 0 2px 2px 0;
+  }
+  
+  .note-check-box[type="checkbox"]:hover {
+    transform: translateY(-0.5px);
   }
 }
 
@@ -365,4 +468,57 @@ li.note-container.note-container-others:hover {
   background: #e17055 !important;
   transform: translateY(-2px);
   box-shadow: 0 8px 24px 0 rgba(225, 112, 85, 0.3) !important;
+}
+
+/* Professional Checkbox Styling for Category Notes */
+li.note-container.note-container-working .note-check-box[type="checkbox"],
+li.note-container.note-container-learning .note-check-box[type="checkbox"],
+li.note-container.note-container-health .note-check-box[type="checkbox"],
+li.note-container.note-container-entertaining .note-check-box[type="checkbox"],
+li.note-container.note-container-others .note-check-box[type="checkbox"] {
+  border-color: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* Category Note Checkbox Hover */
+li.note-container.note-container-working .note-check-box[type="checkbox"]:hover,
+li.note-container.note-container-learning .note-check-box[type="checkbox"]:hover,
+li.note-container.note-container-health .note-check-box[type="checkbox"]:hover,
+li.note-container.note-container-entertaining .note-check-box[type="checkbox"]:hover,
+li.note-container.note-container-others .note-check-box[type="checkbox"]:hover {
+  border-color: rgba(255, 255, 255, 0.9);
+  background: #ffffff;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2), 0 0 0 3px rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+/* Category Note Checkbox Checked */
+li.note-container.note-container-working .note-check-box[type="checkbox"]:checked,
+li.note-container.note-container-learning .note-check-box[type="checkbox"]:checked,
+li.note-container.note-container-health .note-check-box[type="checkbox"]:checked,
+li.note-container.note-container-entertaining .note-check-box[type="checkbox"]:checked,
+li.note-container.note-container-others .note-check-box[type="checkbox"]:checked {
+  background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
+  border-color: #ffffff;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.25);
+}
+
+/* Category Note Checkbox Check Mark */
+li.note-container.note-container-working .note-check-box[type="checkbox"]:checked::before,
+li.note-container.note-container-learning .note-check-box[type="checkbox"]:checked::before,
+li.note-container.note-container-health .note-check-box[type="checkbox"]:checked::before,
+li.note-container.note-container-entertaining .note-check-box[type="checkbox"]:checked::before,
+li.note-container.note-container-others .note-check-box[type="checkbox"]:checked::before {
+  border-color: #2c3e50;
+}
+
+/* Category Note Checkbox Checked Hover */
+li.note-container.note-container-working .note-check-box[type="checkbox"]:checked:hover,
+li.note-container.note-container-learning .note-check-box[type="checkbox"]:checked:hover,
+li.note-container.note-container-health .note-check-box[type="checkbox"]:checked:hover,
+li.note-container.note-container-entertaining .note-check-box[type="checkbox"]:checked:hover,
+li.note-container.note-container-others .note-check-box[type="checkbox"]:checked:hover {
+  background: linear-gradient(135deg, #ffffff 0%, #e8e8e8 100%);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3), 0 0 0 3px rgba(255, 255, 255, 0.4);
 }

@@ -17,7 +17,7 @@ function ModifyNote(props: ModifyNotePos) {
             setNote(cacheNote);
         setHide();
     };
-    
+
     const handleTitleChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
         setTitle(target.value);
     };
@@ -32,7 +32,7 @@ function ModifyNote(props: ModifyNotePos) {
                 currentNote.title,
                 currentNote.description,
                 currentNote.timestamp,
-                currentNote.type
+                currentNote.type, 
             );
             if (response) {
                 setHide();
@@ -40,7 +40,8 @@ function ModifyNote(props: ModifyNotePos) {
                     title: currentNote.title,
                     description: currentNote.description,
                     timestamp: currentNote.timestamp, 
-                    type: currentNote.type
+                    type: currentNote.type,
+                    marked: currentNote.marked
                 });
             }
         } else {

@@ -57,7 +57,7 @@ async function addNote(username: string, title: string, description: string, tim
         title: title, 
         description: description, 
         timestamp: timestamp,
-        type: type
+        type: type,
       }
       await update(noteRef, postData);
     }
@@ -68,10 +68,26 @@ async function addNote(username: string, title: string, description: string, tim
         title: title, 
         description: description,
         timestamp: timestamp,
-        type: type
+        type: type, 
+        marked: false
       });
     }
     return true;
+  }catch(error){
+    console.error(error);
+    return false;
+  }
+}
+
+async function updataMarkNote(username: string, timestamp: number, marked: boolean): Promise<boolean>{
+  try{
+    const key = await getKey(username, timestamp);
+    if (key){
+        const noteRef = ref(database, username + '/' + key[0]);
+        await update(noteRef, {marked: marked});
+        return true;
+    }
+    return false;
   }catch(error){
     console.error(error);
     return false;
@@ -107,4 +123,4 @@ async function fetchNote(username: string): Promise<Note[]>{
   }
 }
 
-export {addUser, addNote, deleteNote, fetchNote};  
+export {addUser, addNote, deleteNote, fetchNote,  updataMarkNote};  
