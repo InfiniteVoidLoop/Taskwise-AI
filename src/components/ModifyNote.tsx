@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import { useDraggable } from '@dnd-kit/core';
 import '../styles/ModifyNote.css'
 import type { ModifyNotePos } from '../utils/interface';
@@ -17,6 +17,7 @@ function ModifyNote(props: ModifyNotePos) {
             setNote(cacheNote);
         setHide();
     };
+    
     const handleTitleChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
         setTitle(target.value);
     };
