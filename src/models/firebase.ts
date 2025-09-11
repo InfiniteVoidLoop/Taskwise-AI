@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import {getDatabase, set, ref, push, query, remove, equalTo, orderByChild, get} from "firebase/database";
+import {getDatabase, set, ref, push, query, remove, equalTo, orderByChild, get, update} from "firebase/database";
 import type {Note} from '../utils/interface'
 
 const firebaseConfig = {
@@ -32,15 +32,43 @@ async function addUser(username: string, password: string): Promise<boolean>{
   }
 }
 
+async function getKey(username: string, timestamp: number): Promise<string[]|null>{
+  const userRef = ref(database, username);
+  const q = query(userRef, orderByChild("timestamp"), equalTo(timestamp));
+  const snapshot = await get(q);
+  if(snapshot.exists()){
+    const result: string[] = [];
+    snapshot.forEach((childSnap) => {
+      result.push(childSnap.key)
+    })
+    return result;
+  }
+  else{
+    return null;
+  }
+}
+
 async function addNote(username: string, title: string, description: string, timestamp: number): Promise<boolean>{
   try{
-    const noteRef = ref(database, username);
-    const newNoteRef = push(noteRef);
-    await set(newNoteRef, {
-      title: title, 
-      description: description,
-      timestamp: timestamp
-    });
+    const key = await getKey(username, timestamp);
+    if (key){
+      const noteRef = ref(database, username + '/' + key[0]);
+      const postData = {
+        title: title, 
+        description: description, 
+        timestamp: timestamp
+      }
+      await update(noteRef, postData);
+    }
+    else{
+      const noteRef = ref(database, username);
+      const newNoteRef = push(noteRef);
+      await set(newNoteRef, {
+        title: title, 
+        description: description,
+        timestamp: timestamp
+      });
+    }
     return true;
   }catch(error){
     console.error(error);

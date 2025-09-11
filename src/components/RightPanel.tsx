@@ -5,16 +5,19 @@ import { useListNoteStore } from '../store';
 import NoteComponent from './NoteComponent'
 
 function RightPanel() {
-    const { listNote, setListNote, addListNote } = useListNoteStore();
+    const { listNote, setListNote, addListNote, deleteListNote} = useListNoteStore();
 
     const fetchData = async () => {
-        const response = await fetchNote('phuc');
+        const response = await fetchNote('phuc');   
         setListNote(response);
     }
     useEffect(() => {
         fetchData();
     }, []);
 
+    const handleClickAddButton = () => {
+        addListNote({title: '', description: '', timestamp: Date.now()});
+    };
     return (
         <div className="right-panel-container">
             <div className="right-panel-header">
@@ -22,17 +25,14 @@ function RightPanel() {
                     Your list
                 </div>
                 <button className='right-panel-add-button'
-                    onClick={() => addListNote({
-                        title: '',
-                        description: '',
-                        timestamp: Date.now()
-                    })}
-                >+</button>
+                   onClick = {handleClickAddButton}
+                >+</button> 
             </div>
             {listNote.map((note) => (
                 <NoteComponent title={note.title}
                     description={note.description}
                     timestamp={note.timestamp}
+                    deleteNote={deleteListNote}
                 />
             ))}
         </div>
