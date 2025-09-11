@@ -1,41 +1,46 @@
-import React, { useEffect } from 'react'
-import '../styles/RightPanel.css'
-import { addNote, deleteNote, fetchNote } from '../models/firebase'
-import { useListNoteStore } from '../store';
-import NoteComponent from './NoteComponent'
+import React from 'react';
+import '../styles/RightPanel.css';
 
-function RightPanel() {
-    const { listNote, setListNote, addListNote, deleteListNote} = useListNoteStore();
-
-    const fetchData = async () => {
-        const response = await fetchNote('phuc');   
-        setListNote(response);
-    }
-    useEffect(() => {
-        fetchData();
-    }, []);
-
-    const handleClickAddButton = () => {
-        addListNote({title: '', description: '', timestamp: Date.now()});
-    };
+function RightPanel(){
     return (
-        <div className="right-panel-container">
-            <div className="right-panel-header">
-                <div className='right-panel-title'>
-                    Your list
-                </div>
-                <button className='right-panel-add-button'
-                   onClick = {handleClickAddButton}
-                >+</button> 
+        <div className = "right-panel-container">
+            <div className = 'right-panel-categories'>
+                Categories
             </div>
-            {listNote.map((note) => (
-                <NoteComponent title={note.title}
-                    description={note.description}
-                    timestamp={note.timestamp}
-                    deleteNote={deleteListNote}
-                />
-            ))}
+            <div className = 'categories-grid'>
+                <div className = "right-panel-working">
+                    Working
+                    <div className = 'count'>
+                        12
+                    </div>
+                </div>
+                <div className = 'right-panel-learning'>
+                    Learning
+                     <div className = 'count'>
+                        12
+                    </div>
+                </div>
+                <div className = 'right-panel-health'>
+                    Health
+                     <div className = 'count'>
+                        12
+                    </div>
+                </div>
+                <div className= 'right-panel-entertaining'>
+                    Entertaining
+                     <div className = 'count'>
+                        12
+                    </div>
+                </div>
+                <div className='right-panel-others'>
+                    Others
+                     <div className = 'count'>
+                        12
+                    </div>
+                </div>
+            </div>
         </div>
     );
-}
+};
+
 export default RightPanel;
