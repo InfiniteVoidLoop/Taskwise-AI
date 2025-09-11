@@ -1,9 +1,9 @@
 import React from 'react'
 import type{Note} from '../utils/interface'
-import '../styles/Note.css'
+import '../styles/NoteComponent.css'
 import {deleteNote} from '../models/firebase'
 import {useVisibilityStore} from '../store'
-import {useCurrentNoteStore} from '../store'
+import {useCurrentNoteStore, useCacheNoteStore} from '../store'
 
 type NoteProps = Note & {
     deleteNote: (timestamp: number) => void
@@ -11,11 +11,17 @@ type NoteProps = Note & {
 
 function NoteComponent(props: NoteProps){
     const {currentNote, setNote} = useCurrentNoteStore();
+    const {setCache} = useCacheNoteStore();
     const {setShow} = useVisibilityStore();
     
     const handleClickNote = () => {
         setNote({
             title: props.title, 
+            description: props.description,
+            timestamp: props.timestamp
+        });
+        setCache({
+             title: props.title, 
             description: props.description,
             timestamp: props.timestamp
         });
@@ -28,8 +34,16 @@ function NoteComponent(props: NoteProps){
         if (respond) props.deleteNote(timestamp);
     };
 
+    // Get category class name
+    const getCategoryClass = () => {
+        if (props.category) {
+            return `note-container note-container-${props.category}`;
+        }
+        return "note-container";
+    };
+
     return (
-        <li key = {props.timestamp} className = "note-container" onClick = {() => handleClickNote()}>
+        <li key = {props.timestamp} className = "note-container note-container-entertaining" onClick = {() => handleClickNote()}>
             <div className = "note-content">
                 <div className = "note-title">
                     {props.timestamp === currentNote?.timestamp ? currentNote.title: props.title}

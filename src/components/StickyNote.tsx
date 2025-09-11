@@ -22,7 +22,7 @@ function StickyNote() {
         <div className="sticky-note-container">
             <div className="sitcky-note-header">
                 <div className='sticky-note-title'>
-                    Your list
+                    Your To-Do-List
                 </div>
                 <button className='sticky-note-add-button'
                    onClick = {handleClickAddButton}

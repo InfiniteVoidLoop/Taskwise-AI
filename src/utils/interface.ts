@@ -1,7 +1,8 @@
 export interface Note{
     title: string,
     description: string, 
-    timestamp: number, 
+    timestamp: number,
+    category?: 'working' | 'learning' | 'health' | 'entertaining' | 'others';
 };
     
 export interface ListNote{
@@ -31,6 +32,7 @@ export interface CurrentNote{
 };
 
 export interface CacheNote{
-    cachNote: Note,
+    cacheNote: Note | null,
     setCache: (note: Note) => void
 };
+

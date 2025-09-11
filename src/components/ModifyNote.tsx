@@ -1,23 +1,28 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { useDraggable } from '@dnd-kit/core';
 import '../styles/ModifyNote.css'
 import type { ModifyNotePos } from '../utils/interface';
-import { useVisibilityStore, useCurrentNoteStore, useListNoteStore} from '../store';
+import { useVisibilityStore, useCurrentNoteStore, useListNoteStore, useCacheNoteStore} from '../store';
 import { addNote } from '../models/firebase';
 
 function ModifyNote(props: ModifyNotePos) {
     const { visibility, setHide } = useVisibilityStore()
-    const { currentNote, setTitle, setDescription} = useCurrentNoteStore();
-    const { setNoteInList} = useListNoteStore();
+    const { currentNote, setTitle, setDescription, setNote} = useCurrentNoteStore();
+    const { setNoteInList } = useListNoteStore();
+    const {cacheNote} = useCacheNoteStore();
+    
+    const [type, setType] = useState('working');
     
     const handleCancel = (e: React.MouseEvent) => {
         e.stopPropagation();
+        if (cacheNote)
+            setNote(cacheNote);
         setHide();
     };
     const handleTitleChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
         setTitle(target.value);
     };
-    const handleDescriptionChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
+    const handleDescriptionChange = ({ target }: React.ChangeEvent<HTMLTextAreaElement>) => {
         setDescription(target.value)
     };
     const handleSave = async (e: React.MouseEvent) => {
@@ -29,11 +34,11 @@ function ModifyNote(props: ModifyNotePos) {
                 currentNote.description,
                 currentNote.timestamp
             );
-            if (response){
+            if (response) {
                 setHide();
                 setNoteInList({
                     title: currentNote.title,
-                    description: currentNote.description, 
+                    description: currentNote.description,
                     timestamp: currentNote.timestamp
                 });
             }
@@ -55,11 +60,11 @@ function ModifyNote(props: ModifyNotePos) {
 
     if (!visibility) return null;
     return (
-        <div className='modify-note-container large'
+        <div className={`modify-note-container large modify-note-${type}`}
             style={style}
             ref={setNodeRef}
             {...attributes}
-           >
+        >
             <div
                 className="drag-handle"
                 style={{
@@ -73,9 +78,18 @@ function ModifyNote(props: ModifyNotePos) {
                 ⋮⋮ Drag to move
             </div>
             <input className="modify-note-title" onChange={handleTitleChange}
-            value={currentNote?.title || ""}/>
-            <input className="modify-note-description" onChange={handleDescriptionChange} 
-            value={currentNote?.description || ""} />
+                value={currentNote?.title || ""} />
+            <textarea className="modify-note-description" onChange={handleDescriptionChange}
+                value={currentNote?.description || ""} 
+                placeholder="Write your note description here..."
+            />
+            <select className = "select-note-type" value={type} onChange = {(e) => setType(e.target.value)}>
+                <option value = 'working'>Working</option>
+                <option value = 'learning'>Learning</option>
+                <option value = 'health'>Health</option>
+                <option value = 'entertaining' >Entertaining</option>
+                <option value = 'others'>Others</option>
+            </select>
             <button className="modify-note-save-button"
                 onClick={handleSave}>
                 Save

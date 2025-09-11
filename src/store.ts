@@ -1,5 +1,5 @@
 import {create} from 'zustand'
-import type{ListNote, Note, VisibilityStore, CurrentNote} from './utils/interface'
+import type{ListNote, Note, VisibilityStore, CurrentNote, CacheNote} from './utils/interface'
 
 const useListNoteStore = create<ListNote>()((set) => ({
     listNote: [],
@@ -33,5 +33,10 @@ const useCurrentNoteStore = create<CurrentNote>()((set) => ({
     })),
 }));
 
-export {useListNoteStore, useVisibilityStore, useCurrentNoteStore};
+const useCacheNoteStore = create<CacheNote>()((set) => ({
+    cacheNote: null, 
+    setCache: (note: Note) => set(() => ({cacheNote: note})),
+}));
+
+export {useListNoteStore, useVisibilityStore, useCurrentNoteStore, useCacheNoteStore};
 

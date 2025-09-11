@@ -39,6 +39,14 @@ function RightPanel(){
                     </div>
                 </div>
             </div>
+            <div className = 'progress-container'>
+                <div className = 'right-panel-progress'>
+                    Progress
+                </div>
+                <div className = 'right-panel-finish-task'>
+                    4/7
+                </div>
+            </div>
         </div>
     );
 };

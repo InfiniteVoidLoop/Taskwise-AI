@@ -15,11 +15,15 @@
 
 /* Categories Header */
 .right-panel-categories {
-  font-size: 1.2rem;
+  font-size: 2.0rem;
   font-weight: 700;
-  color: #333;
-  margin-bottom: 1.5rem;
+  color: #2c3e50;
+  margin-bottom: 2rem;
   text-align: center;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  border-bottom: 2px solid #e8eaed;
+  padding-bottom: 1rem;
 }
 
 /* Categories Grid Container */
@@ -37,18 +41,21 @@
 .right-panel-entertaining,
 .right-panel-others {
   background: #f5f5f5;
-  border-radius: 8px;
-  padding: 1rem 0.8rem;
+  border-radius: 12px;
+  padding: 1.2rem 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-size: 0.9rem;
-  font-weight: 600;
+  font-size: 1.1rem;
+  font-weight: 700;
   color: #333;
   cursor: pointer;
-  transition: transform 0.2s ease;
-  height: 80px;
+  transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+  height: 100px;
   justify-content: space-between;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  position: relative;
+  overflow: hidden;
 }
 
 /* Hover Effects */
@@ -57,49 +64,117 @@
 .right-panel-health:hover,
 .right-panel-entertaining:hover,
 .right-panel-others:hover {
-  transform: translateY(-2px);
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
 }
 
-/* Working Category - Yellow (matches sticky note default) */
+/* Working Category - Darker Blue */
 .right-panel-working {
-  background: #74b9ff;
-  color: #2d3436;
+  background: #0984e3;
+  color: #ffffff;
 }
 
-/* Learning Category - Green (matches sticky note green) */
+/* Learning Category - Darker Green */
 .right-panel-learning {
-  background: #55efc4;
-  color: #2d3436;
+  background: #00b894;
+  color: #ffffff;
 }
 
-/* Health Category - Pink (matches sticky note pink) */
+/* Health Category - Darker Pink */
 .right-panel-health {
-  background: #fd79a8;
-  color: #2d3436;
+  background: #e84393;
+  color: #ffffff;
 }
 
-/* Entertaining Category - Purple (matches sticky note purple) */
+/* Entertaining Category - Darker Purple */
 .right-panel-entertaining {
-  background: #a29bfe;
-  color: #2d3436;
+  background: #6c5ce7;
+  color: #ffffff;
 }
 
-/* Others Category - Orange (matches sticky note orange) */
+/* Others Category - Darker Orange */
 .right-panel-others {
-  background: #fdcb6e;
-  color: #2d3436;
+  background: #e17055;
+  color: #ffffff;
 }
 
-/* Count Badge */
-.count {
-  background: rgba(255, 255, 255, 0.8);
-  color: inherit;
-  font-size: 0.8rem;
-  font-weight: 700;
-  padding: 0.3rem 0.6rem;
+/* Progress Section */
+.progress-container {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: #f8f9fa;
   border-radius: 12px;
-  min-width: 1.5rem;
+  border: 2px solid #e8eaed;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.right-panel-progress {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 1rem;
   text-align: center;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+}
+
+.right-panel-finish-task {
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: #27ae60;
+  text-align: center;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  padding: 0.5rem;
+  background: linear-gradient(135deg, rgba(39, 174, 96, 0.1) 0%, rgba(39, 174, 96, 0.05) 100%);
+  border-radius: 8px;
+  border: 2px solid rgba(39, 174, 96, 0.2);
+}
+
+/* Category Icons (optional enhancement) */
+.right-panel-working::before {
+  content: '💼';
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.right-panel-learning::before {
+  content: '📚';
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.right-panel-health::before {
+  content: '🏥';
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.right-panel-entertaining::before {
+  content: '🎮';
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.right-panel-others::before {
+  content: '📝';
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+/* Count Number - Clean Style */
+.count {
+  background: transparent;
+  color: rgba(255, 255, 255, 0.95);
+  font-size: 1.8rem;
+  font-weight: 900;
+  text-align: center;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  letter-spacing: 0.5px;
 }
 
 /* Mobile Responsive */
@@ -110,6 +185,11 @@
   }
   
   .right-panel-categories {
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .categories-grid {
     gap: 0.8rem;
   }
   
@@ -118,8 +198,42 @@
   .right-panel-health,
   .right-panel-entertaining,
   .right-panel-others {
-    padding: 0.8rem 0.6rem;
-    font-size: 0.8rem;
-    height: 70px;
+    padding: 1rem 0.8rem;
+    font-size: 0.95rem;
+    height: 85px;
+  }
+  
+  .right-panel-working::before,
+  .right-panel-learning::before,
+  .right-panel-health::before,
+  .right-panel-entertaining::before,
+  .right-panel-others::before {
+    font-size: 1.2rem;
+  }
+  
+  .count {
+    font-size: 1.5rem;
+  }
+  
+  .progress-container {
+    margin-top: 1.5rem;
+    padding: 1.2rem;
+  }
+  
+  .right-panel-progress {
+    font-size: 1rem;
+    margin-bottom: 0.8rem;
+  }
+  
+  .right-panel-finish-task {
+    font-size: 2rem;
+  }
+}
+
+/* Tablet Responsive */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .right-panel-container {
+    width: 260px;
+    padding: 1.8rem 0.9rem;
   }
 }
