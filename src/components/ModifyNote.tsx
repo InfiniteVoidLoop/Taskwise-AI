@@ -7,12 +7,10 @@ import { addNote } from '../models/firebase';
 
 function ModifyNote(props: ModifyNotePos) {
     const { visibility, setHide } = useVisibilityStore()
-    const { currentNote, setTitle, setDescription, setNote} = useCurrentNoteStore();
+    const { currentNote, setTitle, setDescription, setNote, setType} = useCurrentNoteStore();
     const { setNoteInList } = useListNoteStore();
     const {cacheNote} = useCacheNoteStore();
-    
-    const [type, setType] = useState('working');
-    
+        
     const handleCancel = (e: React.MouseEvent) => {
         e.stopPropagation();
         if (cacheNote)
@@ -32,14 +30,16 @@ function ModifyNote(props: ModifyNotePos) {
                 'phuc',
                 currentNote.title,
                 currentNote.description,
-                currentNote.timestamp
+                currentNote.timestamp,
+                currentNote.type
             );
             if (response) {
                 setHide();
                 setNoteInList({
                     title: currentNote.title,
                     description: currentNote.description,
-                    timestamp: currentNote.timestamp
+                    timestamp: currentNote.timestamp, 
+                    type: currentNote.type
                 });
             }
         } else {
@@ -60,7 +60,7 @@ function ModifyNote(props: ModifyNotePos) {
 
     if (!visibility) return null;
     return (
-        <div className={`modify-note-container large modify-note-${type}`}
+        <div className={`modify-note-container large modify-note-${currentNote?.type}`}
             style={style}
             ref={setNodeRef}
             {...attributes}
@@ -83,7 +83,7 @@ function ModifyNote(props: ModifyNotePos) {
                 value={currentNote?.description || ""} 
                 placeholder="Write your note description here..."
             />
-            <select className = "select-note-type" value={type} onChange = {(e) => setType(e.target.value)}>
+            <select className = "select-note-type" onChange = {(e) => setType(e.target.value)}>
                 <option value = 'working'>Working</option>
                 <option value = 'learning'>Learning</option>
                 <option value = 'health'>Health</option>

@@ -2,7 +2,7 @@ export interface Note{
     title: string,
     description: string, 
     timestamp: number,
-    category?: 'working' | 'learning' | 'health' | 'entertaining' | 'others';
+    type: string
 };
     
 export interface ListNote{
@@ -28,7 +28,8 @@ export interface CurrentNote{
     currentNote: Note | null,
     setNote: (note: Note) => void;
     setTitle: (title: string) => void;
-    setDescription: (title: string) => void;
+    setDescription: (description: string) => void;
+    setType: (type: string) => void
 };
 
 export interface CacheNote{

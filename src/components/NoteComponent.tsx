@@ -18,12 +18,14 @@ function NoteComponent(props: NoteProps){
         setNote({
             title: props.title, 
             description: props.description,
-            timestamp: props.timestamp
+            timestamp: props.timestamp,
+            type: props.type
         });
         setCache({
-             title: props.title, 
+            title: props.title, 
             description: props.description,
-            timestamp: props.timestamp
+            timestamp: props.timestamp,
+            type: props.type
         });
         setShow();    
     };
@@ -34,16 +36,18 @@ function NoteComponent(props: NoteProps){
         if (respond) props.deleteNote(timestamp);
     };
 
-    // Get category class name
     const getCategoryClass = () => {
-        if (props.category) {
-            return `note-container note-container-${props.category}`;
+        if (props.timestamp === currentNote?.timestamp){
+            return `note-container note-container-${currentNote.type}`;
+        }
+        else if (props.type) {
+            return `note-container note-container-${props.type}`;
         }
         return "note-container";
     };
 
     return (
-        <li key = {props.timestamp} className = "note-container note-container-entertaining" onClick = {() => handleClickNote()}>
+        <li key = {props.timestamp} className = {getCategoryClass()} onClick = {() => handleClickNote()}>
             <div className = "note-content">
                 <div className = "note-title">
                     {props.timestamp === currentNote?.timestamp ? currentNote.title: props.title}

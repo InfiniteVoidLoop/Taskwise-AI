@@ -48,7 +48,7 @@ async function getKey(username: string, timestamp: number): Promise<string[]|nul
   }
 }
 
-async function addNote(username: string, title: string, description: string, timestamp: number): Promise<boolean>{
+async function addNote(username: string, title: string, description: string, timestamp: number, type: string): Promise<boolean>{
   try{
     const key = await getKey(username, timestamp);
     if (key){
@@ -56,7 +56,8 @@ async function addNote(username: string, title: string, description: string, tim
       const postData = {
         title: title, 
         description: description, 
-        timestamp: timestamp
+        timestamp: timestamp,
+        type: type
       }
       await update(noteRef, postData);
     }
@@ -66,7 +67,8 @@ async function addNote(username: string, title: string, description: string, tim
       await set(newNoteRef, {
         title: title, 
         description: description,
-        timestamp: timestamp
+        timestamp: timestamp,
+        type: type
       });
     }
     return true;

@@ -31,6 +31,9 @@ const useCurrentNoteStore = create<CurrentNote>()((set) => ({
     setDescription: (description: string) => set((state) => ({
         currentNote: state.currentNote ? {...state.currentNote, description} : null
     })),
+    setType: (type: string) => set((state) => ({
+        currentNote: state.currentNote ? {...state.currentNote, type} : null
+    }))
 }));
 
 const useCacheNoteStore = create<CacheNote>()((set) => ({

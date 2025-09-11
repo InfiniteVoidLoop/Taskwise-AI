@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import '../styles/StickyNote.css'
-import { addNote, deleteNote, fetchNote } from '../models/firebase'
+import {fetchNote } from '../models/firebase'
 import { useListNoteStore } from '../store';
 import NoteComponent from './NoteComponent'
 
@@ -16,13 +16,13 @@ function StickyNote() {
     }, []);
 
     const handleClickAddButton = () => {
-        addListNote({title: '', description: '', timestamp: Date.now()});
+        addListNote({title: '', description: '', timestamp: Date.now(), type: 'working'});
     };
     return (
         <div className="sticky-note-container">
             <div className="sitcky-note-header">
                 <div className='sticky-note-title'>
-                    Your To-Do-List
+                    My To-Do-List
                 </div>
                 <button className='sticky-note-add-button'
                    onClick = {handleClickAddButton}
@@ -32,6 +32,7 @@ function StickyNote() {
                 <NoteComponent title={note.title}
                     description={note.description}
                     timestamp={note.timestamp}
+                    type={note.type}
                     deleteNote={deleteListNote}
                 />
             ))}
