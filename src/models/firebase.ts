@@ -78,16 +78,11 @@ async function addNote(username: string, title: string, description: string, tim
 
 async function deleteNote(username: string, timestamp: number): Promise<boolean>{
   try{
-    const noteRefCollection = ref(database, username);
-    const noteRef = query(noteRefCollection, orderByChild('timestamp'), equalTo(timestamp));
-    const snapshot = await get(noteRef);
-    if (snapshot.exists()){
-      snapshot.forEach((childSnap) => {
-        remove(ref(database, `${username}/${childSnap.key}`))
-      })
-    }
+    const key = await getKey(username, timestamp);
+    const noteRef = ref(database, username + '/' + key);
+    await remove(noteRef);
     return true;
-  }catch(error){
+  }catch(error){  
     console.error(error);
     return false;
   }

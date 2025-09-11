@@ -22,7 +22,8 @@ function NoteComponent(props: NoteProps){
         setShow();    
     };
 
-    const handleClickDeleteButton = async (timestamp: number) => {
+    const handleClickDeleteButton = async (event: React.MouseEvent<HTMLButtonElement>, timestamp: number) => {
+        event.stopPropagation();
         const respond = await deleteNote('phuc', timestamp);
         if (respond) props.deleteNote(timestamp);
     };
@@ -38,7 +39,7 @@ function NoteComponent(props: NoteProps){
                 </div>
             </div>
             <div className = "note-action">
-                <button className = "delete-button" onClick = {() => handleClickDeleteButton(props.timestamp)} >
+                <button className = "delete-button" onClick = {(e) => handleClickDeleteButton(e, props.timestamp)} >
                     🗑️
                 </button>
             </div>
