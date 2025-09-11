@@ -2,13 +2,14 @@ import React from 'react';
 import { useDraggable } from '@dnd-kit/core';
 import '../styles/ModifyNote.css'
 import type { ModifyNotePos } from '../utils/interface';
-import { useVisibilityStore, useCurrentNoteStore } from '../store';
+import { useVisibilityStore, useCurrentNoteStore, useListNoteStore} from '../store';
 import { addNote } from '../models/firebase';
 
 function ModifyNote(props: ModifyNotePos) {
     const { visibility, setHide } = useVisibilityStore()
-    const { currentNote, setTitle, setDescription } = useCurrentNoteStore();
-
+    const { currentNote, setTitle, setDescription} = useCurrentNoteStore();
+    const { setNoteInList} = useListNoteStore();
+    
     const handleCancel = (e: React.MouseEvent) => {
         e.stopPropagation();
         setHide();
@@ -28,7 +29,14 @@ function ModifyNote(props: ModifyNotePos) {
                 currentNote.description,
                 currentNote.timestamp
             );
-            if (response) setHide();
+            if (response){
+                setHide();
+                setNoteInList({
+                    title: currentNote.title,
+                    description: currentNote.description, 
+                    timestamp: currentNote.timestamp
+                });
+            }
         } else {
             console.error('Missing required note data');
             return;

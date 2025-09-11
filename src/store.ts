@@ -5,7 +5,15 @@ const useListNoteStore = create<ListNote>()((set) => ({
     listNote: [],
     setListNote: (List: Note[]) => set(() => ({listNote: [...List]})), 
     addListNote: (Note: Note) => set((state) => ({listNote: [...state.listNote, Note]}) ),
-    deleteListNote: (timestamp: number) => set((state) => ({listNote: state.listNote.filter((note)=>note.timestamp !== timestamp)})) 
+    deleteListNote: (timestamp: number) => set((state) => ({listNote: state.listNote.filter((note)=>note.timestamp !== timestamp)})),
+    setNoteInList: (note: Note) => set((state) => {
+        for (let i = 0; i < state.listNote.length; i++){
+            if (state.listNote[i].timestamp === note.timestamp){
+                state.listNote[i] = note;
+            }
+        }
+        return{listNote: state.listNote};
+    })
 }));
 
 const useVisibilityStore = create<VisibilityStore>()((set) => ({

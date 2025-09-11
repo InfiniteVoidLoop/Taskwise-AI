@@ -1,4 +1,4 @@
-import React, { use } from 'react'
+import React from 'react'
 import type{Note} from '../utils/interface'
 import '../styles/Note.css'
 import {deleteNote} from '../models/firebase'
@@ -10,7 +10,7 @@ type NoteProps = Note & {
 }
 
 function NoteComponent(props: NoteProps){
-    const {setNote} = useCurrentNoteStore();
+    const {currentNote, setNote} = useCurrentNoteStore();
     const {setShow} = useVisibilityStore();
     
     const handleClickNote = () => {
@@ -32,10 +32,10 @@ function NoteComponent(props: NoteProps){
         <li key = {props.timestamp} className = "note-container" onClick = {() => handleClickNote()}>
             <div className = "note-content">
                 <div className = "note-title">
-                    {props.title}
+                    {props.timestamp === currentNote?.timestamp ? currentNote.title: props.title}
                 </div>
                 <div className = "note-preview"> 
-                    {props.description}
+                    {props.timestamp === currentNote?.timestamp ? currentNote.description: props.description}
                 </div>
             </div>
             <div className = "note-action">

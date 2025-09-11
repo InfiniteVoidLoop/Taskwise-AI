@@ -8,12 +8,8 @@ export interface ListNote{
     listNote: Note[],
     setListNote: (list: Note[]) => void,
     addListNote: (note: Note) => void,
-    deleteListNote: (timestamp: number) => void
-};
-
-export interface GetKey{
-    user: string,
-    timestamp: string
+    deleteListNote: (timestamp: number) => void;
+    setNoteInList: (note: Note) => void;
 };
 
 export interface ModifyNotePos{
@@ -32,4 +28,9 @@ export interface CurrentNote{
     setNote: (note: Note) => void;
     setTitle: (title: string) => void;
     setDescription: (title: string) => void;
+};
+
+export interface CacheNote{
+    cachNote: Note,
+    setCache: (note: Note) => void
 };
