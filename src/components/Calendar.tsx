@@ -6,6 +6,8 @@ import type { PickersDayProps } from '@mui/x-date-pickers/PickersDay';
 import { useDateMonthStore } from '../store';
 import type { Dayjs } from 'dayjs';
 import { styled } from '@mui/material/styles';
+import { useRedDateStore } from '../store';
+import { useGreenDateStore } from '../store';
 
 const RedPickersDay = styled(PickersDay)(() => ({
   '&.red-day': {
@@ -33,21 +35,10 @@ const GreenPickersDay = styled(PickersDay)(() => ({
   },
 }));
 
-// List of dates you want to color red
-const redDates = [
-  '2025-09-25',
-  '2025-09-01', 
-  '2025-09-04',
-];
-
-// List of dates you want to color blue
-const greenDates = [
-  '2025-09-10',
-  '2025-09-15',
-  '2025-09-20',
-]
 
 function CustomDay(props: PickersDayProps) {
+  const {redDates} = useRedDateStore();
+  const {greenDates} = useGreenDateStore();
   const { day, ...other } = props;
   const isRedDay = redDates.includes(day.format('YYYY-MM-DD'));
   const isGreenDay = greenDates.includes(day.format('YYYY-MM-DD'));

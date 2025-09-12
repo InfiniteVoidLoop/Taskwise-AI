@@ -104,6 +104,11 @@ const useProgressStore = create<Progress>()((set) => ({
             }
             return state;
         }),
+    reset: () => 
+        set(()=>({
+            done: 0,
+            unDone: 0
+        }))
 }));
 
 export { useProgressStore, useListNoteStore, useVisibilityStore, useCurrentNoteStore, useCacheNoteStore, useDateMonthStore, useRedDateStore, useGreenDateStore };

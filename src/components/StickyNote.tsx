@@ -1,23 +1,41 @@
 import { useEffect } from 'react'
 import '../styles/StickyNote.css'
-import {fetchNote } from '../models/firebase'
-import {useProgressStore, useListNoteStore, useDateMonthStore } from '../store';
+import {fetchNote, getDateState } from '../models/firebase'
+import {useProgressStore, useListNoteStore, useDateMonthStore, useGreenDateStore, useRedDateStore} from '../store';
 import NoteComponent from './NoteComponent'
+import dayjs from 'dayjs'
 
 function StickyNote() {
     const { listNote, setListNote, addListNote, deleteListNote} = useListNoteStore();
     const {dateMonth} = useDateMonthStore();
-    const {inc} = useProgressStore();
-
+    const {inc, reset} = useProgressStore();
+    const {pushFinishedDate} = useGreenDateStore();
+    const {pushUnfinishedDate} = useRedDateStore();
 
     const fetchData = async () => {
         const response = await fetchNote('phuc', dateMonth);  
+        reset();
         response.forEach((note) => {
             if (note.marked) inc('done');
             else inc('unDone');
         })     
         setListNote(response);
     };
+    
+    useEffect(() => {
+        const fetchDateStates = async () => {
+            try {
+                const res = await getDateState('phuc');
+                // Handle the response data
+                res.finishedDate.forEach(date => pushFinishedDate(dayjs(date)));
+                res.unFinishedDate.forEach(date => pushUnfinishedDate(dayjs(date)));
+            } catch (error) {
+                console.error('Error fetching date states:', error);
+            }
+        };
+
+        fetchDateStates();
+    }, []);
 
     useEffect(() => {
         fetchData();

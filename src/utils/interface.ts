@@ -56,3 +56,11 @@ export interface FinishedTask{
     pushFinishedDate: (date: Dayjs) => void;
     popFinishedDate: (date: Dayjs) => void;
 };
+
+export interface Progress{
+    done: number;
+    unDone: number;
+    inc: (type: string) => void;
+    dec: (type: string) => void;
+    reset: () => void;
+};

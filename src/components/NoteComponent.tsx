@@ -57,20 +57,21 @@ function NoteComponent(props: NoteProps){
         const checked = (e.currentTarget as HTMLInputElement).checked;
         updataMarkNote('phuc', timestamp, checked);
         if (checked){
-            inc('done');
-            dec('unDone');
-            if (unDone === 0){
+            if (unDone === 1){
                 popUnfinishedDate(dayjs(timestamp));
                 pushFinishedDate(dayjs(timestamp));
             }
+            inc('done');
+            dec('unDone');
+           
         }
         else if (!checked) {
+            if (unDone === 0){
+                popFinishedDate(dayjs(timestamp))
+            }
             dec('done');
             inc('unDone');
             pushUnfinishedDate(dayjs(timestamp));
-            if (unDone != 1){
-                popFinishedDate(dayjs(timestamp))
-            }
         }
     };
 

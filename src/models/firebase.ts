@@ -60,8 +60,8 @@ async function addNote(username: string, title: string, description: string, tim
         timestamp: timestamp,
         type: type,
       }
-      return 1;
       await update(noteRef, postData);
+      return 1;
     }
     else{
       const noteRef = ref(database, username);
@@ -126,4 +126,29 @@ async function fetchNote(username: string, dateMonth: Dayjs | null): Promise<Not
   }
 }
 
-export {addUser, addNote, deleteNote, fetchNote,  updataMarkNote};  
+async function getDateState(username: string): Promise<{ finishedDate: string[], unFinishedDate: string[] }>{
+  try{
+    const noteRef = ref(database, username);
+    const finishedDate: string[] = [];
+    const unFinishedDate: string[] = [];
+    const snapshot = await get(noteRef);
+    if (snapshot.exists()){
+      (snapshot).forEach(childSnap => {
+        if (!childSnap.val().marked) {
+          unFinishedDate.push(dayjs(childSnap.val().timestamp).format('YYYY-MM-DD'))
+        }
+      });
+      (snapshot).forEach(childSnap => {
+        if (!unFinishedDate.includes(dayjs(childSnap.val().timestamp).format('YYYY-MM-DD'))){
+            finishedDate.push(dayjs(childSnap.val().timestamp).format('YYYY-MM-DD'))
+        }
+      })
+    }
+    return { finishedDate, unFinishedDate };
+
+  }catch(error){
+    throw error;
+  }
+};
+
+export {addUser, addNote, deleteNote, fetchNote,  updataMarkNote, getDateState};  
