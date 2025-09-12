@@ -1,16 +1,24 @@
-import React from 'react';
+import React, { use } from 'react';
 import { useDraggable } from '@dnd-kit/core';
 import '../styles/ModifyNote.css'
 import type { ModifyNotePos } from '../utils/interface';
 import { useVisibilityStore, useCurrentNoteStore, useListNoteStore, useCacheNoteStore} from '../store';
 import { addNote } from '../models/firebase';
+import { useProgressStore } from '../store';
+import { useRedDateStore } from '../store';
+import { useGreenDateStore } from '../store';
+import dayjs from 'dayjs'
 
 function ModifyNote(props: ModifyNotePos) {
     const { visibility, setHide } = useVisibilityStore()
     const { currentNote, setTitle, setDescription, setNote, setType} = useCurrentNoteStore();
     const { setNoteInList } = useListNoteStore();
     const {cacheNote} = useCacheNoteStore();
-        
+    
+    const {inc, unDone} = useProgressStore();
+    const {pushUnfinishedDate} = useRedDateStore();
+    const { popFinishedDate} = useGreenDateStore();
+
     const handleCancel = (e: React.MouseEvent) => {
         e.stopPropagation();
         if (cacheNote)
@@ -34,7 +42,7 @@ function ModifyNote(props: ModifyNotePos) {
                 currentNote.timestamp,
                 currentNote.type, 
             );
-            if (response) {
+            if (response !== 3) {
                 setHide();
                 setNoteInList({
                     title: currentNote.title,
@@ -43,6 +51,13 @@ function ModifyNote(props: ModifyNotePos) {
                     type: currentNote.type,
                     marked: currentNote.marked
                 });
+                if (response === 2){
+                    if (unDone === 0){
+                        popFinishedDate(dayjs(currentNote.timestamp));
+                        pushUnfinishedDate(dayjs(currentNote.timestamp));
+                    }
+                    inc('unDone');
+                }
             }
         } else {
             console.error('Missing required note data');

@@ -3,7 +3,8 @@ import type{Note} from '../utils/interface'
 import '../styles/NoteComponent.css'
 import {deleteNote, updataMarkNote} from '../models/firebase'
 import {useVisibilityStore} from '../store'
-import {useCurrentNoteStore, useCacheNoteStore} from '../store'
+import {useCurrentNoteStore, useCacheNoteStore, useProgressStore, useRedDateStore, useGreenDateStore} from '../store'
+import dayjs from 'dayjs'
 
 type NoteProps = Note & {
     deleteNote: (timestamp: number) => void
@@ -13,7 +14,10 @@ function NoteComponent(props: NoteProps){
     const {currentNote, setNote} = useCurrentNoteStore();
     const {setCache} = useCacheNoteStore();
     const {setShow} = useVisibilityStore();
-    
+    const {unDone, dec, inc} = useProgressStore();
+    const {pushFinishedDate, popFinishedDate} = useGreenDateStore();
+    const {pushUnfinishedDate, popUnfinishedDate} = useRedDateStore();
+
     const handleClickNote = () => {
         setNote({
             title: props.title, 
@@ -52,6 +56,22 @@ function NoteComponent(props: NoteProps){
         e.stopPropagation();
         const checked = (e.currentTarget as HTMLInputElement).checked;
         updataMarkNote('phuc', timestamp, checked);
+        if (checked){
+            inc('done');
+            dec('unDone');
+            if (unDone === 0){
+                popUnfinishedDate(dayjs(timestamp));
+                pushFinishedDate(dayjs(timestamp));
+            }
+        }
+        else if (!checked) {
+            dec('done');
+            inc('unDone');
+            pushUnfinishedDate(dayjs(timestamp));
+            if (unDone != 1){
+                popFinishedDate(dayjs(timestamp))
+            }
+        }
     };
 
     return (

@@ -40,7 +40,19 @@ export interface CacheNote{
     setCache: (note: Note) => void
 };
 
-export interface DateMonth{
-    dateMonth: Dayjs|null;
+export interface DateMonth{     // get the chosen day
+    dateMonth: Dayjs|null;  
     setDateMonth: (newDate: Dayjs) => void;
+};
+
+export interface UnfinishedTask{
+    redDates: string[];
+    pushUnfinishedDate: (date: Dayjs) => void;
+    popUnfinishedDate: (date: Dayjs) => void;
+};
+
+export interface FinishedTask{
+    greenDates: string[];
+    pushFinishedDate: (date: Dayjs) => void;
+    popFinishedDate: (date: Dayjs) => void;
 };

@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
 import '../styles/RightPanel.css';
-import { useListNoteStore, useVisibilityStore} from '../store';
+import { useListNoteStore, useVisibilityStore, useProgressStore} from '../store';
 
 function RightPanel() {
     const { listNote } = useListNoteStore();
     const {visibility} = useVisibilityStore();
+    const {done, unDone} = useProgressStore();
 
     const [counter, setCounter] = useState<Record<string, number>>({
         working: 0,
@@ -71,7 +72,7 @@ function RightPanel() {
                     Progress
                 </div>
                 <div className='right-panel-finish-task'>
-                    4/7
+                    {done}/{unDone + done}
                 </div>
             </div>
         </div>
