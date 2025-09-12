@@ -8,6 +8,7 @@ import ModifyNote from './components/ModifyNote.tsx'
 import {DndContext} from '@dnd-kit/core';
 import {useState} from 'react'
 import type{ DragEndEvent } from '@dnd-kit/core'
+import AddNote from './components/AddNote.tsx'
 
 function App() {
   const [pos, setPos] = useState({ x: 50, y: 50 });
@@ -22,6 +23,7 @@ function App() {
 
   return (
     <>
+      <AddNote/>
       <LeftPanel/>  
       <RightPanel/>
       <StickyNote/>
