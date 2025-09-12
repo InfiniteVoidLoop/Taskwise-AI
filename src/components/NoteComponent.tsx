@@ -5,6 +5,7 @@ import {deleteNote, updataMarkNote} from '../models/firebase'
 import {useVisibilityStore, useListTimestamp} from '../store'
 import {useCurrentNoteStore, useCacheNoteStore, useProgressStore, useRedDateStore, useGreenDateStore} from '../store'
 import dayjs from 'dayjs'
+import { useUserUIDStore} from '../store'
 
 type NoteProps = Note & {
     deleteNote: (timestamp: number) => void
@@ -18,6 +19,7 @@ function NoteComponent(props: NoteProps){
     const {unDone, dec, inc} = useProgressStore();
     const {pushFinishedDate, popFinishedDate} = useGreenDateStore();
     const {pushUnfinishedDate, popUnfinishedDate} = useRedDateStore();
+    const {userUID} = useUserUIDStore();
 
     const handleClickNote = () => {
         setNote({
@@ -39,7 +41,7 @@ function NoteComponent(props: NoteProps){
 
     const handleClickDeleteButton = async (event: React.MouseEvent<HTMLButtonElement>, timestamp: number) => {
         event.stopPropagation();
-        const respond = await deleteNote('phuc', timestamp);
+        const respond = await deleteNote(userUID, timestamp);
         popTimestamp(timestamp);
         if (respond) props.deleteNote(timestamp);
     };
@@ -57,7 +59,7 @@ function NoteComponent(props: NoteProps){
     const handleCheckBox = (e: React.MouseEvent<HTMLInputElement>, timestamp: number) => {
         e.stopPropagation();
         const checked = (e.currentTarget as HTMLInputElement).checked;
-        updataMarkNote('phuc', timestamp, checked);
+        updataMarkNote(userUID, timestamp, checked);
         if (checked){
             if (unDone === 1){
                 popUnfinishedDate(dayjs(timestamp));

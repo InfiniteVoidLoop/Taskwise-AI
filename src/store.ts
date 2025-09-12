@@ -1,7 +1,6 @@
 import { create } from 'zustand'
-import type {ListTimestamp, Progress, ListNote, Note, VisibilityStore, CurrentNote, CacheNote, DateMonth, FinishedTask, UnfinishedTask } from './utils/interface'
+import type {UserUID, ListTimestamp, Progress, ListNote, Note, VisibilityStore, CurrentNote, CacheNote, DateMonth, FinishedTask, UnfinishedTask } from './utils/interface'
 import dayjs, { Dayjs } from 'dayjs'
-import { listItemTextClasses } from '@mui/material/ListItemText';
 
 const useListNoteStore = create<ListNote>()((set) => ({
     listNote: [],
@@ -131,5 +130,12 @@ const useListTimestamp = create<ListTimestamp>()((set) => ({
             listTimestamp: state.listTimestamp.filter((time) => timestamp !== time)
         }))
 }))
-export { useListTimestamp, useProgressStore, useListNoteStore, useVisibilityStore, useCurrentNoteStore, useCacheNoteStore, useDateMonthStore, useRedDateStore, useGreenDateStore };
+
+const useUserUIDStore = create<UserUID>()((set) => ({
+    userUID: '',
+    setUserUID: (UID: string) => 
+        set(() => ({userUID: UID}))
+}));
+
+export { useUserUIDStore, useListTimestamp, useProgressStore, useListNoteStore, useVisibilityStore, useCurrentNoteStore, useCacheNoteStore, useDateMonthStore, useRedDateStore, useGreenDateStore };
 

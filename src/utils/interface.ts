@@ -70,3 +70,8 @@ export interface ListTimestamp{
     pushTimestamp: (timestamp: number) => boolean;
     popTimestamp: (timestamp: number) => void;
 };
+
+export interface UserUID{
+    userUID: string, 
+    setUserUID: (UID: string ) => void;
+};

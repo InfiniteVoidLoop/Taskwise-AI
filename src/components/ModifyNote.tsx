@@ -2,25 +2,28 @@ import React from 'react';
 import { useDraggable } from '@dnd-kit/core';
 import '../styles/ModifyNote.css'
 import type { ModifyNotePos } from '../utils/interface';
-import { useVisibilityStore, useCurrentNoteStore, useListNoteStore, useCacheNoteStore, useListTimestamp} from '../store';
+import { useVisibilityStore, useCurrentNoteStore, useListNoteStore, useCacheNoteStore, useListTimestamp } from '../store';
 import { addNote } from '../models/firebase';
 import { useProgressStore } from '../store';
-import { useRedDateStore} from '../store';
+import { useRedDateStore } from '../store';
 import { useGreenDateStore } from '../store';
-import { useDateMonthStore } from '../store';
+import { useUserUIDStore } from '../store';
+import { useNavigate } from 'react-router-dom';
 
 import dayjs from 'dayjs'
 
 function ModifyNote(props: ModifyNotePos) {
+    const  navigate  = useNavigate();
     const { visibility, setHide } = useVisibilityStore()
-    const { currentNote, setTitle, setDescription, setNote, setType} = useCurrentNoteStore();
+    const { currentNote, setTitle, setDescription, setNote, setType } = useCurrentNoteStore();
     const { setNoteInList } = useListNoteStore();
-    const {cacheNote} = useCacheNoteStore();
-    const {pushTimestamp} = useListTimestamp();
+    const { cacheNote } = useCacheNoteStore();
+    const { pushTimestamp } = useListTimestamp();
+    const { userUID } = useUserUIDStore();
 
-    const {inc, unDone} = useProgressStore();
-    const {pushUnfinishedDate} = useRedDateStore();
-    const { popFinishedDate} = useGreenDateStore();
+    const { inc, unDone } = useProgressStore();
+    const { pushUnfinishedDate } = useRedDateStore();
+    const { popFinishedDate } = useGreenDateStore();
 
     const handleCancel = (e: React.MouseEvent) => {
         e.stopPropagation();
@@ -37,37 +40,48 @@ function ModifyNote(props: ModifyNotePos) {
     };
     const handleSave = async (e: React.MouseEvent) => {
         e.stopPropagation();
-        if (currentNote?.title && currentNote?.description && currentNote?.timestamp) {
+
+        if (!currentNote?.title || !currentNote?.description || !currentNote?.timestamp) {
+            console.error("Missing required note data");
+            return;
+        }
+
+        try {
             pushTimestamp(currentNote.timestamp);
+            console.log(userUID);
+
             const response = await addNote(
-                'phuc',
+                userUID,
                 currentNote.title,
                 currentNote.description,
                 currentNote.timestamp,
-                currentNote.type, 
+                currentNote.type
             );
+
             if (response !== 3) {
                 setHide();
                 setNoteInList({
                     title: currentNote.title,
                     description: currentNote.description,
-                    timestamp: currentNote.timestamp, 
+                    timestamp: currentNote.timestamp,
                     type: currentNote.type,
-                    marked: currentNote.marked
+                    marked: currentNote.marked,
                 });
-                if (response === 2){
-                    if (unDone === 0){
+
+                if (response === 2) {
+                    if (unDone === 0) {
                         popFinishedDate(dayjs(currentNote.timestamp));
                         pushUnfinishedDate(dayjs(currentNote.timestamp));
                     }
-                    inc('unDone');
+                    inc("unDone");
                 }
             }
-        } else {
-            console.error('Missing required note data');
-            return;
+        } catch (error) {
+            console.error("Error saving note:", error);
+            navigate('/login')
         }
     };
+
 
     const { attributes, listeners, setNodeRef, transform } = useDraggable({
         id: 'draggable',
@@ -101,15 +115,15 @@ function ModifyNote(props: ModifyNotePos) {
             <input className="modify-note-title" onChange={handleTitleChange}
                 value={currentNote?.title || ""} />
             <textarea className="modify-note-description" onChange={handleDescriptionChange}
-                value={currentNote?.description || ""} 
+                value={currentNote?.description || ""}
                 placeholder="Write your note description here..."
             />
-            <select className = "select-note-type" onChange = {(e) => setType(e.target.value)}>
-                <option value = 'working'>Working</option>
-                <option value = 'learning'>Learning</option>
-                <option value = 'health'>Health</option>
-                <option value = 'entertaining' >Entertaining</option>
-                <option value = 'others'>Others</option>
+            <select className="select-note-type" onChange={(e) => setType(e.target.value)}>
+                <option value='working'>Working</option>
+                <option value='learning'>Learning</option>
+                <option value='health'>Health</option>
+                <option value='entertaining' >Entertaining</option>
+                <option value='others'>Others</option>
             </select>
             <button className="modify-note-save-button"
                 onClick={handleSave}>

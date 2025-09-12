@@ -1,40 +1,12 @@
-import { initializeApp } from "firebase/app";
 import {getDatabase, set, ref, push, query, remove, equalTo, orderByChild, get, update} from "firebase/database";
 import type {Note} from '../utils/interface'
 import dayjs, {Dayjs} from "dayjs";
+import {app} from '../config/firebaseConfig';
 
-const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-  databaseURL: import.meta.env.VITE_DATABASE_URL,
-  projectId: import.meta.env.VITE_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_APP_ID,
-  measurementId: import.meta.env.VITE_MEASUREMENT_ID
-};
-
-const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 
-async function addUser(username: string, password: string): Promise<boolean>{
-  try{
-    const userRef = ref(database, 'members');
-    const newUserRef = push(userRef);
-    await set(newUserRef, {
-      username: username, 
-      password: password
-    });
-    console.log('Successfuly add user');
-    return true;
-  }catch(error){
-    console.error(error);
-    return false;
-  }
-}
-
 async function getKey(username: string, timestamp: number): Promise<string[]|null>{
-  const userRef = ref(database, username);
+  const userRef = ref(database, 'users/' + username);
   const q = query(userRef, orderByChild("timestamp"), equalTo(timestamp));
   const snapshot = await get(q);
   if(snapshot.exists()){
@@ -53,7 +25,7 @@ async function addNote(username: string, title: string, description: string, tim
   try{
     const key = await getKey(username, timestamp);
     if (key){
-      const noteRef = ref(database, username + '/' + key[0]);
+      const noteRef = ref(database, 'users' + '/' + username + '/' + key[0]);
       const postData = {
         title: title, 
         description: description, 
@@ -64,7 +36,7 @@ async function addNote(username: string, title: string, description: string, tim
       return 1;
     }
     else{
-      const noteRef = ref(database, username);
+      const noteRef = ref(database, 'users' + '/' + username);
       const newNoteRef = push(noteRef);
       await set(newNoteRef, {
         title: title, 
@@ -77,7 +49,7 @@ async function addNote(username: string, title: string, description: string, tim
     }
   }catch(error){
     console.error(error);
-    return 3;
+    throw error;
   }
 }
 
@@ -85,7 +57,7 @@ async function updataMarkNote(username: string, timestamp: number, marked: boole
   try{
     const key = await getKey(username, timestamp);
     if (key){
-        const noteRef = ref(database, username + '/' + key[0]);
+        const noteRef = ref(database, 'users' + '/' + username + '/' + key[0]);
         await update(noteRef, {marked: marked});
         return true;
     }
@@ -99,7 +71,7 @@ async function updataMarkNote(username: string, timestamp: number, marked: boole
 async function deleteNote(username: string, timestamp: number): Promise<boolean>{
   try{
     const key = await getKey(username, timestamp);
-    const noteRef = ref(database, username + '/' + key);
+    const noteRef = ref(database, 'users' + '/' + username + '/' + key);
     await remove(noteRef);
     return true;
   }catch(error){  
@@ -110,7 +82,7 @@ async function deleteNote(username: string, timestamp: number): Promise<boolean>
 
 async function fetchNote(username: string, dateMonth: Dayjs | null): Promise<Note[]>{
   try{
-    const noteRef = ref(database, username);
+    const noteRef = ref(database, 'users' + '/' + username);
     const snapshot = await get(noteRef);
     const result: Note[] = [];
     if (snapshot.exists()){
@@ -128,7 +100,7 @@ async function fetchNote(username: string, dateMonth: Dayjs | null): Promise<Not
 
 async function getDateState(username: string): Promise<{ finishedDate: string[], unFinishedDate: string[] }>{
   try{
-    const noteRef = ref(database, username);
+    const noteRef = ref(database, 'users' + '/' + username);
     const finishedDate: string[] = [];
     const unFinishedDate: string[] = [];
     const snapshot = await get(noteRef);
@@ -151,4 +123,4 @@ async function getDateState(username: string): Promise<{ finishedDate: string[],
   }
 };
 
-export {addUser, addNote, deleteNote, fetchNote,  updataMarkNote, getDateState};  
+export { addNote, deleteNote, fetchNote,  updataMarkNote, getDateState};  

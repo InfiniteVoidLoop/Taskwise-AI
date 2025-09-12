@@ -5,6 +5,8 @@ import {useListTimestamp, useProgressStore, useListNoteStore, useDateMonthStore,
 import NoteComponent from './NoteComponent'
 import dayjs from 'dayjs'
 import generateTimestamp from '../utils/generateTimestamp';
+import { useUserUIDStore } from '../store';
+import { useNavigate } from 'react-router-dom';
 
 function StickyNote() {
     const { listNote, setListNote, addListNote, deleteListNote} = useListNoteStore();
@@ -13,9 +15,11 @@ function StickyNote() {
     const {pushFinishedDate} = useGreenDateStore();
     const {pushUnfinishedDate} = useRedDateStore();
     const {pushTimestamp, listTimestamp} = useListTimestamp();
+    const {userUID} = useUserUIDStore();
+    const navigate = useNavigate();
 
     const fetchData = async () => {
-        const response = await fetchNote('phuc', dateMonth);  
+        const response = await fetchNote(userUID, dateMonth);  
         reset();
         response.forEach((note) => {
             if (note.marked) inc('done');
@@ -28,11 +32,12 @@ function StickyNote() {
     useEffect(() => {
         const fetchDateStates = async () => {
             try {
-                const res = await getDateState('phuc');
+                const res = await getDateState(userUID);
                 res.finishedDate.forEach(date => pushFinishedDate(dayjs(date)));
                 res.unFinishedDate.forEach(date => pushUnfinishedDate(dayjs(date)));
             } catch (error) {
                 console.error('Error fetching date states:', error);
+                navigate('/login');
             }
         };
         fetchDateStates();
