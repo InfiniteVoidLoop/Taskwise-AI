@@ -11,13 +11,13 @@ import { useGreenDateStore } from '../store';
 
 const RedPickersDay = styled(PickersDay)(() => ({
   '&.red-day': {
-    backgroundColor: '#ff4444',
+    backgroundColor: '#b70a0aff',
     color: 'white',
     '&:hover': {
-      backgroundColor: '#cc3333',
+      backgroundColor: '#df6d6dff',
     },
     '&.Mui-selected': {
-      backgroundColor: '#aa2222',
+      backgroundColor: '#f43232ff',
     },
   },
 }));

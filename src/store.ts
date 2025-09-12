@@ -1,6 +1,7 @@
 import { create } from 'zustand'
-import type { Progress, ListNote, Note, VisibilityStore, CurrentNote, CacheNote, DateMonth, FinishedTask, UnfinishedTask } from './utils/interface'
-import { Dayjs } from 'dayjs'
+import type {ListTimestamp, Progress, ListNote, Note, VisibilityStore, CurrentNote, CacheNote, DateMonth, FinishedTask, UnfinishedTask } from './utils/interface'
+import dayjs, { Dayjs } from 'dayjs'
+import { listItemTextClasses } from '@mui/material/ListItemText';
 
 const useListNoteStore = create<ListNote>()((set) => ({
     listNote: [],
@@ -43,7 +44,7 @@ const useCacheNoteStore = create<CacheNote>()((set) => ({
 }));
 
 const useDateMonthStore = create<DateMonth>()((set) => ({
-    dateMonth: null,
+    dateMonth: dayjs(),
     setDateMonth: (newDate: Dayjs) => set(() => ({
         dateMonth: newDate
     }))
@@ -111,5 +112,24 @@ const useProgressStore = create<Progress>()((set) => ({
         }))
 }));
 
-export { useProgressStore, useListNoteStore, useVisibilityStore, useCurrentNoteStore, useCacheNoteStore, useDateMonthStore, useRedDateStore, useGreenDateStore };
+const useListTimestamp = create<ListTimestamp>()((set) => ({
+    listTimestamp: [], 
+    pushTimestamp: (timestamp: number) => 
+    {
+        let result = true;
+        set((state) => {
+            result = state.listTimestamp.includes(timestamp);
+            if (result) 
+                return {listTimestamp: [...state.listTimestamp]};
+            else 
+                return {listTimestamp: [...state.listTimestamp, timestamp]}
+        })
+        return result;
+    },
+    popTimestamp: (timestamp: number) => 
+        set((state) => ({
+            listTimestamp: state.listTimestamp.filter((time) => timestamp !== time)
+        }))
+}))
+export { useListTimestamp, useProgressStore, useListNoteStore, useVisibilityStore, useCurrentNoteStore, useCacheNoteStore, useDateMonthStore, useRedDateStore, useGreenDateStore };
 

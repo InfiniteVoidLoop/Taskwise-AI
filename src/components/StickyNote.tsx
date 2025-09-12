@@ -1,9 +1,10 @@
 import { useEffect } from 'react'
 import '../styles/StickyNote.css'
 import {fetchNote, getDateState } from '../models/firebase'
-import {useProgressStore, useListNoteStore, useDateMonthStore, useGreenDateStore, useRedDateStore} from '../store';
+import {useListTimestamp, useProgressStore, useListNoteStore, useDateMonthStore, useGreenDateStore, useRedDateStore} from '../store';
 import NoteComponent from './NoteComponent'
 import dayjs from 'dayjs'
+import generateTimestamp from '../utils/generateTimestamp';
 
 function StickyNote() {
     const { listNote, setListNote, addListNote, deleteListNote} = useListNoteStore();
@@ -11,6 +12,7 @@ function StickyNote() {
     const {inc, reset} = useProgressStore();
     const {pushFinishedDate} = useGreenDateStore();
     const {pushUnfinishedDate} = useRedDateStore();
+    const {pushTimestamp, listTimestamp} = useListTimestamp();
 
     const fetchData = async () => {
         const response = await fetchNote('phuc', dateMonth);  
@@ -18,6 +20,7 @@ function StickyNote() {
         response.forEach((note) => {
             if (note.marked) inc('done');
             else inc('unDone');
+            pushTimestamp(note.timestamp);
         })     
         setListNote(response);
     };
@@ -26,14 +29,12 @@ function StickyNote() {
         const fetchDateStates = async () => {
             try {
                 const res = await getDateState('phuc');
-                // Handle the response data
                 res.finishedDate.forEach(date => pushFinishedDate(dayjs(date)));
                 res.unFinishedDate.forEach(date => pushUnfinishedDate(dayjs(date)));
             } catch (error) {
                 console.error('Error fetching date states:', error);
             }
         };
-
         fetchDateStates();
     }, []);
 
@@ -42,13 +43,13 @@ function StickyNote() {
     }, [dateMonth]);
 
     const handleClickAddButton = () => {
-        addListNote({title: '', description: '', timestamp: Date.now(), type: 'working', marked: false});
+        addListNote({title: '', description: '', timestamp: generateTimestamp(dateMonth, listTimestamp), type: 'working', marked: false});
     };
     return (
         <div className="sticky-note-container">
             <div className="sitcky-note-header">
                 <div className='sticky-note-title'>
-                    My To-Do-List
+                    {dateMonth?.format('DD MMMM YYYY')}
                 </div>
                 <button className='sticky-note-add-button'
                    onClick = {handleClickAddButton}

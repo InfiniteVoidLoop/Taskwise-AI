@@ -1,12 +1,14 @@
-import React, { use } from 'react';
+import React from 'react';
 import { useDraggable } from '@dnd-kit/core';
 import '../styles/ModifyNote.css'
 import type { ModifyNotePos } from '../utils/interface';
-import { useVisibilityStore, useCurrentNoteStore, useListNoteStore, useCacheNoteStore} from '../store';
+import { useVisibilityStore, useCurrentNoteStore, useListNoteStore, useCacheNoteStore, useListTimestamp} from '../store';
 import { addNote } from '../models/firebase';
 import { useProgressStore } from '../store';
-import { useRedDateStore } from '../store';
+import { useRedDateStore} from '../store';
 import { useGreenDateStore } from '../store';
+import { useDateMonthStore } from '../store';
+
 import dayjs from 'dayjs'
 
 function ModifyNote(props: ModifyNotePos) {
@@ -14,7 +16,8 @@ function ModifyNote(props: ModifyNotePos) {
     const { currentNote, setTitle, setDescription, setNote, setType} = useCurrentNoteStore();
     const { setNoteInList } = useListNoteStore();
     const {cacheNote} = useCacheNoteStore();
-    
+    const {pushTimestamp} = useListTimestamp();
+
     const {inc, unDone} = useProgressStore();
     const {pushUnfinishedDate} = useRedDateStore();
     const { popFinishedDate} = useGreenDateStore();
@@ -35,6 +38,7 @@ function ModifyNote(props: ModifyNotePos) {
     const handleSave = async (e: React.MouseEvent) => {
         e.stopPropagation();
         if (currentNote?.title && currentNote?.description && currentNote?.timestamp) {
+            pushTimestamp(currentNote.timestamp);
             const response = await addNote(
                 'phuc',
                 currentNote.title,

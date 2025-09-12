@@ -2,7 +2,7 @@ import React from 'react'
 import type{Note} from '../utils/interface'
 import '../styles/NoteComponent.css'
 import {deleteNote, updataMarkNote} from '../models/firebase'
-import {useVisibilityStore} from '../store'
+import {useVisibilityStore, useListTimestamp} from '../store'
 import {useCurrentNoteStore, useCacheNoteStore, useProgressStore, useRedDateStore, useGreenDateStore} from '../store'
 import dayjs from 'dayjs'
 
@@ -11,6 +11,7 @@ type NoteProps = Note & {
 }
 
 function NoteComponent(props: NoteProps){
+    const {popTimestamp} = useListTimestamp();
     const {currentNote, setNote} = useCurrentNoteStore();
     const {setCache} = useCacheNoteStore();
     const {setShow} = useVisibilityStore();
@@ -39,6 +40,7 @@ function NoteComponent(props: NoteProps){
     const handleClickDeleteButton = async (event: React.MouseEvent<HTMLButtonElement>, timestamp: number) => {
         event.stopPropagation();
         const respond = await deleteNote('phuc', timestamp);
+        popTimestamp(timestamp);
         if (respond) props.deleteNote(timestamp);
     };
 

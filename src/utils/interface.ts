@@ -41,7 +41,7 @@ export interface CacheNote{
 };
 
 export interface DateMonth{     // get the chosen day
-    dateMonth: Dayjs|null;  
+    dateMonth: Dayjs;  
     setDateMonth: (newDate: Dayjs) => void;
 };
 
@@ -63,4 +63,10 @@ export interface Progress{
     inc: (type: string) => void;
     dec: (type: string) => void;
     reset: () => void;
+};
+
+export interface ListTimestamp{
+    listTimestamp: number[];
+    pushTimestamp: (timestamp: number) => boolean;
+    popTimestamp: (timestamp: number) => void;
 };
