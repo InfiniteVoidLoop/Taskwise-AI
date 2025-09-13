@@ -139,7 +139,10 @@ const useUserUIDStore = create<UserUID>()((set) => ({
 
 const useChatBotResponseStore = create<ChatBotResponse>((set) => ({
     response: '',
+    isShow: false,
     setResponse: (newResponse: string) => set({ response: newResponse }),
+    setTrue: () => set(() => ({isShow: true})),
+    setFalse: () => set(() => ({isShow: false})),
 }));
 
 export {useChatBotResponseStore, useUserUIDStore, useListTimestamp, useProgressStore, useListNoteStore, useVisibilityStore, useCurrentNoteStore, useCacheNoteStore, useDateMonthStore, useRedDateStore, useGreenDateStore };

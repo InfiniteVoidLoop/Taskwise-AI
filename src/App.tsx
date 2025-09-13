@@ -1,6 +1,4 @@
 import './App.css'
-import hackathonGraphic from './assets/hackathon-graphic.svg'
-import naverLogo from './assets/naver-logo.svg'
 import LeftPanel from './components/LeftPanel.tsx'
 import StickyNote from './components/StickyNote.tsx'
 import RightPanel from './components/RightPanel.tsx'
@@ -13,13 +11,25 @@ import Response from './components/Response.tsx'
 
 function App() {
   const [pos, setPos] = useState({ x: 50, y: 50 });
-
+  const [pos1, setPos1] = useState({x: 300, y: 50}); // Different position so components don't overlap
+  
   const handleDragEnd = (event: DragEndEvent) => {
-    const { delta } = event;
-    setPos((prev) => ({
-      x: prev.x + delta.x,
-      y: prev.y + delta.y,
-    }));
+    const { delta, active } = event;
+    
+    // Handle different draggable items
+    if (active.id === 'draggable') {
+      // ModifyNote component
+      setPos((prev) => ({
+        x: prev.x + delta.x,
+        y: prev.y + delta.y,
+      }));
+    } else if (active.id === 'chat-bot-response') {
+      // Response component
+      setPos1((prev) => ({
+        x: prev.x + delta.x,
+        y: prev.y + delta.y,
+      }));
+    }
   };
 
   return (
@@ -30,7 +40,7 @@ function App() {
       <StickyNote/>
       <DndContext onDragEnd={handleDragEnd}>
         <ModifyNote x={pos.x} y={pos.y}/>
-        <Response x={pos.x} y={pos.y}/>
+        <Response x={pos1.x} y={pos1.y}/>
       </DndContext>
     </>
   )

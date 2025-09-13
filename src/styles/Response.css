@@ -45,7 +45,7 @@
 	user-select: none;
 }
 
-.chat-bot-response-button {
+/* .chat-bot-response-button {
 	background: none;
 	border: none;
 	color: #888;
@@ -59,7 +59,7 @@
 .chat-bot-response-button:hover {
 	background: #fce8e6;
 	color: #d93025;
-}
+} */
 
 @media (max-width: 600px) {
 	.chat-bot-response-container {

@@ -8,7 +8,7 @@ import wrapperTool from "../tool-calling/postNoteTool";
 function AddNote() {
     const { listTimestamp, pushTimestamp} = useListTimestamp();
     const { userUID } = useUserUIDStore();
-    const { setResponse } = useChatBotResponseStore();
+    const { setResponse, setTrue } = useChatBotResponseStore();
     const [message, setMessage] = useState("");
     const {pushUnfinishedDate} = useRedDateStore();
     const {popFinishedDate} = useGreenDateStore();
@@ -60,7 +60,8 @@ function AddNote() {
 
     const handleSendMessage = async () => {
         if (!message.trim()) return;
-
+        
+        setTrue();
         setResponse("Thinking...");
         try {
             console.log("Invoking model with message:", message);

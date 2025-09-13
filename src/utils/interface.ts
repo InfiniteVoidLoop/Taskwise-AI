@@ -78,5 +78,8 @@ export interface UserUID{
 
 export interface ChatBotResponse{
     response: string;
+    isShow: boolean;
     setResponse: (newResponse: string) => void;
+    setTrue: () => void;
+    setFalse: () => void;
 };
