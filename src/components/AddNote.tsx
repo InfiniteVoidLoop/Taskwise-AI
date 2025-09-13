@@ -3,6 +3,7 @@ import wrapperTool from "../tool-calling/postNoteTool";
 import { useVisibilityStore, useListTimestamp, useUserUIDStore, useChatBotResponseStore, useRedDateStore, useGreenDateStore} from "../store";
 import { useProgressStore } from "../store";
 import { useListNoteStore } from "../store";
+import { useDateMonthStore } from "../store";
 
 import model from "../models/chatbot";
 import '../styles/AddNote.css';
@@ -17,9 +18,10 @@ function AddNote() {
     const {setHide} =useVisibilityStore();
     const {inc, unDone} = useProgressStore();
     const {setNoteInList} = useListNoteStore();
-    
+    const {dateMonth} = useDateMonthStore();
+
     const postNote = useMemo(
-        () => wrapperTool(userUID, listTimestamp, {
+        () => wrapperTool(userUID, listTimestamp, dateMonth, {
             pushTimestamp,
             pushUnfinishedDate,
             popFinishedDate,

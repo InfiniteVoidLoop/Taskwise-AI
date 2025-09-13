@@ -10,11 +10,13 @@ import { useGreenDateStore } from '../store';
 import { useUserUIDStore } from '../store';
 import { useNavigate } from 'react-router-dom';
 import type { Note } from '../utils/interface';
-import dayjs from 'dayjs'
+import dayjs, {Dayjs} from 'dayjs'
+import { useDateMonthStore } from "../store";
 
 export const onSaveForTool = async (
     userUID: string,
-    note: Note,
+    note: Note,     
+    dateMonth: Dayjs,
     actions: {
         pushTimestamp: (timestamp: number) => void;
         pushUnfinishedDate: (date: dayjs.Dayjs) => void;
@@ -29,7 +31,7 @@ export const onSaveForTool = async (
         actions.pushTimestamp(note.timestamp);
 
         const response = await addNote(
-            userUID,
+            userUID,    
             note.title,
             note.description,
             note.timestamp,
@@ -47,11 +49,12 @@ export const onSaveForTool = async (
             });
 
             if (response === 2) {
-                if (actions.unDone === 0) {
-                    actions.popFinishedDate(dayjs(note.timestamp));
-                    actions.pushUnfinishedDate(dayjs(note.timestamp));
-                }
-                actions.inc("unDone");
+                actions.popFinishedDate(dayjs(note.timestamp));
+                actions.pushUnfinishedDate(dayjs(note.timestamp));
+                if (dayjs(note.timestamp).isSame(dateMonth,'day')) actions.inc("unDone");
+                console.log(dayjs(note.timestamp).format("YYYY-MM-DD"));
+                console.log( dateMonth.format("YYYY-MM-DD"))
+                console.log(response);
             }
 
             return `Note "${note.title}" successfully saved!`;
@@ -72,6 +75,7 @@ function ModifyNote(props: ModifyNotePos) {
     const { cacheNote } = useCacheNoteStore();
     const { pushTimestamp } = useListTimestamp();
     const { userUID } = useUserUIDStore();
+    const {dateMonth} = useDateMonthStore();
 
     const { inc, unDone } = useProgressStore();
     const { pushUnfinishedDate } = useRedDateStore();
@@ -137,6 +141,7 @@ function ModifyNote(props: ModifyNotePos) {
         await onSaveForTool(
             userUID,
             currentNote, 
+            dateMonth,
             {
             pushTimestamp,
             pushUnfinishedDate,
