@@ -13,7 +13,7 @@ const postNoteSchema = z.object({
     date: z
         .string()
         .regex(/^\d{4}-\d{2}-\d{2}$/, {
-            message: "Date must be in format YYYY-MM-DD",
+            message: "Date must be in format DD-MM-YYYY",
         })
         .default(dayjs().format("YYYY-MM-DD")),
     type: z.enum(["working", "learning", "entertaining", "health", "others"]).default("working"),
@@ -52,7 +52,7 @@ function wrapperTool(userID: string, existingTimestamp: number[],
         },
         {
             name: "postNote",
-            description: "Post a note to the database. If no date is provided, use today's date. Today is " + Date.now(),
+            description: `Today is ${dayjs().format("YYYY-MM-DD")}, calculate the date based on human message`,
             schema: postNoteSchema,
             responseFormat: "content_and_artifact"
         }
