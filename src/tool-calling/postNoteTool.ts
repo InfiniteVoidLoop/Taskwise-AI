@@ -2,7 +2,6 @@ import { z } from 'zod'
 import { tool } from '@langchain/core/tools';
 import generateTimestamp from '../utils/generateTimestamp';
 import dayjs, {Dayjs} from 'dayjs'
-import { addNote} from '../models/firebase'
 import {onSaveForTool} from '../components/ModifyNote';
 import type{Note} from '../utils/interface'
 
@@ -21,6 +20,7 @@ const postNoteSchema = z.object({
 
 function wrapperTool(userID: string, existingTimestamp: number[], dateMonthh: Dayjs,
      actions: {
+            addListNote: (note: Note) => void;
             pushTimestamp: (timestamp: number) => void;
             pushUnfinishedDate: (date: dayjs.Dayjs) => void;
             popFinishedDate: (date: dayjs.Dayjs) => void;

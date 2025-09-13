@@ -14,11 +14,12 @@ function AddNote() {
     const {popFinishedDate} = useGreenDateStore();
     const {setHide} =useVisibilityStore();
     const {inc, unDone} = useProgressStore();
-    const {setNoteInList} = useListNoteStore();
+    const {setNoteInList, addListNote} = useListNoteStore();
     const {dateMonth} = useDateMonthStore();
 
     const postNote = useMemo(
         () => wrapperTool(userUID, listTimestamp, dateMonth, {
+            addListNote,
             pushTimestamp,
             pushUnfinishedDate,
             popFinishedDate,
@@ -48,6 +49,15 @@ function AddNote() {
         }
     };
 
+      const extractContentFromResponse = (response: any) => {
+        if (Array.isArray(response.content)) {
+            return response.content
+                .map((c: any) => (typeof c === "string" ? c : ("text" in c ? c.text : "")))
+                .join("");
+        }
+        return typeof response.content === "string" ? response.content : "No response";
+    };
+
     const handleSendMessage = async () => {
         if (!message.trim()) return;
 
@@ -59,11 +69,15 @@ function AddNote() {
 
             let botMessage: string;
 
-            if (response.tool_calls) {
+           if (response.tool_calls && Array.isArray(response.tool_calls) && response.tool_calls.length > 0) {
                 const toolCall = response.tool_calls[0];
+                console.log("Tool call detected:", toolCall);
                 botMessage = await executeToolCall(toolCall);
-                setResponse(botMessage);
+            } else {
+                botMessage = extractContentFromResponse(response);
             }
+
+            setResponse(botMessage);
         } catch (error: any) {
             const errorMessage = `Error: ${error.message}`;
             setResponse(errorMessage);

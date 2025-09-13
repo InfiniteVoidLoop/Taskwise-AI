@@ -1,5 +1,4 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useDraggable } from '@dnd-kit/core';
 import type { ModifyNotePos, Note } from '../utils/interface';
 import { useVisibilityStore, useCurrentNoteStore, useListNoteStore, useCacheNoteStore, useListTimestamp } from '../store';
@@ -12,6 +11,7 @@ export const onSaveForTool = async (
     note: Note,
     dateMonth: Dayjs,
     actions: {
+        addListNote: (note: Note) => void;
         pushTimestamp: (timestamp: number) => void;
         pushUnfinishedDate: (date: dayjs.Dayjs) => void;
         popFinishedDate: (date: dayjs.Dayjs) => void;
@@ -39,8 +39,10 @@ export const onSaveForTool = async (
             if (response === 2) {
                 actions.popFinishedDate(dayjs(note.timestamp));
                 actions.pushUnfinishedDate(dayjs(note.timestamp));
-                if (dayjs(note.timestamp).isSame(dateMonth, 'day'))
+                if (dayjs(note.timestamp).isSame(dateMonth, 'day')){
                     actions.inc("unDone");
+                    actions.addListNote(note);
+                }
             }
 
             return `Note "${note.title}" successfully saved!`;
@@ -56,7 +58,7 @@ export const onSaveForTool = async (
 function ModifyNote(props: ModifyNotePos) {
     const { visibility, setHide } = useVisibilityStore()
     const { currentNote, setTitle, setDescription, setNote, setType } = useCurrentNoteStore();
-    const { setNoteInList } = useListNoteStore();
+    const { setNoteInList, addListNote } = useListNoteStore();
     const { cacheNote } = useCacheNoteStore();
     const { pushTimestamp } = useListTimestamp();
     const { userUID } = useUserUIDStore();
@@ -91,6 +93,7 @@ function ModifyNote(props: ModifyNotePos) {
             currentNote,
             dateMonth,
             {
+                addListNote,
                 pushTimestamp,
                 pushUnfinishedDate,
                 popFinishedDate,
