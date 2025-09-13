@@ -9,11 +9,63 @@ import { useRedDateStore } from '../store';
 import { useGreenDateStore } from '../store';
 import { useUserUIDStore } from '../store';
 import { useNavigate } from 'react-router-dom';
-
+import type { Note } from '../utils/interface';
 import dayjs from 'dayjs'
 
+export const onSaveForTool = async (
+    userUID: string,
+    note: Note,
+    actions: {
+        pushTimestamp: (timestamp: number) => void;
+        pushUnfinishedDate: (date: dayjs.Dayjs) => void;
+        popFinishedDate: (date: dayjs.Dayjs) => void;
+        setHide: () => void;
+        inc: (type: 'done' | 'unDone') => void;
+        setNoteInList: (note: Note) => void;
+        unDone: number;
+    }
+): Promise<string> => {
+    try {
+        actions.pushTimestamp(note.timestamp);
+
+        const response = await addNote(
+            userUID,
+            note.title,
+            note.description,
+            note.timestamp,
+            note.type
+        );
+
+        if (response !== 3) {
+            actions.setHide();
+            actions.setNoteInList({
+                title: note.title,
+                description: note.description,
+                timestamp: note.timestamp,
+                type: note.type,
+                marked: note.marked,
+            });
+
+            if (response === 2) {
+                if (actions.unDone === 0) {
+                    actions.popFinishedDate(dayjs(note.timestamp));
+                    actions.pushUnfinishedDate(dayjs(note.timestamp));
+                }
+                actions.inc("unDone");
+            }
+
+            return `Note "${note.title}" successfully saved!`;
+        } else {
+            return `Failed to save note "${note.title}".`;
+        }
+    } catch (error) {
+        console.error("Error saving note:", error);
+        throw new Error(`Failed to save note: ${error}`);
+    }
+};
+
 function ModifyNote(props: ModifyNotePos) {
-    const  navigate  = useNavigate();
+    const navigate = useNavigate();
     const { visibility, setHide } = useVisibilityStore()
     const { currentNote, setTitle, setDescription, setNote, setType } = useCurrentNoteStore();
     const { setNoteInList } = useListNoteStore();
@@ -38,48 +90,63 @@ function ModifyNote(props: ModifyNotePos) {
     const handleDescriptionChange = ({ target }: React.ChangeEvent<HTMLTextAreaElement>) => {
         setDescription(target.value)
     };
+
+    // const onSave = async (userUID: string, title: string, description: string, timestamp: number, type: string, marked: boolean) => {
+
+    //     try {
+    //         pushTimestamp(timestamp);
+
+    //         const response = await addNote(
+    //             userUID,
+    //             title,
+    //             description,
+    //             timestamp,
+    //             type
+    //         );
+
+    //         if (response !== 3) {
+    //             setHide();
+    //             setNoteInList({
+    //                 title: title,
+    //                 description: description,
+    //                 timestamp: timestamp,
+    //                 type: type,
+    //                 marked: marked,
+    //             });
+
+    //             if (response === 2) {
+    //                 if (unDone === 0) {
+    //                     popFinishedDate(dayjs(timestamp));
+    //                     pushUnfinishedDate(dayjs(timestamp));
+    //                 }
+    //                 inc("unDone");
+    //             }
+    //         }
+    //     } catch (error) {
+    //         console.error("Error saving note:", error);
+    //         navigate('/login')
+    //     }
+    // }
     const handleSave = async (e: React.MouseEvent) => {
         e.stopPropagation();
-
-        if (!currentNote?.title || !currentNote?.description || !currentNote?.timestamp) {
-            console.error("Missing required note data");
+        if (!currentNote?.title || !currentNote?.description || !currentNote?.timestamp || !currentNote?.type) {
+            console.error("Missing required note fields");
             return;
         }
 
-        try {
-            pushTimestamp(currentNote.timestamp);
-            console.log(userUID);
-
-            const response = await addNote(
-                userUID,
-                currentNote.title,
-                currentNote.description,
-                currentNote.timestamp,
-                currentNote.type
-            );
-
-            if (response !== 3) {
-                setHide();
-                setNoteInList({
-                    title: currentNote.title,
-                    description: currentNote.description,
-                    timestamp: currentNote.timestamp,
-                    type: currentNote.type,
-                    marked: currentNote.marked,
-                });
-
-                if (response === 2) {
-                    if (unDone === 0) {
-                        popFinishedDate(dayjs(currentNote.timestamp));
-                        pushUnfinishedDate(dayjs(currentNote.timestamp));
-                    }
-                    inc("unDone");
-                }
+        await onSaveForTool(
+            userUID,
+            currentNote, 
+            {
+            pushTimestamp,
+            pushUnfinishedDate,
+            popFinishedDate,
+            setHide,
+            inc,
+            setNoteInList,
+            unDone
             }
-        } catch (error) {
-            console.error("Error saving note:", error);
-            navigate('/login')
-        }
+        );
     };
 
 

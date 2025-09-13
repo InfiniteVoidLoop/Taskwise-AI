@@ -1,17 +1,33 @@
 import { useMemo, useState } from "react";
 import wrapperTool from "../tool-calling/postNoteTool";
-import { useListTimestamp, useUserUIDStore, useChatBotResponseStore } from "../store";
+import { useVisibilityStore, useListTimestamp, useUserUIDStore, useChatBotResponseStore, useRedDateStore, useGreenDateStore} from "../store";
+import { useProgressStore } from "../store";
+import { useListNoteStore } from "../store";
+
 import model from "../models/chatbot";
 import '../styles/AddNote.css';
-
 function AddNote() {
-    const { listTimestamp } = useListTimestamp();
+    
+    const { listTimestamp, pushTimestamp} = useListTimestamp();
     const { userUID } = useUserUIDStore();
     const { setResponse } = useChatBotResponseStore();
     const [message, setMessage] = useState("");
-
+    const {pushUnfinishedDate} = useRedDateStore();
+    const {popFinishedDate} = useGreenDateStore();
+    const {setHide} =useVisibilityStore();
+    const {inc, unDone} = useProgressStore();
+    const {setNoteInList} = useListNoteStore();
+    
     const postNote = useMemo(
-        () => wrapperTool(userUID, listTimestamp),
+        () => wrapperTool(userUID, listTimestamp, {
+            pushTimestamp,
+            pushUnfinishedDate,
+            popFinishedDate,
+            setHide,
+            inc,
+            setNoteInList,
+            unDone
+            }),
         [userUID, listTimestamp]
     );
 
@@ -63,7 +79,6 @@ function AddNote() {
                 const toolCall = response.tool_calls[0];
                 console.log("Tool call detected:", toolCall);
                 botMessage = await executeToolCall(toolCall);
-                window.location.reload()
             } else {
                 botMessage = extractContentFromResponse(response);
             }
