@@ -104,7 +104,7 @@ function ResetPage() {
                     </form>
 
                     <div className="login-footer">
-                        <p>Remember your password? <Link to="/login" className="register-link">Sign in</Link></p>
+                        <p>Remember your password? <Link to="/register" className="register-link">Sign in</Link></p>
                         <p>Don't have an account? <Link to="/signup" className="register-link">Create one</Link></p>
                     </div>
                 </div>

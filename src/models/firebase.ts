@@ -2,6 +2,7 @@ import {getDatabase, set, ref, push, query, remove, equalTo, orderByChild, get, 
 import type {Note} from '../utils/interface'
 import dayjs, {Dayjs} from "dayjs";
 import {app} from '../config/firebaseConfig';
+import {auth} from './auth';
 
 const database = getDatabase(app);
 
@@ -123,4 +124,11 @@ async function getDateState(username: string): Promise<{ finishedDate: string[],
   }
 };
 
-export { addNote, deleteNote, fetchNote,  updataMarkNote, getDateState};  
+async function deleteAccountData(){
+    const uid = auth.currentUser?.uid;
+    if (uid){
+      await remove(ref(database, `users/${uid}`));
+    }
+}
+
+export { addNote, deleteNote, fetchNote,  updataMarkNote, getDateState, deleteAccountData};  

@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useListNoteStore, useVisibilityStore, useProgressStore} from '../store';
+import { deleteAccountData } from '../models/firebase';
+import { deleteAccount } from '../models/auth';
 
 function RightPanel() {
     const { listNote } = useListNoteStore();
@@ -29,6 +31,19 @@ function RightPanel() {
 
         setCounter(newCounter); 
     }, [listNote, visibility]); 
+
+    const handleSignOut = (event: React.MouseEvent) => {
+        event.stopPropagation();
+        window.location.reload();
+    };
+
+    const handleDelete = async (event: React.MouseEvent) => {
+        event.stopPropagation();
+        await deleteAccountData();
+        await deleteAccount();
+        window.location.reload();
+    }
+
     return (
         <div className="right-panel-container">
             <div className='right-panel-categories'>
@@ -74,6 +89,15 @@ function RightPanel() {
                     {done}/{unDone + done}
                 </div>
             </div>
+            <button className = 'sign-out'
+                onClick = {handleSignOut}>
+                Sign out
+            </button>
+            <button className = 'delete-account'
+                onClick = {handleDelete}
+            >
+                Delete Account
+            </button>
         </div>
     );
 };

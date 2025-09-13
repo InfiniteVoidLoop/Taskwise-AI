@@ -1,5 +1,5 @@
 import { getAuth, createUserWithEmailAndPassword, sendPasswordResetEmail} from "firebase/auth";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, deleteUser } from "firebase/auth";
 import {app} from '../config/firebaseConfig'
 const auth = getAuth(app);
 
@@ -33,4 +33,16 @@ async function sendEmailResetPass(email: string){
     }
 }
 
-export {signUp, logIn, sendEmailResetPass};
+async function deleteAccount(){
+    const user = auth.currentUser;
+    try{
+        if (!user){
+            throw new Error('Can not delete user');
+        }
+        await deleteUser(user);
+    }catch(error){
+        throw error;
+    }
+}
+
+export {signUp, logIn, sendEmailResetPass, deleteAccount, auth};
