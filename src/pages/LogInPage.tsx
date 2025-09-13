@@ -1,6 +1,5 @@
 import React, {useState} from 'react'
 import {useNavigate, Link} from 'react-router-dom';
-import '../styles/LoginPage.css';
 import {logIn} from '../models/auth';
 import { useUserUIDStore } from '../store';
 

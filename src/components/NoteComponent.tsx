@@ -1,98 +1,89 @@
-import React, {useEffect, useRef} from 'react'
-import type{Note} from '../utils/interface'
-import '../styles/NoteComponent.css'
-import {deleteNote, updataMarkNote} from '../models/firebase'
-import {useVisibilityStore, useListTimestamp} from '../store'
-import {useCurrentNoteStore, useCacheNoteStore, useProgressStore, useRedDateStore, useGreenDateStore} from '../store'
+import React, { useEffect, useRef } from 'react'
+import type { Note } from '../utils/interface'
+import { deleteNote, updataMarkNote } from '../models/firebase'
+import { useVisibilityStore, useListTimestamp, useUserUIDStore, useListNoteStore } from '../store'
+import { useCurrentNoteStore, useCacheNoteStore, useProgressStore, useRedDateStore, useGreenDateStore } from '../store'
 import dayjs from 'dayjs'
-import { useUserUIDStore} from '../store'
-import {useListNoteStore} from '../store'
+
 type NoteProps = Note & {
     deleteNote: (timestamp: number) => void
 }
 
-function NoteComponent(props: NoteProps){
-    const {popTimestamp} = useListTimestamp();
-    const {currentNote, setNote} = useCurrentNoteStore();
-    const {setCache} = useCacheNoteStore();
-    const {setShow} = useVisibilityStore();
-    const {unDone, dec, inc, done} = useProgressStore();
-    const {pushFinishedDate, popFinishedDate, greenDates} = useGreenDateStore();
-    const {pushUnfinishedDate, popUnfinishedDate, redDates} = useRedDateStore();
-    const {userUID} = useUserUIDStore();
+function NoteComponent(props: NoteProps) {
+    const { popTimestamp } = useListTimestamp();
+    const { currentNote, setNote } = useCurrentNoteStore();
+    const { setCache } = useCacheNoteStore();
+    const { setShow } = useVisibilityStore();
+    const { unDone, dec, inc, done } = useProgressStore();
+    const { pushFinishedDate, popFinishedDate } = useGreenDateStore();
+    const { pushUnfinishedDate, popUnfinishedDate } = useRedDateStore();
+    const { userUID } = useUserUIDStore();
     const unDonePrev = useRef<number>(unDone);
-    const {setNoteInList} = useListNoteStore();
+    const { setNoteInList } = useListNoteStore();
 
     const handleClickNote = () => {
         setNote({
-            title: props.title, 
+            title: props.title,
             description: props.description,
             timestamp: props.timestamp,
             type: props.type,
             marked: props.marked
         });
         setCache({
-            title: props.title, 
+            title: props.title,
             description: props.description,
             timestamp: props.timestamp,
-            type: props.type, 
+            type: props.type,
             marked: props.marked
         });
-        setShow();    
+        setShow();
     };
 
-    useEffect(()=>{
-        if (unDone === 0 && done === 0){
+    useEffect(() => {
+        if (unDone === 0 && done === 0) {
             if (unDonePrev.current === 0)
                 popFinishedDate(dayjs(props.timestamp));
             else
                 popUnfinishedDate(dayjs(props.timestamp));
             return;
         }
-        if (unDone === 0){
+        if (unDone === 0) {
             popUnfinishedDate(dayjs(props.timestamp));
             pushFinishedDate(dayjs(props.timestamp));
         }
-        else{
-            if (unDonePrev.current === 0){
+        else {
+            if (unDonePrev.current === 0) {
                 popFinishedDate(dayjs(props.timestamp))
             }
             pushUnfinishedDate(dayjs(props.timestamp));
         }
         unDonePrev.current = unDone
     }, [unDone, done])
-   const handleClickDeleteButton = async (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.stopPropagation();
-    
-    try {
-        // Get checkbox state BEFORE deletion
-        const isChecked = props.marked
-        // Delete from database first
-        if (isChecked) {
-            dec('done');    // Decrease completed count
-        } else {
-            dec('unDone');  // Decrease uncompleted count
+    const handleClickDeleteButton = async (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.stopPropagation();
+
+        try {
+            const isChecked = props.marked
+            if (isChecked)
+                dec('done');
+            else
+                dec('unDone');
+
+            const respond = await deleteNote(userUID, props.timestamp);
+
+            if (respond) {
+                popTimestamp(props.timestamp);
+                props.deleteNote(props.timestamp);
+
+            } else {
+                console.error('Failed to delete note from database');
+            }
+        } catch (error) {
+            console.error('Error deleting note:', error);
         }
-        const respond = await deleteNote(userUID, props.timestamp);
-        
-        if (respond) {
-            // Only update state if deletion was successful
-            popTimestamp(props.timestamp);
-            props.deleteNote(props.timestamp);
-            
-            // Update progress counters based on the note's completion status
-            
-        } else {
-            console.error('Failed to delete note from database');
-            // Optionally show user feedback
-        }
-     }catch (error) {
-        console.error('Error deleting note:', error);
-        // Optionally show user feedback
-    }
-};
+    };
     const getCategoryClass = () => {
-        if (props.timestamp === currentNote?.timestamp){
+        if (props.timestamp === currentNote?.timestamp) {
             return `note-container note-container-${currentNote.type}`;
         }
         else if (props.type) {
@@ -105,17 +96,16 @@ function NoteComponent(props: NoteProps){
         e.stopPropagation();
         const checked = (e.currentTarget as HTMLInputElement).checked;
         updataMarkNote(userUID, props.timestamp, checked);
-        if (checked){
+        if (checked) {
             inc('done');
             dec('unDone');
-           
         }
         else if (!checked) {
             dec('done');
             inc('unDone');
         }
         setNoteInList({
-            title: props.title, 
+            title: props.title,
             description: props.description,
             timestamp: props.timestamp,
             type: props.type,
@@ -124,21 +114,21 @@ function NoteComponent(props: NoteProps){
     };
 
     return (
-        <li key = {props.timestamp} className = {getCategoryClass()} onClick = {() => handleClickNote()}>
-            <div className = "note-content">
-                <div className = "note-title">
-                    {props.timestamp === currentNote?.timestamp ? currentNote.title: props.title}
+        <li key={props.timestamp} className={getCategoryClass()} onClick={() => handleClickNote()}>
+            <div className="note-content">
+                <div className="note-title">
+                    {props.timestamp === currentNote?.timestamp ? currentNote.title : props.title}
                 </div>
-                <div className = "note-preview"> 
-                    {props.timestamp === currentNote?.timestamp ? currentNote.description: props.description}
+                <div className="note-preview">
+                    {props.timestamp === currentNote?.timestamp ? currentNote.description : props.description}
                 </div>
             </div>
-            <div className = "note-action">
-                <button className = "delete-button" onClick = {(e) => handleClickDeleteButton(e)} >
+            <div className="note-action">
+                <button className="delete-button" onClick={(e) => handleClickDeleteButton(e)} >
                     🗑️
                 </button>
             </div>
-            <input type="checkbox" defaultChecked={props.marked} className='note-check-box' onClick = {(e) => handleCheckBox(e)} />
+            <input type="checkbox" defaultChecked={props.marked} className='note-check-box' onClick={(e) => handleCheckBox(e)} />
         </li>
     );
 }

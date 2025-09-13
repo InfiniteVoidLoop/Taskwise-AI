@@ -35,7 +35,6 @@ function wrapperTool(userID: string, existingTimestamp: number[], dateMonthh: Da
             try {
                 const dateMonth = dayjs(date, 'YYYY-MM-DD');
                 const timestamp = generateTimestamp(dateMonth, existingTimestamp);
-                // await addNote(userID, title, description, timestamp, type);
                 await onSaveForTool(userID,{
                     title: title,
                     description: description,
@@ -46,7 +45,7 @@ function wrapperTool(userID: string, existingTimestamp: number[], dateMonthh: Da
                 dateMonthh,
                 actions
             )
-                return [`Note "${title}" added for ${date} (${type}).`, null];
+                return [`Note added sucessfully`, null];
             } catch (error: any) {
                 return [`Failed to add note: ${error.message || error}`, null];
             }

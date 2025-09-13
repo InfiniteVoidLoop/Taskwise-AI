@@ -1,14 +1,11 @@
 import { useMemo, useState } from "react";
-import wrapperTool from "../tool-calling/postNoteTool";
 import { useVisibilityStore, useListTimestamp, useUserUIDStore, useChatBotResponseStore, useRedDateStore, useGreenDateStore} from "../store";
-import { useProgressStore } from "../store";
-import { useListNoteStore } from "../store";
-import { useDateMonthStore } from "../store";
+import { useProgressStore, useListNoteStore, useDateMonthStore } from "../store";
 
 import model from "../models/chatbot";
-import '../styles/AddNote.css';
+import wrapperTool from "../tool-calling/postNoteTool";
+
 function AddNote() {
-    
     const { listTimestamp, pushTimestamp} = useListTimestamp();
     const { userUID } = useUserUIDStore();
     const { setResponse } = useChatBotResponseStore();
@@ -33,36 +30,22 @@ function AddNote() {
         [userUID, listTimestamp]
     );
 
-    const executeToolCall = async (toolCall: any) => {
-        // Check if toolCall exists and has required properties
+    const executeToolCall = async (toolCall: any): Promise<string> => {
         if (!toolCall || !toolCall.name || !toolCall.args) {
             console.error("Invalid tool call:", toolCall);
-            return "Invalid tool call received";
-        }
-
-        if (toolCall.name !== "postNote") {
-            return `Unknown tool called: ${toolCall.name}`;
+            return 'Invalid tool call'
         }
 
         setResponse("Adding your note...");
+
         try {
             console.log("Executing tool with args:", toolCall.args);
             const toolResult = await postNote.invoke(toolCall.args);
-            console.log("Tool result:", toolResult);
-            return Array.isArray(toolResult) ? toolResult[0] : String(toolResult);
+            return toolResult;
         } catch (toolError: any) {
             console.error("Tool execution error:", toolError);
-            return `Failed to add note: ${toolError?.message || toolError}`;
+            return "Fail to execute tool";
         }
-    };
-
-    const extractContentFromResponse = (response: any) => {
-        if (Array.isArray(response.content)) {
-            return response.content
-                .map((c: any) => (typeof c === "string" ? c : ("text" in c ? c.text : "")))
-                .join("");
-        }
-        return typeof response.content === "string" ? response.content : "No response";
     };
 
     const handleSendMessage = async () => {
@@ -76,18 +59,13 @@ function AddNote() {
 
             let botMessage: string;
 
-            // Check if tool_calls exists and has valid structure
-            if (response.tool_calls && Array.isArray(response.tool_calls) && response.tool_calls.length > 0) {
+            if (response.tool_calls) {
                 const toolCall = response.tool_calls[0];
-                console.log("Tool call detected:", toolCall);
                 botMessage = await executeToolCall(toolCall);
-            } else {
-                botMessage = extractContentFromResponse(response);
+                setResponse(botMessage);
             }
-
-            setResponse(botMessage);
         } catch (error: any) {
-            const errorMessage = `Error: ${error?.message || String(error)}`;
+            const errorMessage = `Error: ${error.message}`;
             setResponse(errorMessage);
             console.error("Main error:", error);
         } finally {
@@ -111,7 +89,6 @@ function AddNote() {
             <button
                 className="send-message"
                 onClick={handleSendMessage}
-                disabled={!message.trim()}
             >
                 Send
             </button>

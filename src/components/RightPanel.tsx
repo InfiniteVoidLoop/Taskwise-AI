@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import '../styles/RightPanel.css';
 import { useListNoteStore, useVisibilityStore, useProgressStore} from '../store';
 
 function RightPanel() {

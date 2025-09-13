@@ -1,11 +1,9 @@
 import { useEffect } from 'react'
-import '../styles/StickyNote.css'
 import {fetchNote, getDateState } from '../models/firebase'
-import {useListTimestamp, useProgressStore, useListNoteStore, useDateMonthStore, useGreenDateStore, useRedDateStore} from '../store';
+import {useListTimestamp, useProgressStore, useListNoteStore, useDateMonthStore, useGreenDateStore, useRedDateStore, useUserUIDStore} from '../store';
 import NoteComponent from './NoteComponent'
 import dayjs from 'dayjs'
 import generateTimestamp from '../utils/generateTimestamp';
-import { useUserUIDStore } from '../store';
 import { useNavigate } from 'react-router-dom';
 
 

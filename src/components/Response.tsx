@@ -1,8 +1,6 @@
 import { useChatBotResponseStore } from "../store";
 import { useDraggable } from '@dnd-kit/core';
-import type { ModifyNotePos } from "../utils/interface";
-
-import '../styles/Response.css';
+import type { ModifyNotePos } from "../utils/interface"
 
 function Response(props: ModifyNotePos) {
     const { response, setResponse } = useChatBotResponseStore();

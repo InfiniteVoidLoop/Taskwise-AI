@@ -1,21 +1,15 @@
 import React from 'react';
-import { useDraggable } from '@dnd-kit/core';
-import '../styles/ModifyNote.css'
-import type { ModifyNotePos } from '../utils/interface';
-import { useVisibilityStore, useCurrentNoteStore, useListNoteStore, useCacheNoteStore, useListTimestamp } from '../store';
-import { addNote } from '../models/firebase';
-import { useProgressStore } from '../store';
-import { useRedDateStore } from '../store';
-import { useGreenDateStore } from '../store';
-import { useUserUIDStore } from '../store';
 import { useNavigate } from 'react-router-dom';
-import type { Note } from '../utils/interface';
-import dayjs, {Dayjs} from 'dayjs'
-import { useDateMonthStore } from "../store";
+import { useDraggable } from '@dnd-kit/core';
+import type { ModifyNotePos, Note } from '../utils/interface';
+import { useVisibilityStore, useCurrentNoteStore, useListNoteStore, useCacheNoteStore, useListTimestamp } from '../store';
+import { useDateMonthStore, useProgressStore, useRedDateStore, useGreenDateStore, useUserUIDStore } from "../store";
+import { addNote } from '../models/firebase';
+import dayjs, { Dayjs } from 'dayjs'
 
 export const onSaveForTool = async (
     userUID: string,
-    note: Note,     
+    note: Note,
     dateMonth: Dayjs,
     actions: {
         pushTimestamp: (timestamp: number) => void;
@@ -31,7 +25,7 @@ export const onSaveForTool = async (
         actions.pushTimestamp(note.timestamp);
 
         const response = await addNote(
-            userUID,    
+            userUID,
             note.title,
             note.description,
             note.timestamp,
@@ -40,21 +34,13 @@ export const onSaveForTool = async (
 
         if (response !== 3) {
             actions.setHide();
-            actions.setNoteInList({
-                title: note.title,
-                description: note.description,
-                timestamp: note.timestamp,
-                type: note.type,
-                marked: note.marked,
-            });
+            actions.setNoteInList({ ...note });
 
             if (response === 2) {
                 actions.popFinishedDate(dayjs(note.timestamp));
                 actions.pushUnfinishedDate(dayjs(note.timestamp));
-                if (dayjs(note.timestamp).isSame(dateMonth,'day')) actions.inc("unDone");
-                console.log(dayjs(note.timestamp).format("YYYY-MM-DD"));
-                console.log( dateMonth.format("YYYY-MM-DD"))
-                console.log(response);
+                if (dayjs(note.timestamp).isSame(dateMonth, 'day'))
+                    actions.inc("unDone");
             }
 
             return `Note "${note.title}" successfully saved!`;
@@ -68,14 +54,13 @@ export const onSaveForTool = async (
 };
 
 function ModifyNote(props: ModifyNotePos) {
-    const navigate = useNavigate();
     const { visibility, setHide } = useVisibilityStore()
     const { currentNote, setTitle, setDescription, setNote, setType } = useCurrentNoteStore();
     const { setNoteInList } = useListNoteStore();
     const { cacheNote } = useCacheNoteStore();
     const { pushTimestamp } = useListTimestamp();
     const { userUID } = useUserUIDStore();
-    const {dateMonth} = useDateMonthStore();
+    const { dateMonth } = useDateMonthStore();
 
     const { inc, unDone } = useProgressStore();
     const { pushUnfinishedDate } = useRedDateStore();
@@ -95,61 +80,24 @@ function ModifyNote(props: ModifyNotePos) {
         setDescription(target.value)
     };
 
-    // const onSave = async (userUID: string, title: string, description: string, timestamp: number, type: string, marked: boolean) => {
-
-    //     try {
-    //         pushTimestamp(timestamp);
-
-    //         const response = await addNote(
-    //             userUID,
-    //             title,
-    //             description,
-    //             timestamp,
-    //             type
-    //         );
-
-    //         if (response !== 3) {
-    //             setHide();
-    //             setNoteInList({
-    //                 title: title,
-    //                 description: description,
-    //                 timestamp: timestamp,
-    //                 type: type,
-    //                 marked: marked,
-    //             });
-
-    //             if (response === 2) {
-    //                 if (unDone === 0) {
-    //                     popFinishedDate(dayjs(timestamp));
-    //                     pushUnfinishedDate(dayjs(timestamp));
-    //                 }
-    //                 inc("unDone");
-    //             }
-    //         }
-    //     } catch (error) {
-    //         console.error("Error saving note:", error);
-    //         navigate('/login')
-    //     }
-    // }
     const handleSave = async (e: React.MouseEvent) => {
         e.stopPropagation();
         if (!currentNote?.title || !currentNote?.description || !currentNote?.timestamp || !currentNote?.type) {
             console.error("Missing required note fields");
             return;
         }
-
         await onSaveForTool(
             userUID,
-            currentNote, 
+            currentNote,
             dateMonth,
             {
-            pushTimestamp,
-            pushUnfinishedDate,
-            popFinishedDate,
-            setHide,
-            inc,
-            setNoteInList,
-            unDone
+                pushTimestamp,
+                pushUnfinishedDate,
+                popFinishedDate,
+                setHide,
+                inc,
+                setNoteInList,
+                unDone
             }
         );
     };
@@ -182,7 +130,7 @@ function ModifyNote(props: ModifyNotePos) {
                 }}
                 {...listeners}
             >
-                ⋮⋮ Drag to move
+                Drag to move
             </div>
             <input className="modify-note-title" onChange={handleTitleChange}
                 value={currentNote?.title || ""} />
