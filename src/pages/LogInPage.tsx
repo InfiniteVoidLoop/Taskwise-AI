@@ -99,15 +99,6 @@ function LogInPage(){
                             </div>
                         </div>
 
-                        <div className="form-options">
-                            <label className="checkbox-wrapper">
-                                <input type="checkbox" className="checkbox" />
-                                <span className="checkmark"></span>
-                                Remember me
-                            </label>
-                            <a href="#" className="forgot-password">Forgot password?</a>
-                        </div>
-
                         <button 
                             type="submit" 
                             className={`login-button ${isLoading ? 'loading' : ''}`}
@@ -125,7 +116,8 @@ function LogInPage(){
                     </form>
 
                     <div className="login-footer">
-                        <p>Don't have an account? <Link to="/register" className="register-link">Create one</Link></p>
+                        <p>Forgot your password? <Link to="/resetPassword" className="register-link">Reset it</Link></p>
+                        <p>Don't have an account? <Link to="/signup" className="register-link">Create one</Link></p>
                     </div>
                 </div>
             </div>

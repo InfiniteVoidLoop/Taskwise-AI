@@ -1,9 +1,9 @@
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, sendPasswordResetEmail} from "firebase/auth";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import {app} from '../config/firebaseConfig'
+const auth = getAuth(app);
 
 async function signUp(email: string, password: string): Promise<string|null> {
-    const auth = getAuth(app);
     try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
@@ -15,7 +15,6 @@ async function signUp(email: string, password: string): Promise<string|null> {
 }
 
 async function logIn(email: string, password: string): Promise<string|null> {
-    const auth = getAuth(app);
     try{
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
@@ -26,4 +25,12 @@ async function logIn(email: string, password: string): Promise<string|null> {
     }
 }
 
-export {signUp, logIn};
+async function sendEmailResetPass(email: string){
+    try{
+        await sendPasswordResetEmail(auth, email);
+    }catch(error: any){
+        throw error;
+    }
+}
+
+export {signUp, logIn, sendEmailResetPass};
