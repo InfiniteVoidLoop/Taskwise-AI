@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import type {UserUID, ListTimestamp, Progress, ListNote, Note, VisibilityStore, CurrentNote, CacheNote, DateMonth, FinishedTask, UnfinishedTask } from './utils/interface'
+import type {ChatBotResponse, UserUID, ListTimestamp, Progress, ListNote, Note, VisibilityStore, CurrentNote, CacheNote, DateMonth, FinishedTask, UnfinishedTask } from './utils/interface'
 import dayjs, { Dayjs } from 'dayjs'
 
 const useListNoteStore = create<ListNote>()((set) => ({
@@ -137,5 +137,9 @@ const useUserUIDStore = create<UserUID>()((set) => ({
         set(() => ({userUID: UID}))
 }));
 
-export { useUserUIDStore, useListTimestamp, useProgressStore, useListNoteStore, useVisibilityStore, useCurrentNoteStore, useCacheNoteStore, useDateMonthStore, useRedDateStore, useGreenDateStore };
+const useChatBotResponseStore = create<ChatBotResponse>((set) => ({
+    response: '',
+    setResponse: (newResponse: string) => set({ response: newResponse }),
+}));
 
+export {useChatBotResponseStore, useUserUIDStore, useListTimestamp, useProgressStore, useListNoteStore, useVisibilityStore, useCurrentNoteStore, useCacheNoteStore, useDateMonthStore, useRedDateStore, useGreenDateStore };

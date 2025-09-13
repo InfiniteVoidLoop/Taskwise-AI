@@ -1,43 +1,105 @@
 import { useMemo, useState } from "react";
 import wrapperTool from "../tool-calling/postNoteTool";
-import { useListTimestamp } from "../store";
-import { useUserUIDStore } from "../store";
+import { useListTimestamp, useUserUIDStore, useChatBotResponseStore } from "../store";
 import model from "../models/chatbot";
-import '../styles/AddNote.css'
+import '../styles/AddNote.css';
 
 function AddNote() {
-  const { listTimestamp } = useListTimestamp();
-  const { userUID } = useUserUIDStore();
-  const [message, setMessage] = useState("");
+    const { listTimestamp } = useListTimestamp();
+    const { userUID } = useUserUIDStore();
+    const { setResponse } = useChatBotResponseStore();
+    const [message, setMessage] = useState("");
 
-  const postNote = useMemo(
-    () => wrapperTool(userUID, listTimestamp),
-    [userUID, listTimestamp]
-  );
+    const postNote = useMemo(
+        () => wrapperTool(userUID, listTimestamp),
+        [userUID, listTimestamp]
+    );
 
-  const modelBindWithTool = useMemo(
-    () => model.bindTools([postNote]),
-    [postNote]
-  );
+    const executeToolCall = async (toolCall: any) => {
+        // Check if toolCall exists and has required properties
+        if (!toolCall || !toolCall.name || !toolCall.args) {
+            console.error("Invalid tool call:", toolCall);
+            return "Invalid tool call received";
+        }
 
-  const handleSendMessage = async () => {
-    await modelBindWithTool.invoke(message);
-    setMessage("");
-  };
+        if (toolCall.name !== "postNote") {
+            return `Unknown tool called: ${toolCall.name}`;
+        }
 
-  return (
-    <div className="chat-area">
-      <input
-        type="text"
-        placeholder="Ask bot to add your note"
-        value={message}
-        onChange={(event) => setMessage(event.target.value)}
-      />
-      <button className="send-message" onClick={handleSendMessage}>
-        Send
-      </button>
-    </div>
-  );
+        setResponse("Adding your note...");
+        try {
+            console.log("Executing tool with args:", toolCall.args);
+            const toolResult = await postNote.invoke(toolCall.args);
+            console.log("Tool result:", toolResult);
+            return Array.isArray(toolResult) ? toolResult[0] : String(toolResult);
+        } catch (toolError: any) {
+            console.error("Tool execution error:", toolError);
+            return `Failed to add note: ${toolError?.message || toolError}`;
+        }
+    };
+
+    const extractContentFromResponse = (response: any) => {
+        if (Array.isArray(response.content)) {
+            return response.content
+                .map((c: any) => (typeof c === "string" ? c : ("text" in c ? c.text : "")))
+                .join("");
+        }
+        return typeof response.content === "string" ? response.content : "No response";
+    };
+
+    const handleSendMessage = async () => {
+        if (!message.trim()) return;
+
+        setResponse("Thinking...");
+        try {
+            console.log("Invoking model with message:", message);
+            const response = await model.bindTools([postNote]).invoke(message);
+            console.log("Model raw response:", response);
+
+            let botMessage: string;
+
+            // Check if tool_calls exists and has valid structure
+            if (response.tool_calls && Array.isArray(response.tool_calls) && response.tool_calls.length > 0) {
+                const toolCall = response.tool_calls[0];
+                console.log("Tool call detected:", toolCall);
+                botMessage = await executeToolCall(toolCall);
+                window.location.reload()
+            } else {
+                botMessage = extractContentFromResponse(response);
+            }
+
+            setResponse(botMessage);
+        } catch (error: any) {
+            const errorMessage = `Error: ${error?.message || String(error)}`;
+            setResponse(errorMessage);
+            console.error("Main error:", error);
+        } finally {
+            setMessage("");
+        }
+    };
+
+    const handleKeyDown = (e: React.KeyboardEvent) => {
+        if (e.key === "Enter") handleSendMessage();
+    };
+
+    return (
+        <div className="chat-area">
+            <input
+                type="text"
+                placeholder="Ask bot to add your note"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                onKeyDown={handleKeyDown}
+            />
+            <button
+                className="send-message"
+                onClick={handleSendMessage}
+                disabled={!message.trim()}
+            >
+                Send
+            </button>
+        </div>
+    );
 }
 
 export default AddNote;

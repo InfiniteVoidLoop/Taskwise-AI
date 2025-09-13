@@ -8,6 +8,7 @@ import generateTimestamp from '../utils/generateTimestamp';
 import { useUserUIDStore } from '../store';
 import { useNavigate } from 'react-router-dom';
 
+
 function StickyNote() {
     const { listNote, setListNote, addListNote, deleteListNote} = useListNoteStore();
     const {dateMonth} = useDateMonthStore();
@@ -28,9 +29,7 @@ function StickyNote() {
         })     
         setListNote(response);
     };
-    
-    useEffect(() => {
-        const fetchDateStates = async () => {
+    const fetchDateStates = async () => {
             try {
                 const res = await getDateState(userUID);
                 res.finishedDate.forEach(date => pushFinishedDate(dayjs(date)));
@@ -40,13 +39,14 @@ function StickyNote() {
                 navigate('/login');
             }
         };
+    useEffect(() => {
         fetchDateStates();
     }, []);
 
     useEffect(() => {
         fetchData();
     }, [dateMonth]);
-
+    
     const handleClickAddButton = () => {
         addListNote({title: '', description: '', timestamp: generateTimestamp(dateMonth, listTimestamp), type: 'working', marked: false});
     };

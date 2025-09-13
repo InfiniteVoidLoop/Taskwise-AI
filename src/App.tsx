@@ -9,6 +9,7 @@ import {DndContext} from '@dnd-kit/core';
 import {useState} from 'react'
 import type{ DragEndEvent } from '@dnd-kit/core'
 import AddNote from './components/AddNote.tsx'
+import Response from './components/Response.tsx'
 
 function App() {
   const [pos, setPos] = useState({ x: 50, y: 50 });
@@ -29,6 +30,7 @@ function App() {
       <StickyNote/>
       <DndContext onDragEnd={handleDragEnd}>
         <ModifyNote x={pos.x} y={pos.y}/>
+        <Response x={pos.x} y={pos.y}/>
       </DndContext>
     </>
   )

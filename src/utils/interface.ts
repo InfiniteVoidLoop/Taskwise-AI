@@ -75,3 +75,8 @@ export interface UserUID{
     userUID: string, 
     setUserUID: (UID: string ) => void;
 };
+
+export interface ChatBotResponse{
+    response: string;
+    setResponse: (newResponse: string) => void;
+};
