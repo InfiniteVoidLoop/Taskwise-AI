@@ -1,11 +1,10 @@
 import React, { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom';
-import { logIn } from '../models/auth';
 import { useUserUIDStore } from '../store';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import Alert from '@mui/material/Alert';
-
+import axios from 'axios';
 
 function LogInPage() {
     const [username, setUsername] = useState('');
@@ -42,20 +41,20 @@ function LogInPage() {
         }
         if (isLoading)
             return;
-        try{
+        try {
             setIsLoading(true);
-            const response = await logIn(username, password);
-            if (response) {
-                setUserUID(response);
-                setSucess(true);
-                navigate('/');
-            }
-            else {
-                setError('Log in failed! Wrong username or password');
-            }
-        }catch(error){
+            const response = await axios.post("http://localhost:5000/auth/login", {
+                username: username,
+                password: password
+            })
+            setUserUID(response.data.UID);
+            setSucess(true);
+            navigate('/');
+
+        } catch (error) {
+            setError('Log in failed! Wrong username or password');
             throw error;
-        }finally{
+        } finally {
             setIsLoading(false);
         }
     };

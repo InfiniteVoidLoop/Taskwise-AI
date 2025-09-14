@@ -1,17 +1,16 @@
 import {getDatabase, set, ref, push, query, remove, equalTo, orderByChild, get, update} from "firebase/database";
-import type {Note} from '../utils/interface'
-import dayjs, {Dayjs} from "dayjs";
-import {app} from '../config/firebaseConfig';
-import {auth} from './auth';
+import dayjs from "dayjs";
+import {app} from '../config/firebaseConfig.js';
+import {auth} from '../auth/controllers.js';
 
 const database = getDatabase(app);
 
-async function getKey(username: string, timestamp: number): Promise<string[]|null>{
+async function getKey(username, timestamp){
   const userRef = ref(database, 'users/' + username);
   const q = query(userRef, orderByChild("timestamp"), equalTo(timestamp));
   const snapshot = await get(q);
   if(snapshot.exists()){
-    const result: string[] = [];
+    const result = [];
     snapshot.forEach((childSnap) => {
       result.push(childSnap.key)
     })
@@ -22,7 +21,7 @@ async function getKey(username: string, timestamp: number): Promise<string[]|nul
   }
 }
 
-async function addNote(username: string, title: string, description: string, timestamp: number, type: string): Promise<number>{
+async function addNote(username, title, description, timestamp, type){
   try{
     const key = await getKey(username, timestamp);
     if (key){
@@ -54,7 +53,8 @@ async function addNote(username: string, title: string, description: string, tim
   }
 }
 
-async function updataMarkNote(username: string, timestamp: number, marked: boolean): Promise<boolean>{
+
+async function updataMarkNote(username, timestamp, marked){
   try{
     const key = await getKey(username, timestamp);
     if (key){
@@ -69,7 +69,9 @@ async function updataMarkNote(username: string, timestamp: number, marked: boole
   }
 }
 
-async function deleteNote(username: string, timestamp: number): Promise<boolean>{
+
+
+async function deleteNote(username, timestamp){
   try{
     const key = await getKey(username, timestamp);
     const noteRef = ref(database, 'users' + '/' + username + '/' + key);
@@ -81,15 +83,16 @@ async function deleteNote(username: string, timestamp: number): Promise<boolean>
   }
 }
 
-async function fetchNote(username: string, dateMonth: Dayjs | null): Promise<Note[]>{
+
+async function fetchNote(username, dateMonth){
   try{
     const noteRef = ref(database, 'users' + '/' + username);
     const snapshot = await get(noteRef);
-    const result: Note[] = [];
+    const result = [];
     if (snapshot.exists()){
       (snapshot).forEach(childSnap => {
         if (dayjs(childSnap.val().timestamp).isSame(dateMonth, "day"))
-          result.push(childSnap.val() as Note)
+          result.push(childSnap.val())
       })
     }
     return result;
@@ -99,11 +102,12 @@ async function fetchNote(username: string, dateMonth: Dayjs | null): Promise<Not
   }
 }
 
-async function getDateState(username: string): Promise<{ finishedDate: string[], unFinishedDate: string[] }>{
+
+async function getDateState(username){
   try{
     const noteRef = ref(database, 'users' + '/' + username);
-    const finishedDate: string[] = [];
-    const unFinishedDate: string[] = [];
+    const finishedDate = [];
+    const unFinishedDate = [];
     const snapshot = await get(noteRef);
     if (snapshot.exists()){
       (snapshot).forEach(childSnap => {
@@ -124,11 +128,14 @@ async function getDateState(username: string): Promise<{ finishedDate: string[],
   }
 };
 
+
 async function deleteAccountData(){
     const uid = auth.currentUser?.uid;
     if (uid){
       await remove(ref(database, `users/${uid}`));
+      return true;
     }
+    return false;
 }
 
 export { addNote, deleteNote, fetchNote,  updataMarkNote, getDateState, deleteAccountData};  

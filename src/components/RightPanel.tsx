@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useListNoteStore, useVisibilityStore, useProgressStore} from '../store';
-import { deleteAccountData } from '../models/firebase';
-import { deleteAccount } from '../models/auth';
 import Stack from '@mui/material/Stack';
 import CircularProgress from '@mui/material/CircularProgress';
+import axios from 'axios';
 
 function RightPanel() {
     const { listNote } = useListNoteStore();
@@ -41,8 +40,8 @@ function RightPanel() {
 
     const handleDelete = async (event: React.MouseEvent) => {
         event.stopPropagation();
-        await deleteAccountData();
-        await deleteAccount();
+        await axios.delete('http://localhost:5000/note/deleteAccount');
+        await axios.delete('http://localhost:5000/auth/deleteAccount');
         window.location.reload();
     }
 

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { signUp } from '../models/auth';
 import { useUserUIDStore } from '../store';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import Alert from '@mui/material/Alert';
+import axios from 'axios';
 
 function SignUpPage() {
     const [username, setUsername] = useState('');
@@ -46,13 +46,17 @@ function SignUpPage() {
             return;
         }
         setIsLoading(true);
-        const response = await signUp(username, password);
-        setIsLoading(false);
-        if (response) {
-            setUserUID(response);
+        try{
+            const response = await axios.post('http://localhost:5000/auth/signup', {
+                username: username, 
+                password: password
+            })
+            setIsLoading(false);
+            setUserUID(response.data.UID);
             navigate('/login');
-        } else {
+        }catch(error){
             setError('Sign up failed. Please try again.');
+            throw error;
         }
     };
 

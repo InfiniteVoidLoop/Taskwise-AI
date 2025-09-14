@@ -1,38 +1,37 @@
-import { getAuth, createUserWithEmailAndPassword, sendPasswordResetEmail} from "firebase/auth";
+import {createUserWithEmailAndPassword, sendPasswordResetEmail} from "firebase/auth";
 import { signInWithEmailAndPassword, deleteUser } from "firebase/auth";
-import {app} from '../config/firebaseConfig'
-const auth = getAuth(app);
+import {auth} from '../config/firebaseConfig.js'
 
-async function signUp(email: string, password: string): Promise<string|null> {
+async function signUp(email, password){
     try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
         return user.uid;
-    } catch (error: any) {
+    } catch (error) {
         console.error(error.message);
         return null;
     }
 }
 
-async function logIn(email: string, password: string): Promise<string|null> {
+async function logIn(email, password){
     try{
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
         return user.uid;
-    }catch(error: any){
+    }catch(error){
         console.error(error.message);
         return null;
     }
 }
 
-async function sendEmailResetPass(email: string){
+async function sendEmailResetPass(email){
     try{
         await sendPasswordResetEmail(auth, email);
-            console.log("Password reset email sent!");
-
-    }catch(error: any){
+        console.log("Password reset email sent!");
+        return true;
+    }catch(error){
         console.error(error);
-        throw error;
+        return false;
     }
 }
 
@@ -43,8 +42,10 @@ async function deleteAccount(){
             throw new Error('Can not delete user');
         }
         await deleteUser(user);
+        return true;
     }catch(error){
-        throw error;
+        console.error(error)
+        return false;
     }
 }
 

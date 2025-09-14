@@ -1,10 +1,9 @@
 import React, { useEffect, useRef } from 'react'
 import type { Note } from '../utils/interface'
-import { deleteNote, updataMarkNote } from '../models/firebase'
 import { useVisibilityStore, useListTimestamp, useUserUIDStore, useListNoteStore } from '../store'
 import { useCurrentNoteStore, useCacheNoteStore, useProgressStore, useRedDateStore, useGreenDateStore } from '../store'
 import dayjs from 'dayjs'
-
+import axios from 'axios'
 type NoteProps = Note & {
     deleteNote: (timestamp: number) => void
 }
@@ -69,17 +68,15 @@ function NoteComponent(props: NoteProps) {
             else
                 dec('unDone');
 
-            const respond = await deleteNote(userUID, props.timestamp);
-
-            if (respond) {
-                popTimestamp(props.timestamp);
-                props.deleteNote(props.timestamp);
-
-            } else {
-                console.error('Failed to delete note from database');
-            }
+            await axios.post('http://localhost:5000/note/deleteNote', {
+                username: userUID, 
+                timestamp: props.timestamp
+            })
+            popTimestamp(props.timestamp);
+            props.deleteNote(props.timestamp);
         } catch (error) {
             console.error('Error deleting note:', error);
+            throw error;
         }
     };
     const getCategoryClass = () => {
@@ -92,10 +89,14 @@ function NoteComponent(props: NoteProps) {
         return "note-container";
     };
 
-    const handleCheckBox = (e: React.MouseEvent<HTMLInputElement>) => {
+    const handleCheckBox = async (e: React.MouseEvent<HTMLInputElement>) => {
         e.stopPropagation();
         const checked = (e.currentTarget as HTMLInputElement).checked;
-        updataMarkNote(userUID, props.timestamp, checked);
+        await axios.post('http://localhost:5000/note/updateMarkNote', {
+            username: userUID, 
+            timestamp: props.timestamp, 
+            marked: checked
+        });
         if (checked) {
             inc('done');
             dec('unDone');

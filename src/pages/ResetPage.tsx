@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/ResetPage.css';
-import { sendEmailResetPass } from '../models/auth';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import Alert from '@mui/material/Alert';
+import axios from 'axios';
 
 function ResetPage() {
     
@@ -28,7 +28,9 @@ function ResetPage() {
         }
 
         setIsLoading(true);
-        await sendEmailResetPass(email);
+        await axios.post('http://localhost:5000/auth/resetPass',{
+            username: email
+        });
         setMessage(true);
         await new Promise(resolve => setTimeout(resolve, 2000));
         setIsLoading(false);

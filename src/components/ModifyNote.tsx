@@ -3,10 +3,11 @@ import { useDraggable } from '@dnd-kit/core';
 import type { ModifyNotePos, Note } from '../utils/interface';
 import { useVisibilityStore, useCurrentNoteStore, useListNoteStore, useCacheNoteStore, useListTimestamp } from '../store';
 import { useDateMonthStore, useProgressStore, useRedDateStore, useGreenDateStore, useUserUIDStore } from "../store";
-import { addNote } from '../models/firebase';
 import dayjs, { Dayjs } from 'dayjs'
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
+
+import axios from 'axios'
 
 export const onSaveForTool = async (
     userUID: string,
@@ -25,20 +26,19 @@ export const onSaveForTool = async (
 ): Promise<string> => {
     try {
         actions.pushTimestamp(note.timestamp);
-
-        const response = await addNote(
-            userUID,
-            note.title,
-            note.description,
-            note.timestamp,
-            note.type
-        );
-
-        if (response !== 3) {
+        
+        const response = await axios.post('http://localhost:5000/note/addNote',{
+            username: userUID,
+            title: note.title? note.title: '',
+            description: note.description? note.description : '', 
+            timestamp: note.timestamp,
+            type: note.type
+        })
+        if (response.data !== 3) {
             actions.setHide();
             actions.setNoteInList({ ...note });
 
-            if (response === 2) {
+            if (response.data === 2) {
                 actions.popFinishedDate(dayjs(note.timestamp));
                 actions.pushUnfinishedDate(dayjs(note.timestamp));
                 if (dayjs(note.timestamp).isSame(dateMonth, 'day')) {

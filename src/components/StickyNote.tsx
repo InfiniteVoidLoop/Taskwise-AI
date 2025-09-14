@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react'
-import { fetchNote, getDateState } from '../models/firebase'
+import type{Note} from '../utils/interface';
+
 import { useListTimestamp, useProgressStore, useListNoteStore, useDateMonthStore, useGreenDateStore, useRedDateStore, useUserUIDStore } from '../store';
 import NoteComponent from './NoteComponent'
 import dayjs from 'dayjs'
 import generateTimestamp from '../utils/generateTimestamp';
 import { useNavigate } from 'react-router-dom';
 import CircularProgress from '@mui/material/CircularProgress';
-
 import Box from '@mui/material/Box';
+import axios from 'axios';
 
 function StickyNote() {
     const { listNote, setListNote, addListNote, deleteListNote } = useListNoteStore();
@@ -23,23 +24,28 @@ function StickyNote() {
 
     const fetchData = async () => {
         setLoading(true);
-        const response = await fetchNote(userUID, dateMonth);
+        const response = await axios.post('http://localhost:5000/note/fetchNote',{
+            username: userUID, 
+            dateMonth: dateMonth
+        })
         reset();
-        response.forEach((note) => {
+        response.data.forEach((note: Note) => {
             if (note.marked) inc('done');
             else inc('unDone');
             pushTimestamp(note.timestamp);
         })
-        setListNote(response);
+        setListNote(response.data);
 
         setLoading(false);
     };
     const fetchDateStates = async () => {
         try {
             setLoading(true);
-            const res = await getDateState(userUID);
-            res.finishedDate.forEach(date => pushFinishedDate(dayjs(date)));
-            res.unFinishedDate.forEach(date => pushUnfinishedDate(dayjs(date)));
+            const res = await axios.post('http://localhost:5000/note/getDateState', {
+                username: userUID
+            })
+            res.data.finishedDate.forEach((date: string) => pushFinishedDate(dayjs(date)));
+            res.data.unFinishedDate.forEach((date: string) => pushUnfinishedDate(dayjs(date)));
 
             setLoading(false);
         } catch (error) {

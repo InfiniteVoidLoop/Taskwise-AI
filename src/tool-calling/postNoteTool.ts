@@ -52,7 +52,7 @@ function wrapperTool(userID: string, existingTimestamp: number[], dateMonthh: Da
         },
         {
             name: "postNote",
-            description: `Today is ${dayjs().format("YYYY-MM-DD")}, calculate the date based on human message`,
+            description: `Today is ${dayjs().format("YYYY-MM-DD")}, calculate the date based on human message, if no year given so give it default today's year`,
             schema: postNoteSchema,
             responseFormat: "content_and_artifact"
         }
