@@ -66,7 +66,7 @@ function SignUpPage() {
                 <div className="login-card">
                     <div className="login-header">
                         <h1 className="login-title">Create Account</h1>
-                        <p className="login-subtitle">Sign up for your note-taking workspace</p>
+                        <p className="login-subtitle">Sign up for your to-do-list workspace</p>
                     </div>
                     <form className="login-form" onSubmit={handleSignUp}>
                         {error && (

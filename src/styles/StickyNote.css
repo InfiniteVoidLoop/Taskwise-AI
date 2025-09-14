@@ -1,4 +1,3 @@
-/* Professional Notes Main Display Container */
 .sticky-note-container {
   position: fixed;
   top: 0;
@@ -12,7 +11,6 @@
   display: block;
 }
 
-/* Loading State Styling */
 .sticky-note-loading {
   position: fixed;
   top: 0;
@@ -42,7 +40,6 @@
   height: 60px !important;
 }
 
-/* Professional Header */
 .sticky-note-header {
   display: flex;
   align-items: center;
@@ -97,7 +94,6 @@
   font-weight: 300;
 }
 
-/* Professional Notes Grid Layout */
 .sticky-note-container .note-container {
   list-style: none;
   background: #ffffff;
@@ -123,7 +119,6 @@
 
 
 
-/* Professional hover effects */
 .sticky-note-container .note-container:hover {
   transform: translateY(-8px);
   z-index: 10;
@@ -131,7 +126,6 @@
   border-color: #cbd5e1;
 }
 
-/* Professional note content styling */
 .sticky-note-container .note-content {
   flex: 1;
   display: flex;
@@ -168,7 +162,6 @@
   font-weight: 400;
 }
 
-/* Professional note actions */
 .sticky-note-container .note-action {
   position: absolute;
   top: 1rem;
@@ -205,7 +198,6 @@
   transform: scale(1.1);
 }
 
-/* Professional Responsive Design */
 @media (max-width: 1200px) {
   .sticky-note-container {
     left: 0;
@@ -287,7 +279,6 @@
   }
 }
 
-/* Clearfix for proper row layout */
 .sticky-note-container::after {
   content: "";
   display: table;

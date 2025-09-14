@@ -188,16 +188,6 @@
 	pointer-events: none;
 }
 
-/* Loading Spinner */
-.loading-spinner {
-	width: 20px;
-	height: 20px;
-	border: 2px solid transparent;
-	border-top: 2px solid currentColor;
-	border-radius: 50%;
-	animation: spin 1s linear infinite;
-}
-
 @keyframes spin {
 	0% { transform: rotate(0deg); }
 	100% { transform: rotate(360deg); }
@@ -263,7 +253,6 @@
 	}
 }
 
-/* Focus Management for Accessibility */
 .login-button:focus-visible,
 .form-input:focus-visible,
 .password-toggle:focus-visible,

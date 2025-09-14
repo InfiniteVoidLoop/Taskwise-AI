@@ -1,4 +1,3 @@
-/* Reset Password Page - Consistent White Professional Design */
 .login-container {
   display: flex;
   align-items: center;
@@ -16,7 +15,6 @@
   z-index: 1;
 }
 
-/* Main Reset Card */
 .login-card {
   background: #ffffff;
   border-radius: 12px;
@@ -39,7 +37,6 @@
   border-radius: 12px 12px 0 0;
 }
 
-/* Header Section */
 .login-header {
   text-align: center;
   margin-bottom: 2rem;
@@ -61,7 +58,6 @@
   line-height: 1.5;
 }
 
-/* Form Styling */
 .login-form {
   width: 100%;
 }
@@ -108,7 +104,6 @@
   box-shadow: 0 0 0 2px rgba(9, 132, 227, 0.1);
 }
 
-/* Reset Button */
 .login-button {
   width: 100%;
   background: linear-gradient(135deg, #0984e3 0%, #0574cc 100%);
@@ -153,22 +148,11 @@
   pointer-events: none;
 }
 
-/* Loading Spinner */
-.loading-spinner {
-  width: 20px;
-  height: 20px;
-  border: 2px solid transparent;
-  border-top: 2px solid currentColor;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
 
-/* Footer */
 .login-footer {
   text-align: center;
   margin-top: 2rem;
@@ -198,7 +182,6 @@
   text-decoration: underline;
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
   .login-container {
     padding: 1rem;
@@ -236,7 +219,6 @@
   }
 }
 
-/* Focus Management for Accessibility */
 .login-button:focus-visible,
 .form-input:focus-visible,
 .register-link:focus-visible {

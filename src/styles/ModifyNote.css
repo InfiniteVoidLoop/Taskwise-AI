@@ -1,8 +1,6 @@
-/* ModifyNote Component - Sticky Note Style */
 
-/* Main Container */
 .modify-note-container {
-  background: #ffd93d; /* Yellow sticky note background */
+  background: #ffd93d; 
   border: 1px solid rgba(0,0,0,0.1);
   border-radius: 8px;
   padding: 1.5rem;
@@ -10,17 +8,16 @@
   flex-direction: column;
   gap: 1rem;
   box-shadow: 0 8px 24px rgba(0,0,0,0.2);
-  font-family: 'Comic Sans MS', cursive, sans-serif; /* Handwritten feel */
+  font-family: 'Comic Sans MS', cursive, sans-serif; 
   position: absolute;
   min-width: 300px;
   max-width: 400px;
   min-height: 350px;
   z-index: 1000;
-  transform: rotate(-1deg); /* Slight tilt like sticky notes */
+  transform: rotate(-1deg); 
   transition: transform 0.3s ease;
 }
 
-/* Title Section */
 .modify-note-title {
   font-size: 1.3rem;
   font-weight: 700;
@@ -30,7 +27,7 @@
   word-break: break-word;
   overflow-wrap: break-word;
   border: none;
-  border-bottom: 2px dotted #2d3436; /* Handwritten underline */
+  border-bottom: 2px dotted #2d3436; 
   background: transparent;
   outline: none;
   width: 100%;
@@ -44,7 +41,6 @@
   background: rgba(255,255,255,0.3);
 }
 
-/* Description Section */
 .modify-note-description {
   font-size: 1rem;
   font-weight: 400;
@@ -78,7 +74,6 @@
   padding: 0.5rem;
 }
 
-/* Category Select */
 .select-note-type {
   background: rgba(255,255,255,0.7);
   border: 2px solid #2d3436;
@@ -158,34 +153,31 @@
   cursor: grabbing !important;
 }
 
-/* Hover effect on container - no color changes */
 .modify-note-container:hover {
   transform: rotate(0deg) scale(1.02);
   box-shadow: 0 12px 32px rgba(0,0,0,0.25);
 }
 
-/* Note color variations based on category - Using hover colors as normal */
 .modify-note-container.modify-note-working {
-  background: #0984e3 !important; /* Darker Blue - was hover color */
+  background: #0984e3 !important; 
 }
 
 .modify-note-container.modify-note-learning {
-  background: #00b894 !important; /* Darker Green - was hover color */
+  background: #00b894 !important; 
 }
 
 .modify-note-container.modify-note-health {
-  background: #e84393 !important; /* Darker Pink - was hover color */
+  background: #e84393 !important; 
 }
 
 .modify-note-container.modify-note-entertaining {
-  background: #6c5ce7 !important; /* Darker Purple - was hover color */
+  background: #6c5ce7 !important; 
 }
 
 .modify-note-container.modify-note-others {
-  background: #e17055 !important; /* Darker Orange - was hover color */
+  background: #e17055 !important; 
 }
 
-/* Text color adjustments for different backgrounds */
 .modify-note-container.modify-note-working .modify-note-title,
 .modify-note-container.modify-note-working .modify-note-description {
   color: #ffffff !important;
@@ -233,7 +225,7 @@
     max-width: 95vw;
     min-height: 300px;
     padding: 1.2rem;
-    transform: rotate(0deg); /* No rotation on mobile */
+    transform: rotate(0deg); 
   }
   
   .modify-note-title {

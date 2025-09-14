@@ -1,4 +1,3 @@
-/* Note Component - Professional Design */
 .note-container {
   list-style: none;
   background: #ffffff;
@@ -32,7 +31,6 @@
   box-shadow: 0 4px 12px 0 rgba(0,0,0,0.08);
 }
 
-/* Legacy li support - matches note-container */
 li {
   list-style: none;
   background: #ffffff;
@@ -66,13 +64,12 @@ li:active {
   box-shadow: 0 4px 12px 0 rgba(0,0,0,0.08);
 }
 
-/* Note Content Area */
 .note-content {
   flex: 1;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  margin-right: 3rem; /* Increased to accommodate checkbox */
+  margin-right: 3rem; 
   min-width: 0;
 }
 
@@ -109,7 +106,6 @@ li:active {
   margin-top: 0.2rem;
 }
 
-/* Professional Note Checkbox Styling */
 .note-check-box {
   position: absolute;
   top: 1rem;
@@ -122,7 +118,6 @@ li:active {
   padding: 0;
 }
 
-/* Custom Professional Checkbox Design */
 .note-check-box[type="checkbox"] {
   appearance: none;
   -webkit-appearance: none;
@@ -159,7 +154,6 @@ li:active {
   box-shadow: 0 2px 8px rgba(66, 133, 244, 0.25);
 }
 
-/* Professional Check Mark */
 .note-check-box[type="checkbox"]:checked::before {
   content: '';
   position: absolute;
@@ -174,14 +168,12 @@ li:active {
   transition: all 0.2s ease;
 }
 
-/* Checked Hover Effect */
 .note-check-box[type="checkbox"]:checked:hover {
   background: linear-gradient(135deg, #3367d6 0%, #2e7d32 100%);
   box-shadow: 0 3px 12px rgba(66, 133, 244, 0.3), 0 0 0 3px rgba(66, 133, 244, 0.15);
   transform: translateY(-1px);
 }
 
-/* Active State */
 .note-check-box[type="checkbox"]:active {
   transform: scale(0.95);
   box-shadow: 0 1px 4px rgba(66, 133, 244, 0.2);
@@ -235,7 +227,6 @@ li.completed .note-preview {
   color: #bdc1c6;
 }
 
-/* Focus State for Accessibility */
 .note-container:focus-visible,
 li:focus-visible {
   outline: 2px solid #4285f4;
@@ -253,7 +244,7 @@ li:focus-visible {
   
   .note-content {
     gap: 0.4rem;
-    margin-right: 2.5rem; /* Adjusted for mobile checkbox */
+    margin-right: 2.5rem; 
   }
   
   .note-title {
@@ -300,7 +291,6 @@ li:focus-visible {
   }
 }
 
-/* Category-based Note Container Classes - Using Darker Colors Only */
 li.note-container.note-container-working {
   background: #0984e3 !important; /* Darker Blue */
   color: #ffffff !important;
@@ -371,7 +361,6 @@ li.note-container.note-container-others .note-preview {
   color: rgba(255, 255, 255, 0.8) !important;
 }
 
-/* Hover effects for category containers */
 li.note-container.note-container-working:hover {
   background: #0984e3 !important;
   transform: translateY(-2px);
@@ -402,7 +391,6 @@ li.note-container.note-container-others:hover {
   box-shadow: 0 8px 24px 0 rgba(225, 112, 85, 0.3) !important;
 }
 
-/* Professional Checkbox Styling for Category Notes */
 li.note-container.note-container-working .note-check-box[type="checkbox"],
 li.note-container.note-container-learning .note-check-box[type="checkbox"],
 li.note-container.note-container-health .note-check-box[type="checkbox"],
@@ -413,7 +401,6 @@ li.note-container.note-container-others .note-check-box[type="checkbox"] {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
-/* Category Note Checkbox Hover */
 li.note-container.note-container-working .note-check-box[type="checkbox"]:hover,
 li.note-container.note-container-learning .note-check-box[type="checkbox"]:hover,
 li.note-container.note-container-health .note-check-box[type="checkbox"]:hover,
@@ -425,7 +412,6 @@ li.note-container.note-container-others .note-check-box[type="checkbox"]:hover {
   transform: translateY(-1px);
 }
 
-/* Category Note Checkbox Checked */
 li.note-container.note-container-working .note-check-box[type="checkbox"]:checked,
 li.note-container.note-container-learning .note-check-box[type="checkbox"]:checked,
 li.note-container.note-container-health .note-check-box[type="checkbox"]:checked,
@@ -436,7 +422,6 @@ li.note-container.note-container-others .note-check-box[type="checkbox"]:checked
   box-shadow: 0 3px 12px rgba(0, 0, 0, 0.25);
 }
 
-/* Category Note Checkbox Check Mark */
 li.note-container.note-container-working .note-check-box[type="checkbox"]:checked::before,
 li.note-container.note-container-learning .note-check-box[type="checkbox"]:checked::before,
 li.note-container.note-container-health .note-check-box[type="checkbox"]:checked::before,
@@ -445,7 +430,6 @@ li.note-container.note-container-others .note-check-box[type="checkbox"]:checked
   border-color: #2c3e50;
 }
 
-/* Category Note Checkbox Checked Hover */
 li.note-container.note-container-working .note-check-box[type="checkbox"]:checked:hover,
 li.note-container.note-container-learning .note-check-box[type="checkbox"]:checked:hover,
 li.note-container.note-container-health .note-check-box[type="checkbox"]:checked:hover,

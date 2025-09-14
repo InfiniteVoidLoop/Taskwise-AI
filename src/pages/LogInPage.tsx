@@ -65,7 +65,7 @@ function LogInPage() {
                 <div className="login-card">
                     <div className="login-header">
                         <h1 className="login-title">Welcome Back</h1>
-                        <p className="login-subtitle">Sign in to your note-taking workspace</p>
+                        <p className="login-subtitle">Sign in to your to-do-list workspace</p>
                     </div>
 
                     <form className="login-form" onSubmit={handleSignIn}>

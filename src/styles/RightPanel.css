@@ -1,4 +1,3 @@
-/* Right Panel - Professional Design */
 .right-panel-container {
   position: fixed;
   top: 0;
@@ -18,7 +17,6 @@
   gap: 2rem;
 }
 
-/* Professional Categories Header */
 .right-panel-categories {
   font-size: 1.9rem;
   font-weight: 800;
@@ -47,7 +45,6 @@
   border-radius: 2px;
 }
 
-/* Professional Categories Grid Container */
 .categories-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -56,7 +53,6 @@
   margin-bottom: 1rem;
 }
 
-/* Professional Category Card Base Style */
 .right-panel-working,
 .right-panel-learning,
 .right-panel-health,
@@ -79,7 +75,6 @@
   backdrop-filter: blur(12px);
 }
 
-/* Professional Hover Effects */
 .right-panel-working:hover,
 .right-panel-learning:hover,
 .right-panel-health:hover,
@@ -92,35 +87,30 @@
   border-color: rgba(255, 255, 255, 0.3);
 }
 
-/* Working Category - Matching NoteComponent */
 .right-panel-working {
   background: #0984e3;
   color: #ffffff;
   box-shadow: 0 8px 25px rgba(9, 132, 227, 0.3);
 }
 
-/* Learning Category - Matching NoteComponent */
 .right-panel-learning {
   background: #00b894;
   color: #2d3436;
   box-shadow: 0 8px 25px rgba(0, 184, 148, 0.3);
 }
 
-/* Health Category - Matching NoteComponent */
 .right-panel-health {
   background: #e84393;
   color: #ffffff;
   box-shadow: 0 8px 25px rgba(232, 67, 147, 0.3);
 }
 
-/* Entertaining Category - Matching NoteComponent */
 .right-panel-entertaining {
   background: #6c5ce7;
   color: #ffffff;
   box-shadow: 0 8px 25px rgba(108, 92, 231, 0.3);
 }
 
-/* Others Category - Matching NoteComponent */
 .right-panel-others {
   background: #e17055;
   color: #2d3436;
@@ -185,14 +175,12 @@
   z-index: -1;
 }
 
-/* Professional Material-UI Stack Styling */
 .right-panel-container .MuiStack-root {
   align-items: center;
   justify-content: center;
   margin: 1.5rem 0;
 }
 
-/* Professional CircularProgress Styling */
 .right-panel-container .MuiCircularProgress-root {
   width: 80px !important;
   height: 80px !important;
@@ -205,7 +193,6 @@
   stroke-linecap: round !important;
 }
 
-/* Professional Progress Enhancement */
 .right-panel-container .MuiStack-root::before {
   content: attr(data-percentage);
   position: absolute;
@@ -222,7 +209,6 @@
   pointer-events: none;
 }
 
-/* Category Icons (optional enhancement) */
 .right-panel-working::before {
   content: '💼';
   font-size: 1.5rem;
@@ -258,7 +244,6 @@
   display: block;
 }
 
-/* Count Number - Clean Style */
 .count {
   background: transparent;
   color: rgba(255, 255, 255, 0.95);
@@ -269,7 +254,6 @@
   letter-spacing: 0.5px;
 }
 
-/* Mobile Responsive */
 @media (max-width: 768px) {
   .right-panel-container {
     width: 260px;
@@ -338,7 +322,6 @@
   }
 }
 
-/* Professional Action Buttons */
 .sign-out,
 .delete-account {
   width: 100%;
@@ -356,7 +339,6 @@
   overflow: hidden;
 }
 
-/* Sign Out Button - Professional Blue */
 .sign-out {
   background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
   color: white;
@@ -369,7 +351,6 @@
   background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
 }
 
-/* Delete Account Button - Professional Red */
 .delete-account {
   background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
   color: white;
