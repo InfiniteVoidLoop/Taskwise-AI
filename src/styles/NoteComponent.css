@@ -216,22 +216,6 @@ li:active {
   background: #fdd663;
 }
 
-/* Priority Indicators - Modern Accent */
-.note-container.priority-high,
-li.priority-high {
-  border-left: 4px solid #ea4335;
-}
-
-.note-container.priority-medium,
-li.priority-medium {
-  border-left: 4px solid #fbbc04;
-}
-
-.note-container.priority-low,
-li.priority-low {
-  border-left: 4px solid #34a853;
-}
-
 /* Completed State */
 .note-container.completed,
 li.completed {
@@ -256,42 +240,6 @@ li.completed .note-preview {
 li:focus-visible {
   outline: 2px solid #4285f4;
   outline-offset: 2px;
-}
-
-/* Status Indicators */
-.note-status {
-  position: absolute;
-  top: 0.8rem;
-  right: 3rem;
-  font-size: 0.75rem;
-  padding: 0.2rem 0.6rem;
-  border-radius: 12px;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.note-status.todo {
-  background: #e3f2fd;
-  color: #1976d2;
-}
-
-.note-status.in-progress {
-  background: #fff3e0;
-  color: #f57c00;
-}
-
-.note-status.done {
-  background: #e8f5e8;
-  color: #2e7d32;
-}
-
-/* Timestamp */
-.note-timestamp {
-  font-size: 0.75rem;
-  color: #9aa0a6;
-  margin-top: 0.5rem;
-  font-style: italic;
 }
 
 /* Mobile Responsive */
@@ -350,22 +298,6 @@ li:focus-visible {
   .note-check-box[type="checkbox"]:hover {
     transform: translateY(-0.5px);
   }
-}
-
-/* Animation for new notes */
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-li.new-note {
-  animation: slideIn 0.3s ease-out;
 }
 
 /* Category-based Note Container Classes - Using Darker Colors Only */

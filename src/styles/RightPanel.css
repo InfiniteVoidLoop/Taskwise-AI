@@ -127,36 +127,6 @@
   box-shadow: 0 8px 25px rgba(225, 112, 85, 0.3);
 }
 
-/* Professional Progress Section */
-.progress-container {
-  margin-top: 2rem;
-  padding: 2rem;
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08));
-  border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 
-    0 10px 30px rgba(0,0,0,0.15),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(12px);
-  position: relative;
-  overflow: hidden;
-}
-
-.progress-container::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, 
-    rgba(59, 130, 246, 0.8), 
-    rgba(16, 185, 129, 0.8), 
-    rgba(139, 92, 246, 0.8),
-    rgba(236, 72, 153, 0.8)
-  );
-}
-
 .right-panel-progress {
   font-size: 1.3rem;
   font-weight: 600;
@@ -335,11 +305,6 @@
   
   .count {
     font-size: 1.5rem;
-  }
-  
-  .progress-container {
-    margin-top: 1.5rem;
-    padding: 1.2rem;
   }
   
   .right-panel-progress {

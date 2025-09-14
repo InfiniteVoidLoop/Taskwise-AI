@@ -98,15 +98,6 @@
   border-color: #636e72;
 }
 
-/* Button Container */
-.modify-note-buttons {
-  display: flex;
-  gap: 0.5rem;
-  justify-content: center;
-  margin-top: auto;
-  flex-shrink: 0;
-}
-
 /* Save Button */
 .modify-note-save-button {
   background: #2d3436;
@@ -252,11 +243,6 @@
   .modify-note-description {
     font-size: 0.9rem;
     min-height: 120px;
-  }
-  
-  .modify-note-buttons {
-    flex-direction: column;
-    gap: 0.5rem;
   }
   
   .modify-note-save-button,
