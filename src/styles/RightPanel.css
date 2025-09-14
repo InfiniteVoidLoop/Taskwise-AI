@@ -1,133 +1,255 @@
-/* Right Panel - Simple Categories */
+/* Right Panel - Professional Design */
 .right-panel-container {
   position: fixed;
   top: 0;
   right: 0;
   height: 100vh;
-  width: 280px;
-  background: #ffffff;
-  padding: 2rem 1rem;
+  width: 340px;
+  background: linear-gradient(145deg, #ffffff 0%, #f8fafc 50%, #e2e8f0 100%);
+  padding: 2.5rem 2rem;
   display: flex;
   flex-direction: column;
   z-index: 100;
-  box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+  box-shadow: -6px 0 40px rgba(0,0,0,0.15), 0 0 0 1px rgba(255,255,255,0.1);
+  border-left: 3px solid #cbd5e1;
+  border-top-left-radius: 28px;
+  border-bottom-left-radius: 28px;
+  backdrop-filter: blur(10px);
+  gap: 2rem;
 }
 
-/* Categories Header */
+/* Professional Categories Header */
 .right-panel-categories {
-  font-size: 2.0rem;
-  font-weight: 700;
+  font-size: 1.9rem;
+  font-weight: 800;
   color: #2c3e50;
-  margin-bottom: 2rem;
+  margin: 0 0 1.5rem 0;
   text-align: center;
-  letter-spacing: 0.6px;
+  letter-spacing: -0.8px;
   text-transform: uppercase;
-  border-bottom: 2px solid #e8eaed;
-  padding-bottom: 1rem;
+  padding: 1.2rem 1rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  position: relative;
 }
 
-/* Categories Grid Container */
+.right-panel-categories::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 2px;
+}
+
+/* Professional Categories Grid Container */
 .categories-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1rem;
+  gap: 1.2rem;
   width: 100%;
+  margin-bottom: 1rem;
 }
 
-/* Base Category Card Style */
+/* Professional Category Card Base Style */
 .right-panel-working,
 .right-panel-learning,
 .right-panel-health,
 .right-panel-entertaining,
 .right-panel-others {
-  background: #f5f5f5;
-  border-radius: 12px;
-  padding: 1.2rem 1rem;
+  border-radius: 16px;
+  padding: 1.5rem 1.25rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   font-size: 1.1rem;
-  font-weight: 700;
-  color: #333;
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
-  height: 100px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  height: 110px;
   justify-content: space-between;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   position: relative;
   overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(12px);
 }
 
-/* Hover Effects */
+/* Professional Hover Effects */
 .right-panel-working:hover,
 .right-panel-learning:hover,
 .right-panel-health:hover,
 .right-panel-entertaining:hover,
 .right-panel-others:hover {
-  transform: translateY(-4px) scale(1.02);
-  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+  transform: translateY(-5px) scale(1.03);
+  box-shadow: 
+    0 15px 40px rgba(0,0,0,0.25),
+    0 0 0 1px rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
 }
 
-/* Working Category - Darker Blue */
+/* Working Category - Matching NoteComponent */
 .right-panel-working {
   background: #0984e3;
   color: #ffffff;
+  box-shadow: 0 8px 25px rgba(9, 132, 227, 0.3);
 }
 
-/* Learning Category - Darker Green */
+/* Learning Category - Matching NoteComponent */
 .right-panel-learning {
   background: #00b894;
-  color: #ffffff;
+  color: #2d3436;
+  box-shadow: 0 8px 25px rgba(0, 184, 148, 0.3);
 }
 
-/* Health Category - Darker Pink */
+/* Health Category - Matching NoteComponent */
 .right-panel-health {
   background: #e84393;
   color: #ffffff;
+  box-shadow: 0 8px 25px rgba(232, 67, 147, 0.3);
 }
 
-/* Entertaining Category - Darker Purple */
+/* Entertaining Category - Matching NoteComponent */
 .right-panel-entertaining {
   background: #6c5ce7;
   color: #ffffff;
+  box-shadow: 0 8px 25px rgba(108, 92, 231, 0.3);
 }
 
-/* Others Category - Darker Orange */
+/* Others Category - Matching NoteComponent */
 .right-panel-others {
   background: #e17055;
-  color: #ffffff;
+  color: #2d3436;
+  box-shadow: 0 8px 25px rgba(225, 112, 85, 0.3);
 }
 
-/* Progress Section */
+/* Professional Progress Section */
 .progress-container {
   margin-top: 2rem;
-  padding: 1.5rem;
-  background: #f8f9fa;
-  border-radius: 12px;
-  border: 2px solid #e8eaed;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  padding: 2rem;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08));
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 
+    0 10px 30px rgba(0,0,0,0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(12px);
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, 
+    rgba(59, 130, 246, 0.8), 
+    rgba(16, 185, 129, 0.8), 
+    rgba(139, 92, 246, 0.8),
+    rgba(236, 72, 153, 0.8)
+  );
 }
 
 .right-panel-progress {
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: #2c3e50;
-  margin-bottom: 1rem;
+  font-size: 1.3rem;
+  font-weight: 600;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 2rem;
   text-align: center;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.5px;
   text-transform: uppercase;
+  position: relative;
+}
+
+.right-panel-progress::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 2px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 2px;
 }
 
 .right-panel-finish-task {
-  font-size: 2.5rem;
-  font-weight: 900;
-  color: #27ae60;
+  font-size: 2rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   text-align: center;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  padding: 0.5rem;
-  background: linear-gradient(135deg, rgba(39, 174, 96, 0.1) 0%, rgba(39, 174, 96, 0.05) 100%);
-  border-radius: 8px;
-  border: 2px solid rgba(39, 174, 96, 0.2);
+  padding: 1rem 1.5rem;
+  background-color: rgba(102, 126, 234, 0.08);
+  border-radius: 16px;
+  border: 1px solid rgba(102, 126, 234, 0.25);
+  position: relative;
+  text-shadow: none;
+  min-width: 100px;
+  margin-top: 1rem;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
+}
+
+.right-panel-finish-task::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.04) 100%);
+  border-radius: 16px;
+  z-index: -1;
+}
+
+/* Professional Material-UI Stack Styling */
+.right-panel-container .MuiStack-root {
+  align-items: center;
+  justify-content: center;
+  margin: 1.5rem 0;
+}
+
+/* Professional CircularProgress Styling */
+.right-panel-container .MuiCircularProgress-root {
+  width: 80px !important;
+  height: 80px !important;
+  color: #667eea !important;
+  filter: drop-shadow(0 4px 12px rgba(102, 126, 234, 0.3));
+}
+
+.right-panel-container .MuiCircularProgress-circle {
+  stroke-width: 4 !important;
+  stroke-linecap: round !important;
+}
+
+/* Professional Progress Enhancement */
+.right-panel-container .MuiStack-root::before {
+  content: attr(data-percentage);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.1rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  z-index: 10;
+  pointer-events: none;
 }
 
 /* Category Icons (optional enhancement) */
@@ -226,8 +348,96 @@
   }
   
   .right-panel-finish-task {
-    font-size: 2rem;
+    font-size: 1.6rem;
+    padding: 0.8rem 1.2rem;
   }
+  
+  .right-panel-container .MuiCircularProgress-root {
+    width: 60px !important;
+    height: 60px !important;
+  }
+  
+  .right-panel-container .MuiStack-root::before {
+    font-size: 0.9rem;
+  }
+  
+  .sign-out,
+  .delete-account {
+    padding: 0.8rem 1.2rem;
+    font-size: 0.9rem;
+    margin-top: 0.8rem;
+  }
+  
+  .delete-account {
+    margin-top: 0.4rem;
+  }
+}
+
+/* Professional Action Buttons */
+.sign-out,
+.delete-account {
+  width: 100%;
+  padding: 0.9rem 1.5rem;
+  border: none;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-top: 1rem;
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Sign Out Button - Professional Blue */
+.sign-out {
+  background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(30, 64, 175, 0.3);
+}
+
+.sign-out:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(30, 64, 175, 0.4);
+  background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
+}
+
+/* Delete Account Button - Professional Red */
+.delete-account {
+  background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(220, 38, 38, 0.3);
+  margin-top: 0.005rem;
+}
+
+.delete-account:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(220, 38, 38, 0.4);
+  background: linear-gradient(135deg, #b91c1c 0%, #dc2626 100%);
+}
+
+/* Button Focus States */
+.sign-out:focus,
+.delete-account:focus {
+  outline: none;
+  box-shadow: 
+    0 0 0 3px rgba(59, 130, 246, 0.3),
+    0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.delete-account:focus {
+  box-shadow: 
+    0 0 0 3px rgba(239, 68, 68, 0.3),
+    0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* Button Active States */
+.sign-out:active,
+.delete-account:active {
+  transform: translateY(0);
+  transition: transform 0.1s ease;
 }
 
 /* Tablet Responsive */

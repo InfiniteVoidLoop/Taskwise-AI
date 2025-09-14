@@ -119,7 +119,9 @@ function NoteComponent(props: NoteProps) {
                 <div className="note-title">
                     {props.timestamp === currentNote?.timestamp ? currentNote.title : props.title}
                 </div>
-                <div className="note-preview">
+                <div className="note-preview"
+                  style={{ whiteSpace: "pre-line" }}
+>
                     {props.timestamp === currentNote?.timestamp ? currentNote.description : props.description}
                 </div>
             </div>

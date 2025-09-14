@@ -50,13 +50,13 @@ function StickyNote() {
     };
     return (
         <div className="sticky-note-container">
-            <div className="sitcky-note-header">
+            <div className="sticky-note-header">
                 <div className='sticky-note-title'>
                     {dateMonth?.format('DD MMMM YYYY')}
                 </div>
                 <button className='sticky-note-add-button'
                    onClick = {handleClickAddButton}
-                >+</button> 
+                >Add New Note</button> 
             </div>
             {listNote.map((note) => (
                 <NoteComponent title={note.title}

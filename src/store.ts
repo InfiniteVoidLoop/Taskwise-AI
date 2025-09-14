@@ -1,11 +1,20 @@
 import { create } from 'zustand'
-import type {ChatBotResponse, UserUID, ListTimestamp, Progress, ListNote, Note, VisibilityStore, CurrentNote, CacheNote, DateMonth, FinishedTask, UnfinishedTask } from './utils/interface'
+import type { ChatBotResponse, UserUID, ListTimestamp, Progress, ListNote, Note, VisibilityStore, CurrentNote, CacheNote, DateMonth, FinishedTask, UnfinishedTask } from './utils/interface'
 import dayjs, { Dayjs } from 'dayjs'
 
 const useListNoteStore = create<ListNote>()((set) => ({
     listNote: [],
     setListNote: (List: Note[]) => set(() => ({ listNote: [...List] })),
-    addListNote: (Note: Note) => set((state) => ({ listNote: [...state.listNote, Note] })),
+    addListNote: (note: Note) =>
+        set((state) => {
+            const exists = state.listNote.some(
+                (n) => n.timestamp === note.timestamp
+            );
+            return {
+                listNote: exists ? state.listNote : [...state.listNote, note],
+            };
+        }),
+
     deleteListNote: (timestamp: number) => set((state) => ({ listNote: state.listNote.filter((note) => note.timestamp !== timestamp) })),
     setNoteInList: (note: Note) => set((state) => {
         for (let i = 0; i < state.listNote.length; i++) {
@@ -50,37 +59,37 @@ const useDateMonthStore = create<DateMonth>()((set) => ({
 }));
 
 const useRedDateStore = create<UnfinishedTask>()((set) => ({
-  redDates: [],
-  pushUnfinishedDate: (date: Dayjs) =>
-    set((state) => {
-      const formatted = date.format("YYYY-MM-DD");
-      return state.redDates.includes(formatted)
-        ? state
-        : { redDates: [...state.redDates, formatted] };
-    }),
-  popUnfinishedDate: (date: Dayjs) =>
-    set((state) => ({
-      redDates: state.redDates.filter(
-        (dateString) => dateString !== date.format("YYYY-MM-DD")
-      ),
-    })),
+    redDates: [],
+    pushUnfinishedDate: (date: Dayjs) =>
+        set((state) => {
+            const formatted = date.format("YYYY-MM-DD");
+            return state.redDates.includes(formatted)
+                ? state
+                : { redDates: [...state.redDates, formatted] };
+        }),
+    popUnfinishedDate: (date: Dayjs) =>
+        set((state) => ({
+            redDates: state.redDates.filter(
+                (dateString) => dateString !== date.format("YYYY-MM-DD")
+            ),
+        })),
 }));
 
 const useGreenDateStore = create<FinishedTask>()((set) => ({
-  greenDates: [],
-  pushFinishedDate: (date: Dayjs) =>
-    set((state) => {
-      const formatted = date.format("YYYY-MM-DD");
-      return state.greenDates.includes(formatted)
-        ? state
-        : { greenDates: [...state.greenDates, formatted] };
-    }),
-  popFinishedDate: (date: Dayjs) =>
-    set((state) => ({
-      greenDates: state.greenDates.filter(
-        (dateString) => dateString !== date.format("YYYY-MM-DD")
-      ),
-    })),
+    greenDates: [],
+    pushFinishedDate: (date: Dayjs) =>
+        set((state) => {
+            const formatted = date.format("YYYY-MM-DD");
+            return state.greenDates.includes(formatted)
+                ? state
+                : { greenDates: [...state.greenDates, formatted] };
+        }),
+    popFinishedDate: (date: Dayjs) =>
+        set((state) => ({
+            greenDates: state.greenDates.filter(
+                (dateString) => dateString !== date.format("YYYY-MM-DD")
+            ),
+        })),
 }));
 
 const useProgressStore = create<Progress>()((set) => ({
@@ -93,7 +102,7 @@ const useProgressStore = create<Progress>()((set) => ({
             } else if (type === "unDone") {
                 return { ...state, unDone: state.unDone + 1 };
             }
-            return state; 
+            return state;
         }),
     dec: (type) =>
         set((state) => {
@@ -104,28 +113,27 @@ const useProgressStore = create<Progress>()((set) => ({
             }
             return state;
         }),
-    reset: () => 
-        set(()=>({
+    reset: () =>
+        set(() => ({
             done: 0,
             unDone: 0
         }))
 }));
 
 const useListTimestamp = create<ListTimestamp>()((set) => ({
-    listTimestamp: [], 
-    pushTimestamp: (timestamp: number) => 
-    {
+    listTimestamp: [],
+    pushTimestamp: (timestamp: number) => {
         let result = true;
         set((state) => {
             result = state.listTimestamp.includes(timestamp);
-            if (result) 
-                return {listTimestamp: [...state.listTimestamp]};
-            else 
-                return {listTimestamp: [...state.listTimestamp, timestamp]}
+            if (result)
+                return { listTimestamp: [...state.listTimestamp] };
+            else
+                return { listTimestamp: [...state.listTimestamp, timestamp] }
         })
         return result;
     },
-    popTimestamp: (timestamp: number) => 
+    popTimestamp: (timestamp: number) =>
         set((state) => ({
             listTimestamp: state.listTimestamp.filter((time) => timestamp !== time)
         }))
@@ -133,16 +141,16 @@ const useListTimestamp = create<ListTimestamp>()((set) => ({
 
 const useUserUIDStore = create<UserUID>()((set) => ({
     userUID: '',
-    setUserUID: (UID: string) => 
-        set(() => ({userUID: UID}))
+    setUserUID: (UID: string) =>
+        set(() => ({ userUID: UID }))
 }));
 
 const useChatBotResponseStore = create<ChatBotResponse>((set) => ({
     response: '',
     isShow: false,
     setResponse: (newResponse: string) => set({ response: newResponse }),
-    setTrue: () => set(() => ({isShow: true})),
-    setFalse: () => set(() => ({isShow: false})),
+    setTrue: () => set(() => ({ isShow: true })),
+    setFalse: () => set(() => ({ isShow: false })),
 }));
 
-export {useChatBotResponseStore, useUserUIDStore, useListTimestamp, useProgressStore, useListNoteStore, useVisibilityStore, useCurrentNoteStore, useCacheNoteStore, useDateMonthStore, useRedDateStore, useGreenDateStore };
+export { useChatBotResponseStore, useUserUIDStore, useListTimestamp, useProgressStore, useListNoteStore, useVisibilityStore, useCurrentNoteStore, useCacheNoteStore, useDateMonthStore, useRedDateStore, useGreenDateStore };

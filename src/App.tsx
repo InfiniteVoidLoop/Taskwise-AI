@@ -1,4 +1,3 @@
-import './App.css'
 import LeftPanel from './components/LeftPanel.tsx'
 import StickyNote from './components/StickyNote.tsx'
 import RightPanel from './components/RightPanel.tsx'
@@ -36,8 +35,8 @@ function App() {
     <>
       <AddNote/>
       <LeftPanel/>  
-      <RightPanel/>
       <StickyNote/>
+      <RightPanel/>
       <DndContext onDragEnd={handleDragEnd}>
         <ModifyNote x={pos.x} y={pos.y}/>
         <Response x={pos1.x} y={pos1.y}/>

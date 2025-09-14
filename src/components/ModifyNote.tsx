@@ -84,7 +84,7 @@ function ModifyNote(props: ModifyNotePos) {
 
     const handleSave = async (e: React.MouseEvent) => {
         e.stopPropagation();
-        if (!currentNote?.title || !currentNote?.description || !currentNote?.timestamp || !currentNote?.type) {
+        if (!currentNote?.title || !currentNote?.timestamp || !currentNote?.type) {
             console.error("Missing required note fields");
             return;
         }

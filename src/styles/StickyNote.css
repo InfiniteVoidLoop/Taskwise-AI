@@ -1,184 +1,167 @@
-/* Sticky Note Main Display Container */
+/* Professional Notes Main Display Container */
 .sticky-note-container {
   position: fixed;
   top: 0;
-  left: 350px; /* Increased offset for left panel gap */
-  right: 300px; /* Offset for right panel */
+  left: 420px;
+  right: 380px;
   bottom: 0;
-  background: #f8f9fa;
-  padding: 2rem;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  padding: 3rem 2.5rem 5rem 2.5rem;
   overflow-y: auto;
   z-index: 1;
   display: block;
 }
 
-/* Sticky Note Header */
+/* Professional Header */
 .sticky-note-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 2rem;
-  padding-bottom: 1rem;
-  border-bottom: 2px solid #e9ecef;
+  margin-bottom: 3rem;
+  padding: 2rem 0;
+  border-bottom: 1px solid #cbd5e1;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 12px;
+  padding: 2rem 2.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(10px);
 }
 
 .sticky-note-title {
-  font-size: 2.5rem;
-  font-weight: 800;
-  color: #2c3e50;
-  text-shadow: 0 2px 4px rgba(44,62,80,0.1);
-  letter-spacing: 0.5px;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #1e293b;
+  letter-spacing: -0.5px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .sticky-note-add-button {
-  background: #5FF281;
-  color: #1a1a2e;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
   border: none;
-  border-radius: 12px;
-  padding: 0.8rem 1.5rem;
-  font-size: 1.1rem;
-  font-weight: 700;
+  border-radius: 10px;
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 16px 0 rgba(95,242,129,0.3);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.7rem;
+  font-family: inherit;
 }
 
 .sticky-note-add-button:hover {
-  background: #4ae66b;
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px 0 rgba(95,242,129,0.4);
+  box-shadow: 0 8px 30px rgba(102, 126, 234, 0.4);
+  background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
 }
 
 .sticky-note-add-button::before {
-  content: '📝';
-  font-size: 1.2rem;
+  content: '+';
+  font-size: 1.3rem;
+  font-weight: 300;
 }
 
-/* Sticky Notes Grid Layout - 3 columns per row */
+/* Professional Notes Grid Layout */
 .sticky-note-container .note-container {
-  /* Override existing note styles for sticky note appearance */
   list-style: none;
-  background: #ffd93d; /* Default yellow sticky */
-  border-radius: 8px;
-  padding: 1.5rem;
-  margin: 1rem;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 2rem;
+  margin: 1.5rem;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  border: 1px solid rgba(0,0,0,0.1);
-  transition: all 0.3s ease;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+  border: 1px solid #e2e8f0;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   position: relative;
-  overflow: visible;
-  width: calc(33.333% - 2rem); /* 3 columns: 1/3 width minus margins */
-  min-height: 200px;
-  max-width: calc(33.333% - 2rem);
+  overflow: hidden;
+  width: calc(33.333% - 3rem);
+  min-height: 240px;
+  max-width: calc(33.333% - 3rem);
   box-sizing: border-box;
-  border-left: none;
-  transform: rotate(-2deg);
+  transform: none;
   float: left;
+  backdrop-filter: blur(10px);
 }
 
-/* Sticky note color variations */
-.sticky-note-container .note-container:nth-child(3n+1) {
-  background: #ffd93d; /* Yellow */
-  transform: rotate(1deg);
-}
 
-.sticky-note-container .note-container:nth-child(3n+2) {
-  background: #74b9ff; /* Blue */
-  transform: rotate(-1.5deg);
-}
 
-.sticky-note-container .note-container:nth-child(3n+3) {
-  background: #fd79a8; /* Pink */
-  transform: rotate(0.5deg);
-}
-
-.sticky-note-container .note-container:nth-child(5n) {
-  background: #55efc4; /* Green */
-  transform: rotate(-0.8deg);
-}
-
-.sticky-note-container .note-container:nth-child(7n) {
-  background: #fdcb6e; /* Orange */
-  transform: rotate(1.2deg);
-}
-
-.sticky-note-container .note-container:nth-child(11n) {
-  background: #a29bfe; /* Purple */
-  transform: rotate(-1deg);
-}
-
-/* Hover effects for sticky notes */
+/* Professional hover effects */
 .sticky-note-container .note-container:hover {
-  transform: rotate(0deg) scale(1.05);
+  transform: translateY(-8px);
   z-index: 10;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+  border-color: #cbd5e1;
 }
 
-/* Adjust note content for sticky layout */
+/* Professional note content styling */
 .sticky-note-container .note-content {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.2rem;
   margin-right: 0;
   min-width: 0;
   height: 100%;
+  padding-top: 0.5rem;
 }
 
 .sticky-note-container .note-title {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: #2d3436;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #1e293b;
   line-height: 1.4;
   text-overflow: initial;
   overflow: visible;
   white-space: normal;
   word-wrap: break-word;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.8rem;
+  letter-spacing: -0.2px;
 }
 
 .sticky-note-container .note-preview {
-  font-size: 0.9rem;
-  color: #636e72;
-  line-height: 1.5;
+  font-size: 0.95rem;
+  color: #64748b;
+  line-height: 1.6;
   display: block;
-  -webkit-line-clamp: initial;
-  -webkit-box-orient: initial;
   overflow: visible;
   text-overflow: initial;
   word-break: break-word;
   flex-grow: 1;
+  font-weight: 400;
 }
 
-/* Adjust note actions for sticky layout */
+/* Professional note actions */
 .sticky-note-container .note-action {
   position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
+  top: 1rem;
+  right: 1rem;
   flex-shrink: 0;
 }
 
 .sticky-note-container .delete-button {
-  background: rgba(255,255,255,0.8);
-  border: none;
-  font-size: 1rem;
+  background: rgba(248, 250, 252, 0.9);
+  border: 1px solid #e2e8f0;
+  font-size: 0.9rem;
   cursor: pointer;
-  padding: 0.3rem;
-  border-radius: 50%;
-  transition: all 0.2s ease;
-  color: #636e72;
+  padding: 0.5rem;
+  border-radius: 8px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  color: #64748b;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 24px;
-  height: 24px;
+  width: 32px;
+  height: 32px;
   opacity: 0;
+  backdrop-filter: blur(4px);
 }
 
 .sticky-note-container .note-container:hover .delete-button {
@@ -186,55 +169,77 @@
 }
 
 .sticky-note-container .delete-button:hover {
-  background: #ff7675;
-  color: white;
-  transform: scale(1.2);
+  background: #fee2e2;
+  border-color: #fecaca;
+  color: #dc2626;
+  transform: scale(1.1);
 }
 
-/* Responsive Design */
+/* Professional Responsive Design */
 @media (max-width: 1200px) {
   .sticky-note-container {
     left: 0;
     right: 0;
-    padding: 1.5rem;
+    padding: 2rem;
+  }
+  
+  .sticky-note-header {
+    padding: 1.5rem 2rem;
+    margin-bottom: 2rem;
   }
   
   .sticky-note-container .note-container {
-    width: calc(33.333% - 1.6rem); /* Still 3 columns on tablets */
-    min-height: 180px;
-    margin: 0.8rem;
+    width: calc(33.333% - 2.4rem);
+    min-height: 220px;
+    margin: 1.2rem;
+    padding: 1.8rem;
   }
 }
 
 @media (max-width: 900px) {
   .sticky-note-container .note-container {
-    width: calc(50% - 1rem); /* 2 columns on smaller tablets */
-    margin: 0.5rem;
+    width: calc(50% - 1.5rem);
+    margin: 0.75rem;
+    min-height: 200px;
   }
 }
 
 @media (max-width: 600px) {
   .sticky-note-container {
-    padding: 1rem;
+    padding: 1.5rem;
+  }
+  
+  .sticky-note-header {
+    padding: 1.2rem 1.5rem;
+    margin-bottom: 1.5rem;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
   }
   
   .sticky-note-title {
-    font-size: 2rem;
+    font-size: 1.8rem;
+    text-align: center;
+  }
+  
+  .sticky-note-add-button {
+    align-self: center;
+    width: fit-content;
   }
   
   .sticky-note-container .note-container {
-    width: calc(100% - 1rem); /* 1 column on mobile */
-    min-height: 160px;
-    margin: 0.5rem;
-    padding: 1.2rem;
+    width: calc(100% - 1.5rem);
+    min-height: 180px;
+    margin: 0.75rem;
+    padding: 1.5rem;
   }
   
   .sticky-note-container .note-title {
-    font-size: 1rem;
+    font-size: 1.1rem;
   }
   
   .sticky-note-container .note-preview {
-    font-size: 0.85rem;
+    font-size: 0.9rem;
   }
 }
 

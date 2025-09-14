@@ -50,7 +50,7 @@ async function addNote(username: string, title: string, description: string, tim
     }
   }catch(error){
     console.error(error);
-    throw error;
+    return 3;
   }
 }
 

@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import { useListNoteStore, useVisibilityStore, useProgressStore} from '../store';
 import { deleteAccountData } from '../models/firebase';
 import { deleteAccount } from '../models/auth';
+import Stack from '@mui/material/Stack';
+import CircularProgress from '@mui/material/CircularProgress';
 
 function RightPanel() {
     const { listNote } = useListNoteStore();
@@ -81,14 +83,15 @@ function RightPanel() {
                     </div>
                 </div>
             </div>
-            <div className='progress-container'>
                 <div className='right-panel-progress'>
                     Progress
                 </div>
+                 <Stack spacing={2} direction="row">
+                    <CircularProgress variant="determinate" value={(done/(unDone+done)) * 100} />
+                 </Stack>
                 <div className='right-panel-finish-task'>
                     {done}/{unDone + done}
                 </div>
-            </div>
             <button className = 'sign-out'
                 onClick = {handleSignOut}>
                 Sign out
