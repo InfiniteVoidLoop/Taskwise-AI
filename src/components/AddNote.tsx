@@ -16,7 +16,7 @@ function AddNote() {
     const {inc, unDone} = useProgressStore();
     const {setNoteInList, addListNote} = useListNoteStore();
     const {dateMonth} = useDateMonthStore();
-
+   
     const postNote = useMemo(
         () => wrapperTool(userUID, listTimestamp, dateMonth, {
             addListNote,
@@ -42,7 +42,7 @@ function AddNote() {
         try {
             console.log("Executing tool with args:", toolCall.args);
             const toolResult = await postNote.invoke(toolCall.args);
-            return toolResult;
+            return String(toolResult);
         } catch (toolError: any) {
             console.error("Tool execution error:", toolError);
             return "Fail to execute tool";
