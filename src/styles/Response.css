@@ -1,7 +1,5 @@
-/* Google Fonts for Note-Taking Style */
 @import url('https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&family=Caveat:wght@400;500;600;700&family=Patrick+Hand&family=Indie+Flower&display=swap');
 
-/* CSS Variables */
 :root {
   --note-font-family: 'Kalam', 'Caveat', 'Patrick Hand', 'Indie Flower', cursive, sans-serif;
 }
@@ -19,7 +17,6 @@
     padding: 0 0 1.5rem 0;
     position: fixed;
     z-index: 2000;
-    /* transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); */
     user-select: none;
     font-family: var(--note-font-family);
     backdrop-filter: blur(10px);
