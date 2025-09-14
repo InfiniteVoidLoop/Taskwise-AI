@@ -2,17 +2,21 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/ResetPage.css';
 import { sendEmailResetPass } from '../models/auth';
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
+import Alert from '@mui/material/Alert';
 
 function ResetPage() {
+    
     const [email, setEmail] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    const [message, setMessage] = useState('');
     const [error, setError] = useState('');
+    const [message, setMessage] = useState(false);
 
     const handleEmailChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(target.value);
         if (error) setError('');
-        if (message) setMessage('');
+        if (message) setMessage(false);
     };
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -23,25 +27,13 @@ function ResetPage() {
             return;
         }
 
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
-            setError('Please enter a valid email address');
-            return;
-        }
-        await sendEmailResetPass(email);
         setIsLoading(true);
+        await sendEmailResetPass(email);
+        setMessage(true);
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        setIsLoading(false);
         setError('');
-
-        try {
-            // Simulate password reset API call
-            await new Promise(resolve => setTimeout(resolve, 2000));
-            setMessage('Password reset email sent! Check your inbox.');
-            setEmail('');
-        } catch (error) {
-            setError('Failed to send reset email. Please try again.');
-        } finally {
-            setIsLoading(false);
-        }
+        setEmail('');
     };
 
     return (
@@ -55,17 +47,11 @@ function ResetPage() {
 
                     <form className="login-form" onSubmit={handleSubmit}>
                         {error && (
-                            <div className="error-message">
-                                <span className="error-icon">⚠️</span>
-                                <span className="error-text">{error}</span>
-                            </div>
+                            <Alert severity="error">{error}</Alert>
                         )}
 
                         {message && (
-                            <div className="success-message">
-                                <span className="success-icon">✅</span>
-                                <span className="success-text">{message}</span>
-                            </div>
+                           <Alert severity="success">'If an account with this email exists, you will receive a password reset link shortly.'</Alert>
                         )}
 
                         <div className="form-group">
@@ -75,28 +61,23 @@ function ResetPage() {
                                     id="email"
                                     name="email"
                                     type="email"
-                                    className={`form-input ${error && !email.trim() ? 'input-error' : ''}`}
+                                    className='form-input'
                                     placeholder="Enter your email address"
                                     value={email}
                                     onChange={handleEmailChange}
-                                    required
                                 />
-                                <div className="input-icon">
-                                    <span>📧</span>
-                                </div>
                             </div>
                         </div>
 
                         <button
                             type="submit"
-                            className={`login-button ${isLoading ? 'loading' : ''}`}
+                            className='login-button'
                             disabled={isLoading}
                         >
                             {isLoading ? (
-                                <>
-                                    <span className="loading-spinner"></span>
-                                    Sending...
-                                </>
+                                <Box sx={{ display: 'flex' }}>
+                                    <CircularProgress />
+                                </Box>
                             ) : (
                                 'Send Reset Link'
                             )}

@@ -28,7 +28,10 @@ async function logIn(email: string, password: string): Promise<string|null> {
 async function sendEmailResetPass(email: string){
     try{
         await sendPasswordResetEmail(auth, email);
+            console.log("Password reset email sent!");
+
     }catch(error: any){
+        console.error(error);
         throw error;
     }
 }

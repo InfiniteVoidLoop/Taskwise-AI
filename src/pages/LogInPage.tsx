@@ -1,42 +1,62 @@
-import React, {useState} from 'react'
-import {useNavigate, Link} from 'react-router-dom';
-import {logIn} from '../models/auth';
+import React, { useState } from 'react'
+import { useNavigate, Link } from 'react-router-dom';
+import { logIn } from '../models/auth';
 import { useUserUIDStore } from '../store';
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
+import Alert from '@mui/material/Alert';
 
-function LogInPage(){
+
+function LogInPage() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [hide, setHide] = useState(true);
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    const {setUserUID} = useUserUIDStore();
+    const [success, setSucess] = useState(false);
+    const { setUserUID } = useUserUIDStore();
     const navigate = useNavigate();
+
+
     const handleUsernameChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
         setUsername(target.value);
-        if (error) setError(''); 
+        if (error) setError('');
     };
 
     const handlePasswordChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
         setPassword(target.value);
-        if (error) setError(''); 
+        if (error) setError('');
     };
-    
+
     const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        
+
         if (!username.trim()) {
             setError('Please enter your username');
             return;
         }
-        
+
         if (!password.trim()) {
             setError('Please enter your password');
             return;
         }
-        const response = await logIn(username, password);
-        if (response){
-            setUserUID(response);
-            navigate('/');
+        if (isLoading)
+            return;
+        try{
+            setIsLoading(true);
+            const response = await logIn(username, password);
+            if (response) {
+                setUserUID(response);
+                setSucess(true);
+                navigate('/');
+            }
+            else {
+                setError('Log in failed! Wrong username or password');
+            }
+        }catch(error){
+            throw error;
+        }finally{
+            setIsLoading(false);
         }
     };
 
@@ -48,26 +68,25 @@ function LogInPage(){
                         <h1 className="login-title">Welcome Back</h1>
                         <p className="login-subtitle">Sign in to your note-taking workspace</p>
                     </div>
-                    
+
                     <form className="login-form" onSubmit={handleSignIn}>
                         {error && (
-                            <div className="error-message">
-                                <span className="error-icon">⚠️</span>
-                                <span className="error-text">{error}</span>
-                            </div>
+                            <Alert severity="error">{error}</Alert>
                         )}
-                        
+                        {success && (
+                            <Alert severity="success">Log in sucessfully</Alert>
+                        )}
                         <div className="form-group">
-                            <label htmlFor="username" className="form-label">Username</label>
+                            <label htmlFor="username" className="form-label">Email</label>
                             <div className="input-wrapper">
                                 <input
                                     id="username"
                                     name="username"
                                     type="text"
-                                    className={`form-input ${error && !username.trim() ? 'input-error' : ''}`}
+                                    className='form-input'
                                     placeholder="Enter your username"
-                                    value = {username}
-                                    onChange = {handleUsernameChange}
+                                    value={username}
+                                    onChange={handleUsernameChange}
                                     required
                                 />
                                 <div className="input-icon">
@@ -82,33 +101,32 @@ function LogInPage(){
                                 <input
                                     id="password"
                                     name="password"
-                                    type={hide?"password":"text"}
-                                    className={`form-input ${error && !password.trim() ? 'input-error' : ''}`}
+                                    type={hide ? "password" : "text"}
+                                    className='form-input'
                                     placeholder="Enter your password"
-                                    value = {password}
-                                    onChange = {handlePasswordChange}
+                                    value={password}
+                                    onChange={handlePasswordChange}
                                     required
                                 />
                                 <button
                                     type="button"
                                     className="password-toggle"
-                                    onClick = {()  => setHide((prev) => !prev)}
+                                    onClick={() => setHide((prev) => !prev)}
                                 >
-                                    {!hide?"👁️":"🙈"}
+                                    {!hide ? "👁️" : "🙈"}
                                 </button>
                             </div>
                         </div>
 
-                        <button 
-                            type="submit" 
-                            className={`login-button ${isLoading ? 'loading' : ''}`}
+                        <button
+                            type="submit"
+                            className='login-button'
                             disabled={isLoading}
                         >
                             {isLoading ? (
-                                <>
-                                    <span className="loading-spinner"></span>
-                                    Signing in...
-                                </>
+                                <Box sx={{ display: 'flex' }}>
+                                    <CircularProgress />
+                                </Box>
                             ) : (
                                 'Sign In'
                             )}
@@ -125,4 +143,4 @@ function LogInPage(){
     );
 }
 
-export {LogInPage};
+export { LogInPage };

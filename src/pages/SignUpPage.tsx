@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { signUp } from '../models/auth';
 import { useUserUIDStore } from '../store';
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
+import Alert from '@mui/material/Alert';
 
 function SignUpPage() {
     const [username, setUsername] = useState('');
@@ -47,7 +50,7 @@ function SignUpPage() {
         setIsLoading(false);
         if (response) {
             setUserUID(response);
-            navigate('/');
+            navigate('/login');
         } else {
             setError('Sign up failed. Please try again.');
         }
@@ -63,10 +66,10 @@ function SignUpPage() {
                     </div>
                     <form className="login-form" onSubmit={handleSignUp}>
                         {error && (
-                            <div className="error-message">
-                                <span className="error-icon">⚠️</span>
-                                <span className="error-text">{error}</span>
-                            </div>
+                            <Alert severity="error">{error}</Alert>
+                        )}
+                        {isLoading && (
+                            <Alert severity="success">Sign up sucessfully</Alert>
                         )}
                         <div className="form-group">
                             <label htmlFor="username" className="form-label">Email</label>
@@ -75,14 +78,13 @@ function SignUpPage() {
                                     id="username"
                                     name="username"
                                     type="email"
-                                    className={`form-input ${error && !username.trim() ? 'input-error' : ''}`}
+                                    className='form-input'
                                     placeholder="Enter your email"
                                     value={username}
                                     onChange={handleUsernameChange}
                                     required
                                 />
                                 <div className="input-icon">
-                                    <span>📧</span>
                                 </div>
                             </div>
                         </div>
@@ -93,7 +95,7 @@ function SignUpPage() {
                                     id="password"
                                     name="password"
                                     type={hide ? "password" : "text"}
-                                    className={`form-input ${error && !password.trim() ? 'input-error' : ''}`}
+                                    className='form-input'
                                     placeholder="Enter your password"
                                     value={password}
                                     onChange={handlePasswordChange}
@@ -115,7 +117,7 @@ function SignUpPage() {
                                     id="confirmPassword"
                                     name="confirmPassword"
                                     type={hide ? "password" : "text"}
-                                    className={`form-input ${error && !confirmPassword.trim() ? 'input-error' : ''}`}
+                                    className='form-input'
                                     placeholder="Confirm your password"
                                     value={confirmPassword}
                                     onChange={handleConfirmPasswordChange}
@@ -125,14 +127,13 @@ function SignUpPage() {
                         </div>
                         <button
                             type="submit"
-                            className={`login-button ${isLoading ? 'loading' : ''}`}
+                            className="login-button"
                             disabled={isLoading}
                         >
                             {isLoading ? (
-                                <>
-                                    <span className="loading-spinner"></span>
-                                    Signing up...
-                                </>
+                                <Box sx={{ display: 'flex' }}>
+                                    <CircularProgress />
+                                </Box>
                             ) : (
                                 'Sign Up'
                             )}

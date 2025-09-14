@@ -1,42 +1,52 @@
-import { useEffect } from 'react'
-import {fetchNote, getDateState } from '../models/firebase'
-import {useListTimestamp, useProgressStore, useListNoteStore, useDateMonthStore, useGreenDateStore, useRedDateStore, useUserUIDStore} from '../store';
+import { useEffect, useState } from 'react'
+import { fetchNote, getDateState } from '../models/firebase'
+import { useListTimestamp, useProgressStore, useListNoteStore, useDateMonthStore, useGreenDateStore, useRedDateStore, useUserUIDStore } from '../store';
 import NoteComponent from './NoteComponent'
 import dayjs from 'dayjs'
 import generateTimestamp from '../utils/generateTimestamp';
 import { useNavigate } from 'react-router-dom';
+import CircularProgress from '@mui/material/CircularProgress';
 
+import Box from '@mui/material/Box';
 
 function StickyNote() {
-    const { listNote, setListNote, addListNote, deleteListNote} = useListNoteStore();
-    const {dateMonth} = useDateMonthStore();
-    const {inc, reset} = useProgressStore();
-    const {pushFinishedDate} = useGreenDateStore();
-    const {pushUnfinishedDate} = useRedDateStore();
-    const {pushTimestamp, listTimestamp} = useListTimestamp();
-    const {userUID} = useUserUIDStore();
+    const { listNote, setListNote, addListNote, deleteListNote } = useListNoteStore();
+    const { dateMonth } = useDateMonthStore();
+    const { inc, reset } = useProgressStore();
+    const { pushFinishedDate } = useGreenDateStore();
+    const { pushUnfinishedDate } = useRedDateStore();
+    const { pushTimestamp, listTimestamp } = useListTimestamp();
+    const { userUID } = useUserUIDStore();
+    const [isLoading, setLoading] = useState(false);
+
     const navigate = useNavigate();
 
     const fetchData = async () => {
-        const response = await fetchNote(userUID, dateMonth);  
+        setLoading(true);
+        const response = await fetchNote(userUID, dateMonth);
         reset();
         response.forEach((note) => {
             if (note.marked) inc('done');
             else inc('unDone');
             pushTimestamp(note.timestamp);
-        })     
+        })
         setListNote(response);
+
+        setLoading(false);
     };
     const fetchDateStates = async () => {
-            try {
-                const res = await getDateState(userUID);
-                res.finishedDate.forEach(date => pushFinishedDate(dayjs(date)));
-                res.unFinishedDate.forEach(date => pushUnfinishedDate(dayjs(date)));
-            } catch (error) {
-                console.error('Error fetching date states:', error);
-                navigate('/login');
-            }
-        };
+        try {
+            setLoading(true);
+            const res = await getDateState(userUID);
+            res.finishedDate.forEach(date => pushFinishedDate(dayjs(date)));
+            res.unFinishedDate.forEach(date => pushUnfinishedDate(dayjs(date)));
+
+            setLoading(false);
+        } catch (error) {
+            console.error('Error fetching date states:', error);
+            navigate('/login');
+        }
+    };
     useEffect(() => {
         fetchDateStates();
     }, []);
@@ -44,10 +54,19 @@ function StickyNote() {
     useEffect(() => {
         fetchData();
     }, [dateMonth]);
-    
+
     const handleClickAddButton = () => {
-        addListNote({title: '', description: '', timestamp: generateTimestamp(dateMonth, listTimestamp), type: 'working', marked: false});
+        addListNote({ title: '', description: '', timestamp: generateTimestamp(dateMonth, listTimestamp), type: 'working', marked: false });
     };
+    if (isLoading) {
+        return (
+            <div className='sticky-note-loading'>
+                <Box sx={{ display: 'flex' }}>
+                    <CircularProgress />
+                </Box>
+            </div>
+        )
+    }
     return (
         <div className="sticky-note-container">
             <div className="sticky-note-header">
@@ -55,8 +74,8 @@ function StickyNote() {
                     {dateMonth?.format('DD MMMM YYYY')}
                 </div>
                 <button className='sticky-note-add-button'
-                   onClick = {handleClickAddButton}
-                >Add New Note</button> 
+                    onClick={handleClickAddButton}
+                >Add New Note</button>
             </div>
             {listNote.map((note) => (
                 <NoteComponent title={note.title}

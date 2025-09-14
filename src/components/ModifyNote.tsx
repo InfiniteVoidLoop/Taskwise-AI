@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDraggable } from '@dnd-kit/core';
 import type { ModifyNotePos, Note } from '../utils/interface';
 import { useVisibilityStore, useCurrentNoteStore, useListNoteStore, useCacheNoteStore, useListTimestamp } from '../store';
 import { useDateMonthStore, useProgressStore, useRedDateStore, useGreenDateStore, useUserUIDStore } from "../store";
 import { addNote } from '../models/firebase';
 import dayjs, { Dayjs } from 'dayjs'
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
 
 export const onSaveForTool = async (
     userUID: string,
@@ -39,7 +41,7 @@ export const onSaveForTool = async (
             if (response === 2) {
                 actions.popFinishedDate(dayjs(note.timestamp));
                 actions.pushUnfinishedDate(dayjs(note.timestamp));
-                if (dayjs(note.timestamp).isSame(dateMonth, 'day')){
+                if (dayjs(note.timestamp).isSame(dateMonth, 'day')) {
                     actions.inc("unDone");
                     actions.addListNote(note);
                 }
@@ -63,7 +65,7 @@ function ModifyNote(props: ModifyNotePos) {
     const { pushTimestamp } = useListTimestamp();
     const { userUID } = useUserUIDStore();
     const { dateMonth } = useDateMonthStore();
-
+    const [isLoading, setLoading] = useState(false);
     const { inc, unDone } = useProgressStore();
     const { pushUnfinishedDate } = useRedDateStore();
     const { popFinishedDate } = useGreenDateStore();
@@ -88,6 +90,7 @@ function ModifyNote(props: ModifyNotePos) {
             console.error("Missing required note fields");
             return;
         }
+        setLoading(true);
         await onSaveForTool(
             userUID,
             currentNote,
@@ -103,6 +106,7 @@ function ModifyNote(props: ModifyNotePos) {
                 unDone
             }
         );
+        setLoading(false);
     };
 
 
@@ -117,6 +121,11 @@ function ModifyNote(props: ModifyNotePos) {
     };
 
     if (!visibility) return null;
+    if (isLoading) return (
+        <Box sx={{ display: 'flex' }}>
+            <CircularProgress />
+        </Box>
+    );
     return (
         <div className={`modify-note-container large modify-note-${currentNote?.type}`}
             style={style}
