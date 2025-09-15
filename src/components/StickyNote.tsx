@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import type{Note} from '../utils/interface';
+import type { Note } from '../utils/interface';
 
 import { useListTimestamp, useProgressStore, useListNoteStore, useDateMonthStore, useGreenDateStore, useRedDateStore, useUserUIDStore } from '../store';
 import NoteComponent from './NoteComponent'
@@ -9,8 +9,10 @@ import { useNavigate } from 'react-router-dom';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import axios from 'axios';
+import { useViewNoteStore } from '../store';
 
 function StickyNote() {
+    const { typeView } = useViewNoteStore();
     const { listNote, setListNote, addListNote, deleteListNote } = useListNoteStore();
     const { dateMonth } = useDateMonthStore();
     const { inc, reset } = useProgressStore();
@@ -24,8 +26,8 @@ function StickyNote() {
 
     const fetchData = async () => {
         setLoading(true);
-        const response = await axios.post('http://localhost:5000/note/fetchNote',{
-            username: userUID, 
+        const response = await axios.post('http://localhost:5000/note/fetchNote', {
+            username: userUID,
             dateMonth: dateMonth
         })
         reset();
@@ -83,15 +85,41 @@ function StickyNote() {
                     onClick={handleClickAddButton}
                 >Add New Note</button>
             </div>
-            {listNote.map((note) => (
-                <NoteComponent title={note.title}
-                    description={note.description}
-                    timestamp={note.timestamp}
-                    type={note.type}
-                    marked={note.marked}
-                    deleteNote={deleteListNote}
-                />
-            ))}
+            {listNote.map((note) => {
+                if (typeView === 1 && note.marked === true) {
+                    return (
+                        <NoteComponent title={note.title}
+                            description={note.description}
+                            timestamp={note.timestamp}
+                            type={note.type}
+                            marked={note.marked}
+                            deleteNote={deleteListNote}
+                        />
+                    )
+                }
+                else if (typeView === 2 && note.marked === false) {
+                    return (
+                        <NoteComponent title={note.title}
+                            description={note.description}
+                            timestamp={note.timestamp}
+                            type={note.type}
+                            marked={note.marked}
+                            deleteNote={deleteListNote}
+                        />
+                    )
+                }
+                else if (typeView === 3) {
+                    return (
+                        <NoteComponent title={note.title}
+                            description={note.description}
+                            timestamp={note.timestamp}
+                            type={note.type}
+                            marked={note.marked}
+                            deleteNote={deleteListNote}
+                        />
+                    )
+                }
+            })}
         </div>
     );
 }

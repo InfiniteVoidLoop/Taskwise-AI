@@ -1,9 +1,15 @@
 import Calendar from './Calendar'
 import '../styles/LeftPanel.css'
 import naverLogo from '../assets/to-do-list.png';
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
 
-function LeftPanel() {      
-    return (    
+import { useViewNoteStore } from '../store';
+
+function LeftPanel() {
+    const { typeView, setView } = useViewNoteStore();
+
+    return (
         <div className="left-panel-container">
             <div className="left-panel-heading">
                 To-Do-List App
@@ -23,8 +29,39 @@ function LeftPanel() {
                     </div>
                 </div>
             </div>
-            
-        </div>  
+            <div className='display-checkbox'>
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            color="secondary"
+                            checked={typeView === 1}
+                            onChange={() => setView(1)}
+                        />
+                    }
+                    label="Done"
+                />
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            color="secondary"
+                            checked={typeView === 2}
+                            onChange={() => setView(2)}
+                        />
+                    }
+                    label="Undone"
+                />
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            color="secondary"
+                            checked={typeView === 3}
+                            onChange={() => setView(3)}
+                        />
+                    }
+                    label="All"
+                />
+            </div>
+        </div>
     );
 }
 export default LeftPanel;

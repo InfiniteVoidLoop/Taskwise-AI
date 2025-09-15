@@ -83,3 +83,8 @@ export interface ChatBotResponse{
     setTrue: () => void;
     setFalse: () => void;
 };
+
+export interface ViewNote{
+    typeView: number,
+    setView: (type: number) => void,
+};
