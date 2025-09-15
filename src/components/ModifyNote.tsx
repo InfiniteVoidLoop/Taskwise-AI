@@ -27,7 +27,7 @@ export const onSaveForTool = async (
     try {
         actions.pushTimestamp(note.timestamp);
         
-        const response = await axios.post('http://localhost:5000/note/addNote',{
+        const response = await axios.post('https://taskwise-ai.onrender.com/note/addNote',{
             username: userUID,
             title: note.title? note.title: '',
             description: note.description? note.description : '', 

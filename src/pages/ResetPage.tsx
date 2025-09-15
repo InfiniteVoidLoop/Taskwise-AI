@@ -28,7 +28,7 @@ function ResetPage() {
         }
 
         setIsLoading(true);
-        await axios.post('http://localhost:5000/auth/resetPass',{
+        await axios.post('https://taskwise-ai.onrender.com/auth/resetPass',{
             username: email
         });
         setMessage(true);

@@ -26,7 +26,7 @@ function StickyNote() {
 
     const fetchData = async () => {
         setLoading(true);
-        const response = await axios.post('http://localhost:5000/note/fetchNote', {
+        const response = await axios.post('https://taskwise-ai.onrender.com/note/fetchNote', {
             username: userUID,
             dateMonth: dateMonth
         })
@@ -43,7 +43,7 @@ function StickyNote() {
     const fetchDateStates = async () => {
         try {
             setLoading(true);
-            const res = await axios.post('http://localhost:5000/note/getDateState', {
+            const res = await axios.post('https://taskwise-ai.onrender.com/note/getDateState', {
                 username: userUID
             })
             res.data.finishedDate.forEach((date: string) => pushFinishedDate(dayjs(date)));

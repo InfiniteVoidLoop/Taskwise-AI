@@ -47,7 +47,7 @@ function SignUpPage() {
         }
         setIsLoading(true);
         try{
-            const response = await axios.post('http://localhost:5000/auth/signup', {
+            const response = await axios.post('https://taskwise-ai.onrender.com/auth/signup', {
                 username: username, 
                 password: password
             })

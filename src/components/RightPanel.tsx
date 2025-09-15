@@ -40,8 +40,8 @@ function RightPanel() {
 
     const handleDelete = async (event: React.MouseEvent) => {
         event.stopPropagation();
-        await axios.delete('http://localhost:5000/note/deleteAccount');
-        await axios.delete('http://localhost:5000/auth/deleteAccount');
+        await axios.delete('https://taskwise-ai.onrender.com/note/deleteAccount');
+        await axios.delete('https://taskwise-ai.onrender.com/auth/deleteAccount');
         window.location.reload();
     }
 

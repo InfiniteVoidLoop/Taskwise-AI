@@ -68,7 +68,7 @@ function NoteComponent(props: NoteProps) {
             else
                 dec('unDone');
 
-            await axios.post('http://localhost:5000/note/deleteNote', {
+            await axios.post('https://taskwise-ai.onrender.com/note/deleteNote', {
                 username: userUID, 
                 timestamp: props.timestamp
             })
@@ -92,7 +92,7 @@ function NoteComponent(props: NoteProps) {
     const handleCheckBox = async (e: React.MouseEvent<HTMLInputElement>) => {
         e.stopPropagation();
         const checked = (e.currentTarget as HTMLInputElement).checked;
-        await axios.post('http://localhost:5000/note/updateMarkNote', {
+        await axios.post('https://taskwise-ai.onrender.com/note/updateMarkNote', {
             username: userUID, 
             timestamp: props.timestamp, 
             marked: checked
