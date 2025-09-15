@@ -72,7 +72,7 @@ function SignUpPage() {
                         {error && (
                             <Alert severity="error">{error}</Alert>
                         )}
-                        {!error && (
+                        {!error && isLoading && (
                             <Alert severity="success">Sign up sucessfully</Alert>
                         )}
                         <div className="form-group">
