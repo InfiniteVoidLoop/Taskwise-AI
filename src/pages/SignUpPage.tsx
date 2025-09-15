@@ -57,7 +57,6 @@ function SignUpPage() {
         }catch(error){
             setError('Sign up failed. Please try again.');
             navigate('/login');
-            throw error;
         }
     };
 
