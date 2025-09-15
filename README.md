@@ -22,7 +22,7 @@
 
   
 ## 🔗 Deployed Web URL or APK file
-✍️ [\[Paste your link here\]](https://taskwise-ai-rho.vercel.app/login)
+✍️ [\[Paste your link here\]](https://taskwise-ai-rho.vercel.app)
 
 
 ## 🎥 Demo Video
