@@ -56,6 +56,7 @@ function SignUpPage() {
             navigate('/login');
         }catch(error){
             setError('Sign up failed. Please try again.');
+            navigate('/login');
             throw error;
         }
     };
@@ -72,7 +73,7 @@ function SignUpPage() {
                         {error && (
                             <Alert severity="error">{error}</Alert>
                         )}
-                        {isLoading && (
+                        {!error && (
                             <Alert severity="success">Sign up sucessfully</Alert>
                         )}
                         <div className="form-group">
